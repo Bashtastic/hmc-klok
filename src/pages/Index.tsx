@@ -3,6 +3,8 @@ import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import { toZonedTime } from "date-fns-tz";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
+import { Moon } from "lucide-react";
+import axios from "axios";
 import AnalogClock from "../components/AnalogClock";
 
 const AMSTERDAM_LAT = 52.3676;
@@ -11,7 +13,37 @@ const AMSTERDAM_LON = 4.9041;
 const Index = () => {
   const [time, setTime] = useState(new Date());
   const [isDark, setIsDark] = useState(false);
+  const [moonPhase, setMoonPhase] = useState("");
+  const [moonDescription, setMoonDescription] = useState("");
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
+
+  useEffect(() => {
+    const fetchMoonData = async () => {
+      try {
+        const response = await axios.get('https://waterberichtgeving.rws.nl/dynamisch/infobord/zeeland/test.html');
+        const htmlContent = response.data;
+        
+        // Extract moon symbol
+        const moonSymbolMatch = htmlContent.match(/maansymbool:\s*([^\n]+)/);
+        if (moonSymbolMatch) {
+          setMoonPhase(moonSymbolMatch[1].trim());
+        }
+
+        // Extract moon phase description
+        const moonDescMatch = htmlContent.match(/omschrijving_getijfase:\s*([^\n]+)/);
+        if (moonDescMatch) {
+          setMoonDescription(moonDescMatch[1].trim());
+        }
+      } catch (error) {
+        console.error('Error fetching moon data:', error);
+      }
+    };
+
+    fetchMoonData();
+    const moonDataInterval = setInterval(fetchMoonData, 3600000); // Update every hour
+
+    return () => clearInterval(moonDataInterval);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -50,6 +82,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-4xl">
+        <div className="flex items-center justify-center mb-8 space-x-2">
+          <Moon className="w-6 h-6 text-foreground" />
+          <span className="text-foreground">{moonPhase}</span>
+          <span className="text-muted-foreground">-</span>
+          <span className="text-foreground">{moonDescription}</span>
+        </div>
+        
         <div className="flex flex-wrap justify-center gap-8 md:gap-16">
           {/* UTC Clock */}
           <div className="flex flex-col items-center">
