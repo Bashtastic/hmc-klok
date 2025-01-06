@@ -32,10 +32,10 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Draw clock face
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "hsl(var(--background))";
     ctx.fill();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "#000000";
+    ctx.strokeStyle = "hsl(var(--foreground))";
     ctx.stroke();
 
     // Draw hour markers
@@ -50,6 +50,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
       ctx.beginPath();
       ctx.moveTo(startX, startY);
       ctx.lineTo(endX, endY);
+      ctx.strokeStyle = "hsl(var(--foreground))";
       ctx.stroke();
     }
 
@@ -63,6 +64,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     const hourAngle = (hours + minutes / 60) * (Math.PI / 6) - Math.PI / 2;
     ctx.beginPath();
     ctx.lineWidth = 4;
+    ctx.strokeStyle = "hsl(var(--foreground))";
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.5 * Math.cos(hourAngle),
@@ -74,6 +76,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     const minuteAngle = (minutes + seconds / 60) * (Math.PI / 30) - Math.PI / 2;
     ctx.beginPath();
     ctx.lineWidth = 3;
+    ctx.strokeStyle = "hsl(var(--foreground))";
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.7 * Math.cos(minuteAngle),
@@ -86,7 +89,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
       (seconds + milliseconds / 1000) * (Math.PI / 30) - Math.PI / 2;
     ctx.beginPath();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "#4299e1";
+    ctx.strokeStyle = "hsl(var(--primary))";
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.8 * Math.cos(secondAngle),
@@ -97,7 +100,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Draw center dot
     ctx.beginPath();
     ctx.arc(centerX, centerY, 3, 0, 2 * Math.PI);
-    ctx.fillStyle = "#4299e1";
+    ctx.fillStyle = "hsl(var(--primary))";
     ctx.fill();
   }, [time]);
 
