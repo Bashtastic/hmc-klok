@@ -3,7 +3,6 @@ import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import { toZonedTime } from "date-fns-tz";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
-import { Moon } from "lucide-react";
 import axios from "axios";
 import AnalogClock from "../components/AnalogClock";
 
@@ -29,8 +28,8 @@ const Index = () => {
           setMoonPhase(moonSymbolMatch[1].trim());
         }
 
-        // Extract moon phase description
-        const moonDescMatch = htmlContent.match(/omschrijving_getijfase:\s*([^\n]+)/);
+        // Extract moon phase description - updated regex to capture everything after the colon
+        const moonDescMatch = htmlContent.match(/omschrijving_getijfase:([^\n]+)/);
         if (moonDescMatch) {
           setMoonDescription(moonDescMatch[1].trim());
         }
@@ -83,8 +82,7 @@ const Index = () => {
     <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-4xl">
         <div className="flex items-center justify-center mb-8 space-x-2">
-          <Moon className="w-6 h-6 text-foreground" />
-          <span className="text-foreground">{moonPhase}</span>
+          <span className="text-foreground text-xl">{moonPhase}</span>
           <span className="text-muted-foreground">-</span>
           <span className="text-foreground">{moonDescription}</span>
         </div>
