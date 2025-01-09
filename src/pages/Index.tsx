@@ -19,19 +19,15 @@ const Index = () => {
   useEffect(() => {
     const fetchMoonData = async () => {
       try {
-        const response = await axios.get('https://waterberichtgeving.rws.nl/dynamisch/infobord/zeeland/test.html');
-        const htmlContent = response.data;
+        const response = await axios.get('https://waterberichtgeving.rws.nl/dynamisch/infobord/api/maanfase.html');
+        const data = response.data;
         
-        // Extract moon symbol
-        const moonSymbolMatch = htmlContent.match(/maansymbool:\s*([^\n]+)/);
-        if (moonSymbolMatch) {
-          setMoonPhase(moonSymbolMatch[1].trim());
+        if (data.maansymbool) {
+          setMoonPhase(data.maansymbool.trim());
         }
-
-        // Extract moon phase description - updated regex to capture everything after the colon
-        const moonDescMatch = htmlContent.match(/omschrijving_getijfase:([^\n]+)/);
-        if (moonDescMatch) {
-          setMoonDescription(moonDescMatch[1].trim());
+        
+        if (data.omschrijving_getijfase) {
+          setMoonDescription(data.omschrijving_getijfase.trim());
         }
       } catch (error) {
         console.error('Error fetching moon data:', error);
