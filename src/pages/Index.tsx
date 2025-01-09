@@ -105,7 +105,7 @@ const Index = () => {
 
           {/* CET Clock */}
           <div className="flex flex-col items-center">
-            <p className="mb-2 text-sm font-medium text-muted-foreground">CET</p>
+            <p className="mb-2 text-sm font-medium text-muted-foreground">{isDST ? 'CET' : 'MET/CET'}</p>
             <AnalogClock time={cetTime} />
             <p className="mt-4 text-2xl font-light tracking-wide text-foreground">
               {format(cetTime, "HH:mm")}
