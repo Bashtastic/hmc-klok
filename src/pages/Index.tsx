@@ -77,10 +77,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-4xl">
-        <div className="flex items-center justify-center mb-8 space-x-2">
-          <span className="text-foreground text-xl">{moonPhase}</span>
-          <span className="text-muted-foreground">-</span>
-          <span className="text-foreground">{moonDescription}</span>
+        <div className="flex items-center justify-center mb-8 space-x-4">
+          <span className="text-foreground text-4xl">{moonPhase}</span>
+          <span className="text-foreground text-3xl">{moonDescription}</span>
         </div>
         
         <div className="flex flex-wrap justify-center gap-8 md:gap-16">
@@ -114,7 +113,7 @@ const Index = () => {
           </div>
         </div>
         <p className="text-center mt-12 text-3xl font-light tracking-wide text-foreground">
-          {format(time, "d MMMM", { locale: nl })}
+          {format(time, "d MMMM yyyy", { locale: nl })}
         </p>
       </div>
     </div>
