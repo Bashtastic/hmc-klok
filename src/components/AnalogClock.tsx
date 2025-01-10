@@ -77,11 +77,12 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     const milliseconds = time.getMilliseconds();
 
     // Draw hour hand (50% thicker, blue in light theme, green in dark theme)
-    const hourAngle = (hours + minutes / 60) * (Math.PI / 6) - Math.PI / 2;
     ctx.beginPath();
+    ctx.lineCap = 'round'; // Add rounded end
     ctx.lineWidth = 6; // 50% thicker (was 4)
     const isDarkMode = document.documentElement.classList.contains('dark');
     ctx.strokeStyle = isDarkMode ? "hsl(142, 76%, 36%)" : "hsl(217, 91%, 60%)"; // Green in dark mode, blue in light mode
+    const hourAngle = (hours + minutes / 60) * (Math.PI / 6) - Math.PI / 2;
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.5 * Math.cos(hourAngle),
@@ -90,10 +91,11 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.stroke();
 
     // Draw minute hand
-    const minuteAngle = (minutes + seconds / 60) * (Math.PI / 30) - Math.PI / 2;
     ctx.beginPath();
+    ctx.lineCap = 'round'; // Add rounded end
     ctx.lineWidth = 3;
     ctx.strokeStyle = "hsl(0, 0%, 89%)"; // Light gray hands
+    const minuteAngle = (minutes + seconds / 60) * (Math.PI / 30) - Math.PI / 2;
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.7 * Math.cos(minuteAngle),
@@ -102,12 +104,13 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.stroke();
 
     // Draw second hand (red, thinner, and semi-transparent)
-    const secondAngle =
-      (seconds + milliseconds / 1000) * (Math.PI / 30) - Math.PI / 2;
     ctx.beginPath();
+    ctx.lineCap = 'round'; // Add rounded end
     ctx.lineWidth = 1; // 50% thinner (was 2)
     ctx.globalAlpha = 0.9; // 10% transparent
     ctx.strokeStyle = "hsl(0, 100%, 50%)"; // Red color
+    const secondAngle =
+      (seconds + milliseconds / 1000) * (Math.PI / 30) - Math.PI / 2;
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.8 * Math.cos(secondAngle),
