@@ -75,19 +75,8 @@ const Index = () => {
   const metTime = toZonedTime(time, 'Etc/GMT-1');
 
   return (
-    <div 
-      className="min-h-screen transition-colors duration-300 flex flex-col items-center justify-center p-4 relative"
-      style={{
-        backgroundImage: 'url(/lovable-uploads/cc328c55-1c71-42a4-b6d0-2ac4eccef6e8.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
-      {/* Semi-transparant overlay voor betere leesbaarheid */}
-      <div className="absolute inset-0 bg-black/30" />
-      
-      <div className="w-full max-w-4xl relative z-10">
+    <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-4xl">
         <MoonPhaseInfo moonPhase={moonPhase} moonDescription={moonDescription} />
         
         <div className="flex flex-wrap justify-center gap-8 md:gap-16">
