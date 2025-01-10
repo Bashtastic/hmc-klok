@@ -50,9 +50,9 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
       const isMainHour = i % 3 === 0;
       
       if (isMainHour) {
-        // Draw numbers for 12, 3, 6, 9
-        const numberX = centerX + (radius - 25) * Math.cos(angle - Math.PI / 2);
-        const numberY = centerY + (radius - 25) * Math.sin(angle - Math.PI / 2);
+        // Draw numbers for 12, 3, 6, 9 at the same radius as the hour markers
+        const numberX = centerX + (radius - 10) * Math.cos(angle - Math.PI / 2);
+        const numberY = centerY + (radius - 10) * Math.sin(angle - Math.PI / 2);
         const number = i === 0 ? "12" : i.toString();
         ctx.fillText(number, numberX, numberY);
       } else {
