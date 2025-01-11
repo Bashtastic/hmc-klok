@@ -3,7 +3,6 @@ import { toZonedTime } from "date-fns-tz";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
 import axios from "axios";
 import ClockDisplay from "../components/ClockDisplay";
-import MoonPhaseInfo from "../components/MoonPhaseInfo";
 import DateDisplay from "../components/DateDisplay";
 import WaterLevel from "../components/WaterLevel";
 
@@ -80,13 +79,11 @@ const Index = () => {
     <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col items-center justify-center p-4 relative">
       <WaterLevel percentage={waterLevel} />
       <div className="w-full max-w-4xl relative z-10">
-        <div className="flex justify-between items-center mb-8">
-          <div className="text-foreground text-3xl">{moonDescription}</div>
+        <div className="flex justify-center mb-8">
           <span className="text-foreground text-4xl">{moonPhase}</span>
-          <DateDisplay date={time} />
         </div>
         
-        <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+        <div className="flex flex-wrap justify-center gap-8 md:gap-16 scale-150 mb-16">
           <ClockDisplay time={utcTime} title="UTC" />
           
           {isDST && (
@@ -97,6 +94,11 @@ const Index = () => {
             time={cetTime} 
             title={isDST ? 'CET' : 'MET/CET'} 
           />
+        </div>
+
+        <div className="flex justify-between items-center">
+          <div className="text-foreground text-3xl">{moonDescription}</div>
+          <DateDisplay date={time} />
         </div>
       </div>
     </div>
