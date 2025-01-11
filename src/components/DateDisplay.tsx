@@ -7,7 +7,7 @@ interface DateDisplayProps {
 
 const DateDisplay = ({ date }: DateDisplayProps) => {
   return (
-    <p className="text-foreground text-3xl font-light tracking-wide">
+    <p className="text-center mt-12 text-3xl font-light tracking-wide text-foreground">
       {format(date, "d MMMM yyyy", { locale: nl })}
     </p>
   );
