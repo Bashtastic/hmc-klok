@@ -15,7 +15,7 @@ const Index = () => {
   const [isDark, setIsDark] = useState(false);
   const [moonPhase, setMoonPhase] = useState("");
   const [moonDescription, setMoonDescription] = useState("");
-  const [waterLevel, setWaterLevel] = useState(50); // Temporary state, replace with API data
+  const [waterLevel, setWaterLevel] = useState(50);
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
 
   useEffect(() => {
@@ -80,7 +80,11 @@ const Index = () => {
     <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col items-center justify-center p-4 relative">
       <WaterLevel percentage={waterLevel} />
       <div className="w-full max-w-4xl relative z-10">
-        <MoonPhaseInfo moonPhase={moonPhase} moonDescription={moonDescription} />
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-foreground text-3xl">{moonDescription}</div>
+          <span className="text-foreground text-4xl">{moonPhase}</span>
+          <DateDisplay date={time} />
+        </div>
         
         <div className="flex flex-wrap justify-center gap-8 md:gap-16">
           <ClockDisplay time={utcTime} title="UTC" />
@@ -94,8 +98,6 @@ const Index = () => {
             title={isDST ? 'CET' : 'MET/CET'} 
           />
         </div>
-
-        <DateDisplay date={time} />
       </div>
     </div>
   );
