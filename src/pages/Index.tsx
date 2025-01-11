@@ -98,6 +98,7 @@ const Index = () => {
 
         <div className="flex justify-between items-center">
           <div className="text-foreground text-3xl">{moonDescription}</div>
+          <span className="text-foreground text-4xl">{moonPhase}</span>
           <DateDisplay date={time} />
         </div>
       </div>
