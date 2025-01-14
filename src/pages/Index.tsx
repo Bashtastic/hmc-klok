@@ -20,8 +20,8 @@ const Index = () => {
   useEffect(() => {
     const fetchMoonData = async () => {
       try {
-        const response = await axios.get('https://api.allorigins.win/get?url=' + encodeURIComponent('https://waterberichtgeving.rws.nl/dynamisch/infobord/api/maanfase.html'));
-        const data = JSON.parse(response.data.contents);
+        const response = await axios.get('https://waterberichtgeving.rws.nl/dynamisch/infobord/api/maanfase.json');
+        const data = response.data;
         
         if (data.maansymbool) {
           setMoonPhase(data.maansymbool.trim());
