@@ -16,26 +16,27 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
 
     // Set actual size in memory (scaled to account for extra pixel density)
     const scale = window.devicePixelRatio;
-    canvas.width = 200 * scale;
-    canvas.height = 200 * scale;
+    canvas.width = 400 * scale; // Doubled from 200
+    canvas.height = 400 * scale; // Doubled from 200
 
     // Normalize coordinate system to use CSS pixels
     ctx.scale(scale, scale);
 
-    const radius = 90;
-    const centerX = 100;
-    const centerY = 100;
+    const radius = 180; // Doubled from 90
+    const centerX = 200; // Doubled from 100
+    const centerY = 200; // Doubled from 100
 
     // Clear canvas
-    ctx.clearRect(0, 0, 200, 200);
+    ctx.clearRect(0, 0, 400, 400); // Doubled from 200, 200
 
     // Draw clock face
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = "hsl(222, 47%, 11%)"; // Dark blue clock face
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    ctx.fillStyle = isDarkMode ? "hsl(222, 47%, 11%)" : "#F1F1F1"; // Light gray in day mode
     ctx.fill();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "hsl(217, 33%, 17.5%)"; // Darker border
+    ctx.strokeStyle = isDarkMode ? "hsl(217, 33%, 17.5%)" : "#E5E5E5";
     ctx.stroke();
 
     // Draw hour markers and numbers
@@ -79,7 +80,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Draw hour hand (50% thicker, blue in light theme, green in dark theme)
     ctx.beginPath();
     ctx.lineCap = 'round'; // Add rounded end
-    ctx.lineWidth = 6; // 50% thicker (was 4)
+    ctx.lineWidth = 12; // Doubled from 6
     const isDarkMode = document.documentElement.classList.contains('dark');
     ctx.strokeStyle = isDarkMode ? "hsl(142, 76%, 36%)" : "hsl(217, 91%, 60%)"; // Green in dark mode, blue in light mode
     const hourAngle = (hours + minutes / 60) * (Math.PI / 6) - Math.PI / 2;
@@ -93,7 +94,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Draw minute hand
     ctx.beginPath();
     ctx.lineCap = 'round'; // Add rounded end
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 6; // Doubled from 3
     ctx.strokeStyle = "hsl(0, 0%, 89%)"; // Light gray hands
     const minuteAngle = (minutes + seconds / 60) * (Math.PI / 30) - Math.PI / 2;
     ctx.moveTo(centerX, centerY);
@@ -106,7 +107,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Draw second hand (red, thinner, and semi-transparent)
     ctx.beginPath();
     ctx.lineCap = 'round'; // Add rounded end
-    ctx.lineWidth = 1; // 50% thinner (was 2)
+    ctx.lineWidth = 2; // Doubled from 1
     ctx.globalAlpha = 0.9; // 10% transparent
     ctx.strokeStyle = "hsl(0, 100%, 50%)"; // Red color
     const secondAngle =
@@ -121,7 +122,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
 
     // Draw center dot
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 3, 0, 2 * Math.PI);
+    ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI); // Doubled from 3
     ctx.fillStyle = "hsl(0, 0%, 89%)"; // Light gray center dot
     ctx.fill();
   }, [time]);
@@ -129,9 +130,9 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
   return (
     <canvas
       ref={canvasRef}
-      width="200"
-      height="200"
-      style={{ width: "200px", height: "200px" }}
+      width="400" // Doubled from 200
+      height="400" // Doubled from 200
+      style={{ width: "400px", height: "400px" }} // Doubled from 200px
       className="shadow-lg rounded-full"
     />
   );
