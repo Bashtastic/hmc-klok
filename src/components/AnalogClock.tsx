@@ -81,7 +81,6 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.beginPath();
     ctx.lineCap = 'round'; // Add rounded end
     ctx.lineWidth = 12; // Doubled from 6
-    const isDarkMode = document.documentElement.classList.contains('dark');
     ctx.strokeStyle = isDarkMode ? "hsl(142, 76%, 36%)" : "hsl(217, 91%, 60%)"; // Green in dark mode, blue in light mode
     const hourAngle = (hours + minutes / 60) * (Math.PI / 6) - Math.PI / 2;
     ctx.moveTo(centerX, centerY);
