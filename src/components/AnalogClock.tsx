@@ -41,7 +41,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
 
     // Draw hour markers and numbers
     ctx.lineWidth = 2;
-    ctx.font = "bold 16px Arial";
+    ctx.font = "bold 20px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "hsl(220, 13%, 40%)"; // Dark gray color for numbers
