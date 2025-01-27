@@ -4,7 +4,6 @@ import { getSunrise, getSunset } from "sunrise-sunset-js";
 import axios from "axios";
 import ClockDisplay from "../components/ClockDisplay";
 import DateDisplay from "../components/DateDisplay";
-import WaterLevel from "../components/WaterLevel";
 
 const AMSTERDAM_LAT = 52.3676;
 const AMSTERDAM_LON = 4.9041;
@@ -14,7 +13,6 @@ const Index = () => {
   const [isDark, setIsDark] = useState(false);
   const [moonPhase, setMoonPhase] = useState("");
   const [moonDescription, setMoonDescription] = useState("");
-  const [waterLevel, setWaterLevel] = useState(50);
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
 
   useEffect(() => {
@@ -77,7 +75,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#D3E4FD] dark:bg-background transition-colors duration-300 flex flex-col items-center justify-between p-4 relative">
-      <WaterLevel percentage={waterLevel} />
       <div className="w-full max-w-4xl relative z-10 flex flex-col min-h-screen">
         <div className="flex flex-wrap justify-center gap-8 md:gap-16 scale-150 mt-32">
           <ClockDisplay time={utcTime} title="UTC" />
@@ -99,7 +96,6 @@ const Index = () => {
             moonDescription={moonDescription} 
           />
         </div>
-      </div>
     </div>
   );
 };
