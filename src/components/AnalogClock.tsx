@@ -36,7 +36,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.fillStyle = isDarkMode ? "hsl(222, 47%, 11%)" : "#F1F1F1"; // Light gray in day mode
     ctx.fill();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = isDarkMode ? "hsl(217, 33%, 17.5%)" : "#E5E5E5";
+    ctx.strokeStyle = isDarkMode ? "hsl(217, 33%, 17.5%)" : "#999999";
     ctx.stroke();
 
     // Draw hour markers and numbers
