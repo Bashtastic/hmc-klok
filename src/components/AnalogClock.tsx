@@ -106,7 +106,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Draw second hand (red, thinner, and semi-transparent)
     ctx.beginPath();
     ctx.lineCap = 'round'; // Add rounded end
-    ctx.lineWidth = 2; // Doubled from 1
+    ctx.lineWidth = 1; // Doubled from 1
     ctx.globalAlpha = 0.9; // 10% transparent
     ctx.strokeStyle = "hsl(0, 100%, 50%)"; // Red color
     const secondAngle =
