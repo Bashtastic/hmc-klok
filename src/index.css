@@ -42,11 +42,11 @@
 
     --sidebar-primary-foreground: #f5f5f5;
 
-    --sidebar-accent: #f3f4f5; /* HSL(240, 4.8%, 95.9%) */
+    --sidebar-accent: #e43d3d; /* HSL(240, 4.8%, 95.9%) */
 
     --sidebar-accent-foreground: #191d1f;
 
-    --sidebar-border: #eaeef3; /* HSL(220, 13%, 91%) */
+    --sidebar-border: #8a1747; /* HSL(220, 13%, 91%) */
 
     --sidebar-ring: #339af0; /* HSL(217.2, 91.2%, 59.8%) */
   }
