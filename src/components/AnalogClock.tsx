@@ -36,7 +36,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.fillStyle = isDarkMode ? "hsl(222, 47%, 11%)" : "#F1F1F1"; // Light gray in day mode
     ctx.fill();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = isDarkMode ? "hsl(217, 33%, 17.5%)" : "#999999";
+    ctx.strokeStyle = isDarkMode ? "hsl(217, 33%, 17.5%)" : "#E5E5E5";
     ctx.stroke();
 
     // Draw hour markers and numbers
@@ -106,7 +106,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Draw second hand (red, thinner, and semi-transparent)
     ctx.beginPath();
     ctx.lineCap = 'round'; // Add rounded end
-    ctx.lineWidth = 1; // Doubled from 1
+    ctx.lineWidth = 2; // Doubled from 1
     ctx.globalAlpha = 0.9; // 10% transparent
     ctx.strokeStyle = "hsl(0, 100%, 50%)"; // Red color
     const secondAngle =
