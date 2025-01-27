@@ -94,7 +94,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.beginPath();
     ctx.lineCap = 'round'; // Add rounded end
     ctx.lineWidth = 6; // Doubled from 3
-    ctx.strokeStyle = "hsl(0, 0%, 89%)"; // Light gray hands
+    ctx.strokeStyle = "hsl(0, 0.00%, 22.00%)"; // Light gray hands
     const minuteAngle = (minutes + seconds / 60) * (Math.PI / 30) - Math.PI / 2;
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
