@@ -40,7 +40,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.stroke();
 
     // Draw hour markers and numbers
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 2;
     ctx.font = "bold 20px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -52,8 +52,8 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
       
       if (isMainHour) {
         // Draw numbers for 12, 3, 6, 9 at the same radius as the hour markers
-        const numberX = centerX + (radius - 10) * Math.cos(angle - Math.PI / 2);
-        const numberY = centerY + (radius - 10) * Math.sin(angle - Math.PI / 2);
+        const numberX = centerX + (radius - 20) * Math.cos(angle - Math.PI / 2);
+        const numberY = centerY + (radius - 20) * Math.sin(angle - Math.PI / 2);
         const number = i === 0 ? "12" : i.toString();
         ctx.fillText(number, numberX, numberY);
       } else {
