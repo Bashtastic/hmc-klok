@@ -22,7 +22,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Normalize coordinate system to use CSS pixels
     ctx.scale(scale, scale);
 
-    const radius = 180; // Doubled from 90
+    const radius = 200; // Doubled from 90
     const centerX = 200; // Doubled from 100
     const centerY = 200; // Doubled from 100
 
@@ -35,7 +35,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     const isDarkMode = document.documentElement.classList.contains('dark');
     ctx.fillStyle = isDarkMode ? "hsl(222, 47%, 11%)" : "#F1F1F1"; // Light gray in day mode
     ctx.fill();
-    ctx.lineWidth = 20;
+    ctx.lineWidth = 2;
     ctx.strokeStyle = isDarkMode ? "hsl(217, 49.10%, 41.60%)" : "#999999";
     ctx.stroke();
 
