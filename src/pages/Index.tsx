@@ -93,6 +93,8 @@ const Index = () => {
         </div>
       </div>
 
+      <div className="flex-grow" /> {/* This creates flexible space between the clocks and the date display */}
+
       <div className="mb-16">
         <DateDisplay 
           date={time} 
