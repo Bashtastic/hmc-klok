@@ -76,10 +76,10 @@ const Index = () => {
   const metTime = toZonedTime(time, 'Etc/GMT-1');
 
   return (
-    <div className="min-h-screen bg-[#D3E4FD] dark:bg-background transition-colors duration-300 flex flex-col items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-[#D3E4FD] dark:bg-background transition-colors duration-300 flex flex-col items-center justify-between p-4 relative">
       <WaterLevel percentage={waterLevel} />
-      <div className="w-full max-w-4xl relative z-10">
-        <div className="flex flex-wrap justify-center gap-8 md:gap-16 scale-150 mb-24">
+      <div className="w-full max-w-4xl relative z-10 flex flex-col min-h-screen">
+        <div className="flex flex-wrap justify-center gap-8 md:gap-16 scale-150 mt-24">
           <ClockDisplay time={utcTime} title="UTC" />
           
           {isDST && (
@@ -92,11 +92,13 @@ const Index = () => {
           />
         </div>
 
-        <DateDisplay 
-          date={time} 
-          moonPhase={moonPhase} 
-          moonDescription={moonDescription} 
-        />
+        <div className="flex-grow flex items-center justify-center">
+          <DateDisplay 
+            date={time} 
+            moonPhase={moonPhase} 
+            moonDescription={moonDescription} 
+          />
+        </div>
       </div>
     </div>
   );
