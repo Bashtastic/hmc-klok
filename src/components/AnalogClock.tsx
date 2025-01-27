@@ -31,12 +31,12 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
 
     // Draw clock face
     ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.arc(centerX, centerY, radius, 0, 1 * Math.PI);
     const isDarkMode = document.documentElement.classList.contains('dark');
     ctx.fillStyle = isDarkMode ? "hsl(222, 47%, 11%)" : "#F1F1F1"; // Light gray in day mode
     ctx.fill();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = isDarkMode ? "hsl(217, 33%, 17.5%)" : "#999999";
+    ctx.strokeStyle = isDarkMode ? "hsl(217, 49.10%, 41.60%)" : "#999999";
     ctx.stroke();
 
     // Draw hour markers and numbers
