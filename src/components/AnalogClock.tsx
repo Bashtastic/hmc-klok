@@ -40,7 +40,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.stroke();
 
     // Draw hour markers and numbers
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 4;
     ctx.font = "bold 20px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
