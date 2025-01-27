@@ -22,14 +22,14 @@
     --muted: #ffffff;
     --muted-foreground: #1b1b1b;
 
-    --accent: #ccd9e3;
+    --accent: #888122;
     --accent-foreground: #111827;
 
     --destructive: #e63946; /* HSL(0, 84.2%, 60.2%) */
     --destructive-foreground: #f0faff;
 
-    --border: #e8eef3; /* HSL(214.3, 31.8%, 91.4%) */
-    --input: #e8eef3;
+    --border: #3174aa; /* HSL(214.3, 31.8%, 91.4%) */
+    --input: #41c052;
     --ring: #1b1b1b;
 
     --radius: 0.5rem;
