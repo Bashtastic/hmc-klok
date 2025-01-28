@@ -35,10 +35,20 @@ const Index = () => {
       }
     };
 
+    // Initial fetch
     fetchMoonData();
-    const moonDataInterval = setInterval(fetchMoonData, 3600000);
 
-    return () => clearInterval(moonDataInterval);
+    // Set up interval to check every second if it's 2 minutes past the hour
+    const checkTimeInterval = setInterval(() => {
+      const now = new Date();
+      if (now.getMinutes() === 2 && now.getSeconds() === 0) {
+        fetchMoonData();
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(checkTimeInterval);
+    };
   }, []);
 
   useEffect(() => {
