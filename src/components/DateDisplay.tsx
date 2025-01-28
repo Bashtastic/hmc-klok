@@ -9,15 +9,16 @@ interface DateDisplayProps {
 
 const DateDisplay = ({ date, moonPhase, moonDescription }: DateDisplayProps) => {
   return (
-    <div className="flex items-center justify-center space-x-8">
-      <span className="text-foreground" style={{ fontSize: "3rem" }}>{moonDescription}</span>
-      <span className="text-foreground" style={{ fontSize: "6rem" }}>{moonPhase}</span>
-      <span className="text-foreground" style={{ fontSize: "3rem" }}>{format(date, "d MMMM yyyy", { locale: nl })}</span>
+    <div className="flex items-center justify-center w-full">
+      <div className="flex-1 flex justify-end">
+        <span className="text-foreground pr-4" style={{ fontSize: "3rem" }}>{moonDescription}</span>
+      </div>
+      <span className="text-foreground flex-shrink-0" style={{ fontSize: "6rem" }}>{moonPhase}</span>
+      <div className="flex-1 flex justify-start">
+        <span className="text-foreground pl-4" style={{ fontSize: "3rem" }}>{format(date, "d MMMM yyyy", { locale: nl })}</span>
+      </div>
     </div>
   );
 };
-
-
-
 
 export default DateDisplay;
