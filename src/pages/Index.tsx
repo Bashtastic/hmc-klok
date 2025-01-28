@@ -78,8 +78,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#FFFFFF] dark:bg-background transition-colors duration-300 flex flex-col items-center justify-between p-4 relative">
       <WaterLevel percentage={waterLevel} />
-      <div className="w-full max-w-4xl relative z-10 flex flex-col min-h-screen">
-        <div className="flex flex-wrap justify-center gap-8 md:gap-30 scale-150 mt-32">
+      <div className="w-full relative z-10 flex flex-col min-h-screen">
+        <div className="flex flex-wrap justify-between px-[25%] scale-150 mt-32">
           <ClockDisplay time={utcTime} title="UTC" />
           
           {isDST && (
@@ -92,7 +92,7 @@ const Index = () => {
           />
         </div>
 
-        <div className="flex-grow flex items-center justify-center">
+        <div className="flex-grow flex items-center justify-center w-screen -ml-4">
           <DateDisplay 
             date={time} 
             moonPhase={moonPhase} 
