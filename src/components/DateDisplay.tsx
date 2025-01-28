@@ -9,7 +9,7 @@ interface DateDisplayProps {
 
 const DateDisplay = ({ date, moonPhase, moonDescription }: DateDisplayProps) => {
   return (
-    <div className="flex items-center justify-center w-full mt-[50px]"> {/* Full width container, moved down 50px */}
+    <div className="flex items-center justify-center w-full mt-[80px]"> {/* Full width container, moved down 50px */}
       <div className="flex-1 flex justify-end">
         <span className="text-foreground pr-4" style={{ fontSize: "3rem" }}>{moonDescription}</span> {/* Text size: 48px (3rem) */}
       </div>
