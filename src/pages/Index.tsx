@@ -20,7 +20,7 @@ const Index = () => {
   useEffect(() => {
     const fetchMoonData = async () => {
       try {
-        const response = await axios.get('https://api.allorigins.win/get?url=' + encodeURIComponent('https://waterberichtgeving.rws.nl/dynamisch/infobord/api/maanfase.json'));
+        const response = await axios.get('https://api.allorigins.win/get?url=' + encodeURIComponent('https://waterberichtgeving.rws.nl/dynamisch/hmc-api/maanfase.json'));
         const data = JSON.parse(response.data.contents);
         
         if (data.maansymbool) {
