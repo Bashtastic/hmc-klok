@@ -55,16 +55,16 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Draw cat eyes
     ctx.beginPath();
     // Left eye
-    ctx.ellipse(centerX - 50, centerY - 60, 15, 25, 0, 0, 2 * Math.PI);
+    ctx.ellipse(centerX - 50, centerY - 60, 15, 25, 0, 0, 2 * Math.PI, false);
     // Right eye
-    ctx.ellipse(centerX + 50, centerY - 60, 15, 25, 0, 2 * Math.PI);
+    ctx.ellipse(centerX + 50, centerY - 60, 15, 25, 0, 0, 2 * Math.PI, false);
     ctx.fillStyle = isDarkMode ? "#ffffff" : "#000000";
     ctx.fill();
 
     // Draw cat pupils
     ctx.beginPath();
-    ctx.ellipse(centerX - 50, centerY - 55, 8, 15, 0, 0, 2 * Math.PI);
-    ctx.ellipse(centerX + 50, centerY - 55, 8, 15, 0, 0, 2 * Math.PI);
+    ctx.ellipse(centerX - 50, centerY - 55, 8, 15, 0, 0, 2 * Math.PI, false);
+    ctx.ellipse(centerX + 50, centerY - 55, 8, 15, 0, 0, 2 * Math.PI, false);
     ctx.fillStyle = isDarkMode ? "#000000" : "#000000";
     ctx.fill();
 
