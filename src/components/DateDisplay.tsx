@@ -18,7 +18,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription }: DateDisplayProps) => 
         className="text-foreground flex-shrink-0" 
         style={{ 
           fontSize: "6rem",
-          fontFamily: "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Android Emoji', 'EmojiSymbols', sans-serif"
+          fontFamily: "'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Android Emoji', 'EmojiSymbols', sans-serif"
         }}
       >
         {moonPhase}
