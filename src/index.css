@@ -29,14 +29,14 @@ html::-webkit-scrollbar {
     --secondary: #474f55; /* HSL(210, 40%, 96.1%) */
     --secondary-foreground: #111827;
 
-    --muted: #ffffff;
+    --muted: #be7777;
     --muted-foreground: #1b1b1b;
 
     --accent: #888122;
     --accent-foreground: #111827;
 
     --destructive: #e63946; /* HSL(0, 84.2%, 60.2%) */
-    --destructive-foreground: #f0faff;
+    --destructive-foreground: #4d6b7a;
 
     --border: #3174aa; /* HSL(214.3, 31.8%, 91.4%) */
     --input: #41c052;
