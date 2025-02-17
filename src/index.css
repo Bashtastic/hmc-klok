@@ -15,7 +15,7 @@ html::-webkit-scrollbar {
 @layer base {
   :root {
     --background: #000000; /* HSL(0, 0%, 100%) */
-    --foreground: #d80000; /* HSL(222.2, 84%, 4.9%) */
+    --foreground: #ffffff; /* HSL(222.2, 84%, 4.9%) */
 
     --card: #000000;
     --card-foreground: #f35111;
