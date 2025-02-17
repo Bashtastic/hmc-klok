@@ -17,8 +17,8 @@ html::-webkit-scrollbar {
     --background: #000000; /* HSL(0, 0%, 100%) */
     --foreground: #ffffff; /* HSL(222.2, 84%, 4.9%) */
 
-    --card: #ffffff;
-    --card-foreground: #1b1b1b;
+    --card: #000000;
+    --card-foreground: #f35111;
 
     --popover: #ffffff;
     --popover-foreground: #1b1b1b;
