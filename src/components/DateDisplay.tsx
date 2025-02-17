@@ -31,8 +31,8 @@ const DateDisplay = ({ date, moonPhase, moonDescription }: DateDisplayProps) => 
         <span className="text-foreground pr-4" style={{ fontSize: "3rem" }}>{moonDescription}</span>
       </div>
       <img 
-        src={getMoonPhaseImage(moonPhase)}
-        alt={moonDescription}
+        src={moonPhase ? getMoonPhaseImage(moonPhase) : "/moon-phases/animated_moon.gif"}
+        alt={moonDescription || "Loading moon phase..."}
         className="text-foreground flex-shrink-0"
         style={{ 
           width: "96px",
