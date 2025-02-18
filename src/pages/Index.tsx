@@ -99,7 +99,7 @@ const Index = () => {
           
           <ClockDisplay 
             time={cetTime} 
-            title={isDST ? 'CET' : 'MET/CET'} 
+            title={isDST ? 'CET' : 'MET / CET'} 
           />
         </div>
 
