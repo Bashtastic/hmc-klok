@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from "react";
 
 interface AnalogClockProps {
@@ -16,24 +17,24 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
 
     // Set actual size in memory (scaled to account for extra pixel density)
     const scale = window.devicePixelRatio;
-    canvas.width = 400 * scale; // Doubled from 200
-    canvas.height = 400 * scale; // Doubled from 200
+    canvas.width = 400 * scale;
+    canvas.height = 400 * scale;
 
     // Normalize coordinate system to use CSS pixels
     ctx.scale(scale, scale);
 
-    const radius = 200; // Doubled from 90
-    const centerX = 200; // Doubled from 100
-    const centerY = 200; // Doubled from 100
+    const radius = 200;
+    const centerX = 200;
+    const centerY = 200;
 
     // Clear canvas
-    ctx.clearRect(0, 0, 400, 400); // Doubled from 200, 200
+    ctx.clearRect(0, 0, 400, 400);
 
     // Draw clock face
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
     const isDarkMode = document.documentElement.classList.contains('dark');
-    ctx.fillStyle = isDarkMode ? "hsl(222, 47%, 11%)" : "#F1F1F1"; // Light gray in day mode
+    ctx.fillStyle = isDarkMode ? "hsl(222, 47%, 11%)" : "#F1F1F1";
     ctx.fill();
     ctx.lineWidth = 2;
     ctx.strokeStyle = isDarkMode ? "hsl(217, 49.10%, 41.60%)" : "#999999";
@@ -44,20 +45,18 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.font = "bold 20px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "hsl(220, 13%, 40%)"; // Dark gray color for numbers
+    ctx.fillStyle = "hsl(220, 13%, 40%)";
 
     for (let i = 0; i < 12; i++) {
-      const angle = (i * Math.PI) / 6;
+      const angle = (i * Math.PI) / 6 - Math.PI / 2; // Aangepast om te beginnen bij 12 uur
       const isMainHour = i % 3 === 0;
       
       if (isMainHour) {
-        // Draw numbers for 12, 3, 6, 9 at the same radius as the hour markers
-        const numberX = centerX + (radius - 20) * Math.cos(angle - Math.PI / 2);
-        const numberY = centerY + (radius - 20) * Math.sin(angle - Math.PI / 2);
+        const numberX = centerX + (radius - 20) * Math.cos(angle);
+        const numberY = centerY + (radius - 20) * Math.sin(angle);
         const number = i === 0 ? "12" : i.toString();
         ctx.fillText(number, numberX, numberY);
       } else {
-        // Draw shorter markers for other hours
         const startX = centerX + (radius - 15) * Math.cos(angle);
         const startY = centerY + (radius - 15) * Math.sin(angle);
         const endX = centerX + (radius - 5) * Math.cos(angle);
@@ -66,7 +65,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
         ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(endX, endY);
-        ctx.strokeStyle = "hsl(220, 13%, 40%)"; // Dark gray hour markers
+        ctx.strokeStyle = "hsl(220, 13%, 40%)";
         ctx.stroke();
       }
     }
@@ -77,12 +76,12 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     const seconds = time.getSeconds();
     const milliseconds = time.getMilliseconds();
 
-    // Draw hour hand (50% thicker, blue in light theme, green in dark theme)
+    // Draw hour hand
     ctx.beginPath();
-    ctx.lineCap = 'round'; // Add rounded end
-    ctx.lineWidth = 12; // Doubled from 6
-    ctx.strokeStyle = isDarkMode ? "hsl(142, 76%, 36%)" : "hsl(217, 91%, 60%)"; // Green in dark mode, blue in light mode
-    const hourAngle = (hours + minutes / 60) * (Math.PI / 6) - Math.PI / 2;
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 12;
+    ctx.strokeStyle = isDarkMode ? "hsl(142, 76%, 36%)" : "hsl(217, 91%, 60%)";
+    const hourAngle = ((hours + minutes / 60) * 30 - 90) * (Math.PI / 180); // Aangepast naar graden en correcte offset
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.5 * Math.cos(hourAngle),
@@ -92,10 +91,10 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
 
     // Draw minute hand
     ctx.beginPath();
-    ctx.lineCap = 'round'; // Add rounded end
-    ctx.lineWidth = 6; // Doubled from 3
-    ctx.strokeStyle = "hsl(0, 0.00%, 22.00%)"; // Light gray hands
-    const minuteAngle = (minutes + seconds / 60) * (Math.PI / 30) - Math.PI / 2;
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = "hsl(0, 0.00%, 22.00%)";
+    const minuteAngle = ((minutes + seconds / 60) * 6 - 90) * (Math.PI / 180); // Aangepast naar graden en correcte offset
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.7 * Math.cos(minuteAngle),
@@ -103,35 +102,34 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     );
     ctx.stroke();
 
-    // Draw second hand (red, thinner, and semi-transparent)
+    // Draw second hand
     ctx.beginPath();
-    ctx.lineCap = 'round'; // Add rounded end
-    ctx.lineWidth = 1; // Doubled from 1
-    ctx.globalAlpha = 0.9; // 10% transparent
-    ctx.strokeStyle = "hsl(0, 100%, 50%)"; // Red color
-    const secondAngle =
-      (seconds + milliseconds / 1000) * (Math.PI / 30) - Math.PI / 2;
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 1;
+    ctx.globalAlpha = 0.9;
+    ctx.strokeStyle = "hsl(0, 100%, 50%)";
+    const secondAngle = ((seconds + milliseconds / 1000) * 6 - 90) * (Math.PI / 180); // Aangepast naar graden en correcte offset
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.8 * Math.cos(secondAngle),
       centerY + radius * 0.8 * Math.sin(secondAngle)
     );
     ctx.stroke();
-    ctx.globalAlpha = 1; // Reset transparency
+    ctx.globalAlpha = 1;
 
     // Draw center dot
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI); // Doubled from 3
-    ctx.fillStyle = "hsl(0, 0%, 89%)"; // Light gray center dot
+    ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+    ctx.fillStyle = "hsl(0, 0%, 89%)";
     ctx.fill();
   }, [time]);
 
   return (
     <canvas
       ref={canvasRef}
-      width="400" // Doubled from 200
-      height="400" // Doubled from 200
-      style={{ width: "400px", height: "400px" }} // Doubled from 200px
+      width="400"
+      height="400"
+      style={{ width: "400px", height: "400px" }}
       className="shadow-lg rounded-full"
     />
   );
