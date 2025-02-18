@@ -14,8 +14,8 @@ html::-webkit-scrollbar {
 
 @layer base {
   :root {
-    --background: #ffffff; /* HSL(0, 0%, 100%) */
-    --foreground: #1b1b1b; /* HSL(222.2, 84%, 4.9%) */
+    --background: #000000; /* Veranderd naar zwart voor dag thema */
+    --foreground: #ffffff; /* Veranderd naar wit voor dag thema */
 
     --card: #ffffff;
     --card-foreground: #1b1b1b;
@@ -23,42 +23,35 @@ html::-webkit-scrollbar {
     --popover: #ffffff;
     --popover-foreground: #1b1b1b;
 
-    --primary: #111827; /* HSL(222.2, 47.4%, 11.2%) */
-    --primary-foreground: #f0faff; /* HSL(210, 40%, 98%) */
+    --primary: #111827;
+    --primary-foreground: #f0faff;
 
-    --secondary: #474f55; /* HSL(210, 40%, 96.1%) */
+    --secondary: #474f55;
     --secondary-foreground: #111827;
 
     --muted: #ffffff;
-    --muted-foreground: #1b1b1b;
+    --muted-foreground: #ffffff; /* Veranderd naar wit voor tijdzone aanduiding */
 
     --accent: #888122;
     --accent-foreground: #111827;
 
-    --destructive: #e63946; /* HSL(0, 84.2%, 60.2%) */
+    --destructive: #e63946;
     --destructive-foreground: #f0faff;
 
-    --border: #3174aa; /* HSL(214.3, 31.8%, 91.4%) */
+    --border: #3174aa;
     --input: #41c052;
     --ring: #1b1b1b;
 
     --radius: 0.5rem;
 
-    --sidebar-background: #f5f5f5; /* HSL(0, 0%, 98%) */
-
-    --sidebar-foreground: #3f4a50; /* HSL(240, 5.3%, 26.1%) */
-
-    --sidebar-primary: #191d1f; /* HSL(240, 5.9%, 10%) */
-
+    --sidebar-background: #f5f5f5;
+    --sidebar-foreground: #3f4a50;
+    --sidebar-primary: #191d1f;
     --sidebar-primary-foreground: #f5f5f5;
-
-    --sidebar-accent: #e43d3d; /* HSL(240, 4.8%, 95.9%) */
-
+    --sidebar-accent: #e43d3d;
     --sidebar-accent-foreground: #191d1f;
-
-    --sidebar-border: #8a1747; /* HSL(220, 13%, 91%) */
-
-    --sidebar-ring: #339af0; /* HSL(217.2, 91.2%, 59.8%) */
+    --sidebar-border: #8a1747;
+    --sidebar-ring: #339af0;
   }
 
   .dark {
