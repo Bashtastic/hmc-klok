@@ -87,7 +87,7 @@ const Index = () => {
   const metTime = toZonedTime(time, 'Etc/GMT-1');
 
   return (
-    <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col items-center justify-between p-4 relative">
+    <div className="min-h-screen bg-background transition-colors duration-300 flex flex-col items-center justify-center p-4 relative mx-auto max-w-7xl">
       {/* Temporarily commented out WaterLevel component */}
       {/* <WaterLevel percentage={waterLevel} /> */}
       <div className="w-full relative z-10 flex flex-col min-h-screen">
