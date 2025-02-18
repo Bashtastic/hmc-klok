@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,82 +15,83 @@ html::-webkit-scrollbar {
 
 @layer base {
   :root {
-    --background: #000000; /* Veranderd naar zwart voor dag thema */
-    --foreground: #ffffff; /* Veranderd naar wit voor dag thema */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: #ffffff;
-    --card-foreground: #1b1b1b;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
 
-    --popover: #ffffff;
-    --popover-foreground: #1b1b1b;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: #111827;
-    --primary-foreground: #f0faff;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: #474f55;
-    --secondary-foreground: #111827;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: #ffffff;
-    --muted-foreground: #ffffff; /* Veranderd naar wit voor tijdzone aanduiding */
+    --muted: 0 0% 100%;
+    --muted-foreground: 0 0% 100%;
 
-    --accent: #888122;
-    --accent-foreground: #111827;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: #e63946;
-    --destructive-foreground: #f0faff;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: #3174aa;
-    --input: #41c052;
-    --ring: #1b1b1b;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: #f5f5f5;
-    --sidebar-foreground: #3f4a50;
-    --sidebar-primary: #191d1f;
-    --sidebar-primary-foreground: #f5f5f5;
-    --sidebar-accent: #e43d3d;
-    --sidebar-accent-foreground: #191d1f;
-    --sidebar-border: #8a1747;
-    --sidebar-ring: #339af0;
+    --sidebar-background: 0 0% 96%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 96%;
+    --sidebar-accent: 0 76% 57%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 348 72% 31%;
+    --sidebar-ring: 210 90% 57%;
   }
 
   .dark {
-    --background: #000000; /* HSL(0, 0%, 0%) */
-    --foreground: #f0faff; /* HSL(210, 40%, 98%) */
+    --background: 0 0% 0%; /* HSL(0, 0%, 0%) */
+    --foreground: 210 40% 98%; /* HSL(210, 40%, 98%) */
 
-    --card: #1e293b; /* HSL(222, 47%, 11%) */
-    --card-foreground: #f0faff;
+    --card: 222 47% 11%; /* HSL(222, 47%, 11%) */
+    --card-foreground: 210 40% 98%;
 
-    --popover: #1b1b1b;
-    --popover-foreground: #f0faff;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: #e3e3e3; /* HSL(0, 0%, 89%) */
-    --primary-foreground: #111827;
+    --primary: 0 0% 89%; /* HSL(0, 0%, 89%) */
+    --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: #2c3542; /* HSL(217.2, 32.6%, 17.5%) */
-    --secondary-foreground: #f0faff;
+    --secondary: 217.2 32.6% 17.5%; /* HSL(217.2, 32.6%, 17.5%) */
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: #2c3542;
-    --muted-foreground: #a4afbd; /* HSL(215, 20.2%, 65.1%) */
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%; /* HSL(215, 20.2%, 65.1%) */
 
-    --accent: #2c3542;
-    --accent-foreground: #f0faff;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: #4c0c0c; /* HSL(0, 62.8%, 30.6%) */
-    --destructive-foreground: #f0faff;
+    --destructive: 0 62.8% 30.6%; /* HSL(0, 62.8%, 30.6%) */
+    --destructive-foreground: 210 40% 98%;
 
-    --border: #2c3542;
-    --input: #2c3542;
-    --ring: #cdd6e5; /* HSL(212.7, 26.8%, 83.9%) */
-    --sidebar-background: #191d1f;
-    --sidebar-foreground: #f3f4f5;
-    --sidebar-primary: #3498db; /* HSL(224.3, 76.3%, 48%) */
-    --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #292e34; /* HSL(240, 3.7%, 15.9%) */
-    --sidebar-accent-foreground: #f3f4f5;
-    --sidebar-border: #292e34;
-    --sidebar-ring: #339af0;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%; /* HSL(212.7, 26.8%, 83.9%) */
+
+    --sidebar-background: 210 10% 11%;
+    --sidebar-foreground: 210 5% 96%;
+    --sidebar-primary: 204 76% 53%; /* HSL(224.3, 76.3%, 48%) */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%; /* HSL(240, 3.7%, 15.9%) */
+    --sidebar-accent-foreground: 210 5% 96%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 210 90% 57%;
   }
 }
 
