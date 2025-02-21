@@ -28,20 +28,22 @@ const DateDisplay = ({ date, moonPhase, moonDescription }: DateDisplayProps) => 
   return (
     <div className="flex items-center justify-center w-full mt-[80px]">
       <div className="flex-1 flex justify-end">
-        <span className="text-foreground pr-4" style={{ fontSize: "3rem" }}>{moonDescription}</span>
+        <span className="text-foreground" style={{ fontSize: "3rem" }}>{moonDescription}</span>
       </div>
-      <img 
-        src={moonPhase ? getMoonPhaseImage(moonPhase) : "/moon-phases/animated_moon.gif"}
-        alt={moonDescription || "Loading moon phase..."}
-        className="text-foreground flex-shrink-0"
-        style={{ 
-          width: "96px",
-          height: "96px",
-          objectFit: "contain"
-        }}
-      />
+      <div className="mx-[50px]">
+        <img 
+          src={moonPhase ? getMoonPhaseImage(moonPhase) : "/moon-phases/animated_moon.gif"}
+          alt={moonDescription || "Loading moon phase..."}
+          className="text-foreground flex-shrink-0"
+          style={{ 
+            width: "96px",
+            height: "96px",
+            objectFit: "contain"
+          }}
+        />
+      </div>
       <div className="flex-1 flex justify-start">
-        <span className="text-foreground pl-4" style={{ fontSize: "3rem" }}>{format(date, "d MMMM yyyy", { locale: nl })}</span>
+        <span className="text-foreground" style={{ fontSize: "3rem" }}>{format(date, "d MMMM yyyy", { locale: nl })}</span>
       </div>
     </div>
   );
