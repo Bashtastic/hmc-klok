@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { toZonedTime } from "date-fns-tz";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
@@ -8,6 +9,22 @@ import DateDisplay from "../components/DateDisplay";
 
 const AMSTERDAM_LAT = 52.3676;
 const AMSTERDAM_LON = 4.9041;
+
+// Nieuwe interface voor de maanfase data op basis van de nieuwe API-structuur
+interface MoonPhaseData {
+  maan: {
+    symbool: string;
+    naam: string;
+    percentage_tot_hondert: number;
+    is_groeiend: boolean;
+    is_slinkend: boolean;
+  };
+  getijfase: {
+    omschrijving: string;
+    omschrijving_lang: string;
+  };
+  timestamp: string;
+}
 
 const Index = () => {
   const [time, setTime] = useState(new Date());
@@ -21,14 +38,15 @@ const Index = () => {
     const fetchMoonData = async () => {
       try {
         const response = await axios.get('https://api.allorigins.win/get?url=' + encodeURIComponent('https://waterberichtgeving.rws.nl/dynamisch/hmc-api/maanfase.json'));
-        const data = JSON.parse(response.data.contents);
+        const data = JSON.parse(response.data.contents) as MoonPhaseData;
         
-        if (data.maansymbool) {
-          setMoonPhase(data.maansymbool.trim());
+        // Gebruik de nieuwe JSON-structuur om de maanfase en getijfase te extraheren
+        if (data.maan && data.maan.symbool) {
+          setMoonPhase(data.maan.symbool.trim());
         }
         
-        if (data.omschrijving_getijfase) {
-          setMoonDescription(data.omschrijving_getijfase.trim());
+        if (data.getijfase && data.getijfase.omschrijving) {
+          setMoonDescription(data.getijfase.omschrijving.trim());
         }
       } catch (error) {
         console.error('Error fetching moon data:', error);
