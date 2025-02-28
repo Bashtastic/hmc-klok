@@ -31,6 +31,7 @@ const Index = () => {
   const [isDark, setIsDark] = useState(false);
   const [moonPhase, setMoonPhase] = useState("");
   const [moonDescription, setMoonDescription] = useState("");
+  const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
   // const [waterLevel, setWaterLevel] = useState(50); // Temporarily commented out
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
 
@@ -48,8 +49,12 @@ const Index = () => {
         if (data.getijfase && data.getijfase.omschrijving) {
           setMoonDescription(data.getijfase.omschrijving.trim());
         }
+        
+        setLastFetchSuccess(true);
+        console.log("Maanfase data succesvol opgehaald:", data);
       } catch (error) {
         console.error('Error fetching moon data:', error);
+        setLastFetchSuccess(false);
       }
     };
 
@@ -57,9 +62,19 @@ const Index = () => {
     fetchMoonData();
 
     // Set up interval to check every second if it's 2 minutes past the hour
+    // én om elke minuut opnieuw te proberen als de laatste fetch mislukt is
     const checkTimeInterval = setInterval(() => {
       const now = new Date();
+      
+      // Als het 2 minuten na het uur is, haal dan sowieso nieuwe data op
       if (now.getMinutes() === 2 && now.getSeconds() === 0) {
+        fetchMoonData();
+        return;
+      }
+      
+      // Als de laatste fetch mislukt is, probeer elke minuut opnieuw
+      if (!lastFetchSuccess && now.getSeconds() === 0) {
+        console.log("Vorige fetch mislukt, opnieuw proberen...");
         fetchMoonData();
       }
     }, 1000);
@@ -67,7 +82,7 @@ const Index = () => {
     return () => {
       clearInterval(checkTimeInterval);
     };
-  }, []);
+  }, [lastFetchSuccess]);
 
   useEffect(() => {
     const timer = setInterval(() => {
