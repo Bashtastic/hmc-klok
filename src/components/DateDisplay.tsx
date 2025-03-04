@@ -28,7 +28,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription }: DateDisplayProps) => 
   return (
     <div className="flex items-center justify-center w-full mt-[80px]">
       <div className="flex-1 flex justify-end">
-        <span className="text-foreground font-chelsea" style={{ fontSize: "3rem" }}>{moonDescription}</span>
+        <span className="text-foreground" style={{ fontSize: "3rem" }}>{moonDescription}</span>
       </div>
       <div className="mx-[50px]">
         <img 
@@ -43,7 +43,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription }: DateDisplayProps) => 
         />
       </div>
       <div className="flex-1 flex justify-start">
-        <span className="text-foreground font-chelsea" style={{ fontSize: "3rem" }}>{format(date, "d MMMM yyyy", { locale: nl })}</span>
+        <span className="text-foreground" style={{ fontSize: "3rem" }}>{format(date, "d MMMM yyyy", { locale: nl })}</span>
       </div>
     </div>
   );
