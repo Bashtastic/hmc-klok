@@ -21,6 +21,7 @@ export default {
 			fontFamily: {
 				'dosis': ['Dosis', 'sans-serif'],
 				'chelsea': ['Chelsea Market', 'cursive'],
+				'roboto': ['Roboto', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

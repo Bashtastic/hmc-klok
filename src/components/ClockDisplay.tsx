@@ -13,7 +13,7 @@ const ClockDisplay = ({ time, title }: ClockDisplayProps) => {
       <p 
         className="mb-2 text-2xl text-muted-foreground" 
         style={{ 
-          fontFamily: "'Dosis', sans-serif", 
+          fontFamily: "'Roboto', sans-serif", 
           fontWeight: 100, 
           marginTop: "50px" 
         }}
@@ -24,7 +24,7 @@ const ClockDisplay = ({ time, title }: ClockDisplayProps) => {
       <p 
         className="mt-4 text-4xl tracking-wide text-foreground" 
         style={{ 
-          fontFamily: "'Dosis', sans-serif", 
+          fontFamily: "'Roboto', sans-serif", 
           fontWeight: 400 
         }}
       >
