@@ -6,10 +6,21 @@ interface DateDisplayProps {
   date: Date;
   moonPhase: string;
   moonDescription: string;
+  moonPercentage?: number;
+  isWaning?: boolean;
 }
 
-const getMoonPhaseImage = (phase: string) => {
-  // Deze mapping functie zet de emoji tekst om naar de juiste afbeelding URL
+const getMoonPhaseImage = (phase: string, percentage?: number, isWaning?: boolean) => {
+  // Als we een percentage hebben, gebruik dan dat om het juiste plaatje te kiezen
+  if (percentage !== undefined) {
+    // Rond het percentage af naar het dichtstbijzijnde gehele getal
+    const roundedPercentage = Math.round(percentage);
+    // Kies het dichtstbijzijnde beschikbare plaatje (1-100)
+    const imageNumber = Math.max(1, Math.min(100, roundedPercentage));
+    return `/moon-phases/${imageNumber}.png`;
+  }
+  
+  // Fallback naar de emoji mapping als er geen percentage beschikbaar is
   const moonImages: { [key: string]: string } = {
     "🌑": "/moon-phases/new-moon.png",
     "🌒": "/moon-phases/waxing-crescent.png",
@@ -24,7 +35,7 @@ const getMoonPhaseImage = (phase: string) => {
   return moonImages[phase] || moonImages["🌑"]; // fallback naar nieuwe maan als de fase niet bekend is
 };
 
-const DateDisplay = ({ date, moonPhase, moonDescription }: DateDisplayProps) => {
+const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWaning }: DateDisplayProps) => {
   return (
     <div className="flex items-center justify-center w-full mt-[80px]">
       <div className="flex-1 flex justify-end">
@@ -41,13 +52,14 @@ const DateDisplay = ({ date, moonPhase, moonDescription }: DateDisplayProps) => 
       </div>
       <div className="mx-[50px]">
         <img 
-          src={moonPhase ? getMoonPhaseImage(moonPhase) : "/moon-phases/animated_moon.gif"}
+          src={moonPhase ? getMoonPhaseImage(moonPhase, moonPercentage, isWaning) : "/moon-phases/animated_moon.gif"}
           alt={moonDescription || "Loading moon phase..."}
           className="text-foreground flex-shrink-0"
           style={{ 
             width: "96px",
             height: "96px",
-            objectFit: "contain"
+            objectFit: "contain",
+            transform: isWaning ? 'scaleX(-1)' : 'none' // Horizontaal spiegelen als de maan slinkend is
           }}
         />
       </div>

@@ -31,6 +31,8 @@ const Index = () => {
   const [isDark, setIsDark] = useState(false);
   const [moonPhase, setMoonPhase] = useState("");
   const [moonDescription, setMoonDescription] = useState("");
+  const [moonPercentage, setMoonPercentage] = useState<number | undefined>(undefined);
+  const [isWaning, setIsWaning] = useState<boolean | undefined>(undefined);
   const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
   // const [waterLevel, setWaterLevel] = useState(50); // Temporarily commented out
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
@@ -48,6 +50,15 @@ const Index = () => {
         
         if (data.getijfase && data.getijfase.omschrijving) {
           setMoonDescription(data.getijfase.omschrijving.trim());
+        }
+        
+        // Sla het percentage en de slinkende status op
+        if (data.maan && data.maan.percentage_tot_hondert !== undefined) {
+          setMoonPercentage(data.maan.percentage_tot_hondert);
+        }
+        
+        if (data.maan && data.maan.is_slinkend !== undefined) {
+          setIsWaning(data.maan.is_slinkend);
         }
         
         setLastFetchSuccess(true);
@@ -140,7 +151,9 @@ const Index = () => {
           <DateDisplay 
             date={time} 
             moonPhase={moonPhase} 
-            moonDescription={moonDescription} 
+            moonDescription={moonDescription}
+            moonPercentage={moonPercentage}
+            isWaning={isWaning}
           />
         </div>
       </div>
