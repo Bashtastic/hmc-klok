@@ -135,15 +135,15 @@ const Index = () => {
       {/* <WaterLevel percentage={waterLevel} /> */}
       <div className="w-full relative z-10 flex flex-col min-h-screen">
         <div className="flex flex-wrap justify-between px-[20%] scale-150 mt-32">
-          <ClockDisplay time={utcTime} title="UTC &#x1F1EC;&#x1F1E7;" />
+          <ClockDisplay time={utcTime} title="UTC 🇬🇧" />
           
           {isDST && (
-            <ClockDisplay time={metTime} title="MET &#129453;" />
+            <ClockDisplay time={metTime} title="MET 🦭" />
           )}
           
           <ClockDisplay 
             time={cetTime} 
-            title={isDST ? 'CET &#x1F1F3;' : 'MET / CET &#x1F1F3;'} 
+            title={isDST ? 'CET  🇳🇱' : 'MET / CET  🇳🇱'} 
           />
         </div>
 
