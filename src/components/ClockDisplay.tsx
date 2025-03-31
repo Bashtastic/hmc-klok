@@ -14,7 +14,7 @@ const ClockDisplay = ({ time, title }: ClockDisplayProps) => {
         className="mb-2 text-2xl text-muted-foreground" 
         style={{ 
           fontFamily: "'Roboto', sans-serif", 
-          fontWeight: 100, 
+          fontWeight: 400, 
           marginTop: "50px" 
         }}
       >
