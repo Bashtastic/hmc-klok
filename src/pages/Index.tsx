@@ -134,7 +134,7 @@ const Index = () => {
       {/* Temporarily commented out WaterLevel component */}
       {/* <WaterLevel percentage={waterLevel} /> */}
       <div className="w-full relative z-10 flex flex-col min-h-screen">
-        <div className="flex flex-wrap justify-between px-[25%] scale-150 mt-32">
+        <div className="flex flex-wrap justify-between px-[5%] scale-150 mt-32">
           <ClockDisplay time={utcTime} title="UTC" />
           
           {isDST && (
