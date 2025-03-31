@@ -144,7 +144,3 @@ html::-webkit-scrollbar {
     font-family: 'Roboto', sans-serif;
   }
 }
-
-.emoji-supported {
-  font-family: system-ui, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif;
-}
