@@ -138,7 +138,7 @@ const Index = () => {
           <ClockDisplay time={utcTime} title="UTC 🇬🇧" />
           
           {isDST && (
-            <ClockDisplay time={metTime} title="MET 🦭" />
+            <ClockDisplay time={metTime} title={isDST ? `CET \u{1F9AD}` : `MET / CET \u{1F9AD}`} />
           )}
           
           <ClockDisplay 
