@@ -17,18 +17,18 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
 
     // Set actual size in memory (scaled to account for extra pixel density)
     const scale = window.devicePixelRatio;
-    canvas.width = 400 * scale;
-    canvas.height = 400 * scale;
+    canvas.width = 200 * scale;
+    canvas.height = 200 * scale;
 
     // Normalize coordinate system to use CSS pixels
     ctx.scale(scale, scale);
 
-    const radius = 200;
-    const centerX = 200;
-    const centerY = 200;
+    const radius = 100;
+    const centerX = 100;
+    const centerY = 100;
 
     // Clear canvas
-    ctx.clearRect(0, 0, 400, 400);
+    ctx.clearRect(0, 0, 200, 200);
 
     // Draw clock face
     ctx.beginPath();
@@ -127,9 +127,9 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
   return (
     <canvas
       ref={canvasRef}
-      width="400"
-      height="400"
-      style={{ width: "400px", height: "400px" }}
+      width="200"
+      height="200"
+      style={{ width: "200px", height: "200px" }}
       className="shadow-lg rounded-full"
     />
   );
