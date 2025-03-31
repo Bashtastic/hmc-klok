@@ -11,7 +11,7 @@ const ClockDisplay = ({ time, title }: ClockDisplayProps) => {
   return (
     <div className="flex flex-col items-center">
       <p 
-        className="mb-2 text-2xl text-muted-foreground" 
+        className="mb-2 text-4xl text-muted-foreground" 
         style={{ 
           fontFamily: "'Roboto', sans-serif", 
           fontWeight: 400, 
