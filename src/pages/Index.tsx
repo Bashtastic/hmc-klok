@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { toZonedTime } from "date-fns-tz";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
@@ -9,6 +10,7 @@ import DateDisplay from "../components/DateDisplay";
 const AMSTERDAM_LAT = 52.3676;
 const AMSTERDAM_LON = 4.9041;
 
+// Nieuwe interface voor de maanfase data op basis van de nieuwe API-structuur
 interface MoonPhaseData {
   maan: {
     symbool: string;
@@ -40,23 +42,25 @@ const Index = () => {
       try {
         const response = await axios.get('https://api.allorigins.win/get?url=' + encodeURIComponent('https://waterberichtgeving.rws.nl/dynamisch/hmc-api/maanfase.json'));
         const data = JSON.parse(response.data.contents) as MoonPhaseData;
-
+        
+        // Gebruik de nieuwe JSON-structuur om de maanfase en getijfase te extraheren
         if (data.maan && data.maan.symbool) {
           setMoonPhase(data.maan.symbool.trim());
         }
-
+        
         if (data.getijfase && data.getijfase.omschrijving) {
           setMoonDescription(data.getijfase.omschrijving.trim());
         }
-
+        
+        // Sla het percentage en de slinkende status op
         if (data.maan && data.maan.percentage_tot_hondert !== undefined) {
           setMoonPercentage(data.maan.percentage_tot_hondert);
         }
-
+        
         if (data.maan && data.maan.is_slinkend !== undefined) {
           setIsWaning(data.maan.is_slinkend);
         }
-
+        
         setLastFetchSuccess(true);
         console.log("Maanfase data succesvol opgehaald:", data);
       } catch (error) {
@@ -65,16 +69,21 @@ const Index = () => {
       }
     };
 
+    // Initial fetch
     fetchMoonData();
 
+    // Set up interval to check every second if it's 2 minutes past the hour
+    // én om elke minuut opnieuw te proberen als de laatste fetch mislukt is
     const checkTimeInterval = setInterval(() => {
       const now = new Date();
-
+      
+      // Als het 2 minuten na het uur is, haal dan sowieso nieuwe data op
       if (now.getMinutes() === 2 && now.getSeconds() === 0) {
         fetchMoonData();
         return;
       }
-
+      
+      // Als de laatste fetch mislukt is, probeer elke minuut opnieuw
       if (!lastFetchSuccess && now.getSeconds() === 0) {
         console.log("Vorige fetch mislukt, opnieuw proberen...");
         fetchMoonData();
@@ -126,15 +135,16 @@ const Index = () => {
       {/* <WaterLevel percentage={waterLevel} /> */}
       <div className="w-full relative z-10 flex flex-col min-h-screen">
         <div className="flex flex-wrap justify-between px-[20%] scale-150 mt-32">
-          <ClockDisplay time={utcTime} title={`UTC \u{1F1EC}\u{1F1E7}`} /> {/* 🇬🇧 */}
-
+          <ClockDisplay time={utcTime} title="UTC 🇬🇧" />
+          
           {isDST && (
-            <ClockDisplay time={metTime} title={`MET \u{1F9AD}`} /> {/* 🦭 */}
+            <ClockDisplay time={metTime} title={isDST ? `CET \u{1F9AD}` : `MET / CET \u{1F9AD}`} />
           )}
-
+          
           <ClockDisplay 
             time={cetTime} 
-            title={isDST ? `CET \u{1F9AD}` : `MET / CET \u{1F9AD}`} /> {/* 🦭 */}
+            title={isDST ? 'CET  🇳🇱' : 'MET / CET  🇳🇱'} 
+          />
         </div>
 
         <div className="flex-grow flex items-center justify-center w-screen -ml-4">
