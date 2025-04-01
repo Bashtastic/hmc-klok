@@ -1,11 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { toZonedTime } from "date-fns-tz";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
 import axios from "axios";
 import ClockDisplay from "../components/ClockDisplay";
 import DateDisplay from "../components/DateDisplay";
-// import WaterLevel from "../components/WaterLevel"; // Temporarily commented out
 
 const AMSTERDAM_LAT = 52.3676;
 const AMSTERDAM_LON = 4.9041;
@@ -131,19 +129,26 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white bg-opacity-0 dark:bg-background transition-colors duration-300 flex flex-col items-center justify-between p-4 relative">
-      {/* Temporarily commented out WaterLevel component */}
-      {/* <WaterLevel percentage={waterLevel} /> */}
       <div className="w-full relative z-10 flex flex-col min-h-screen">
         <div className="flex flex-wrap justify-between px-[20%] scale-150 mt-32">
-          <ClockDisplay time={utcTime} title="UTC" />
+          <ClockDisplay 
+            time={utcTime} 
+            title="UTC" 
+            flagType="uk" 
+          />
           
           {isDST && (
-            <ClockDisplay time={metTime} title="MET" />
+            <ClockDisplay 
+              time={metTime} 
+              title="MET" 
+              flagType="seal" 
+            />
           )}
           
           <ClockDisplay 
             time={cetTime} 
             title={isDST ? 'CET' : 'MET / CET'} 
+            flagType="nl"
           />
         </div>
 
