@@ -41,7 +41,7 @@ const ClockDisplay = ({ time, title, flagType }: ClockDisplayProps) => {
           <img 
             src={flagImage} 
             alt={`${title} flag`} 
-            className="w-8 h-8 mb-2 mt-12 object-cover" 
+            className="w-12 h-12 mb-2 mt-12 object-cover" 
           />
         )}
       </div>
