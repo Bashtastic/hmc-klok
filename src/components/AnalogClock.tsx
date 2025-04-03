@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from "react";
 
 interface AnalogClockProps {
@@ -46,20 +47,26 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.textBaseline = "middle";
     ctx.fillStyle = "hsl(220, 13%, 40%)";
 
+    // Set equal margin from edge for both hour markers and numbers
+    const marginFromEdge = 20; // Equal margin from edge
+    
     for (let i = 0; i < 12; i++) {
       const angle = (i * Math.PI) / 6 - Math.PI / 2;
       const isMainHour = i % 3 === 0;
       
       if (isMainHour) {
-        const numberX = centerX + (radius - 40) * Math.cos(angle); // Adjusted position for larger numbers
-        const numberY = centerY + (radius - 40) * Math.sin(angle);
+        // Adjust number position to have equal margin from edge as the hour markers
+        const numberX = centerX + (radius - marginFromEdge) * Math.cos(angle);
+        const numberY = centerY + (radius - marginFromEdge) * Math.sin(angle);
         const number = i === 0 ? "12" : i.toString();
         ctx.fillText(number, numberX, numberY);
       } else {
-        const startX = centerX + (radius - 30) * Math.cos(angle); // Doubled marker length
-        const startY = centerY + (radius - 30) * Math.sin(angle);
-        const endX = centerX + (radius - 10) * Math.cos(angle); // Adjusted end position
-        const endY = centerY + (radius - 10) * Math.sin(angle);
+        // Hour markers with equal margin from edge
+        const markerLength = 20; // Length of marker
+        const startX = centerX + (radius - marginFromEdge) * Math.cos(angle);
+        const startY = centerY + (radius - marginFromEdge) * Math.sin(angle);
+        const endX = centerX + (radius - marginFromEdge - markerLength) * Math.cos(angle);
+        const endY = centerY + (radius - marginFromEdge - markerLength) * Math.sin(angle);
 
         ctx.beginPath();
         ctx.moveTo(startX, startY);
