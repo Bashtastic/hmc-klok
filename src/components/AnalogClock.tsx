@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 
 interface AnalogClockProps {
@@ -40,27 +39,27 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.strokeStyle = isDarkMode ? "hsl(217, 49.10%, 41.60%)" : "#999999";
     ctx.stroke();
 
-    // Draw hour markers and numbers
-    ctx.lineWidth = 2;
-    ctx.font = "bold 20px Arial";
+    // Draw hour markers and numbers - 2x larger
+    ctx.lineWidth = 4; // Doubled from 2
+    ctx.font = "bold 40px Arial"; // Doubled from 20px
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "hsl(220, 13%, 40%)";
 
     for (let i = 0; i < 12; i++) {
-      const angle = (i * Math.PI) / 6 - Math.PI / 2; // Aangepast om te beginnen bij 12 uur
+      const angle = (i * Math.PI) / 6 - Math.PI / 2;
       const isMainHour = i % 3 === 0;
       
       if (isMainHour) {
-        const numberX = centerX + (radius - 20) * Math.cos(angle);
-        const numberY = centerY + (radius - 20) * Math.sin(angle);
+        const numberX = centerX + (radius - 40) * Math.cos(angle); // Adjusted position for larger numbers
+        const numberY = centerY + (radius - 40) * Math.sin(angle);
         const number = i === 0 ? "12" : i.toString();
         ctx.fillText(number, numberX, numberY);
       } else {
-        const startX = centerX + (radius - 15) * Math.cos(angle);
-        const startY = centerY + (radius - 15) * Math.sin(angle);
-        const endX = centerX + (radius - 5) * Math.cos(angle);
-        const endY = centerY + (radius - 5) * Math.sin(angle);
+        const startX = centerX + (radius - 30) * Math.cos(angle); // Doubled marker length
+        const startY = centerY + (radius - 30) * Math.sin(angle);
+        const endX = centerX + (radius - 10) * Math.cos(angle); // Adjusted end position
+        const endY = centerY + (radius - 10) * Math.sin(angle);
 
         ctx.beginPath();
         ctx.moveTo(startX, startY);
@@ -81,7 +80,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.lineCap = 'round';
     ctx.lineWidth = 12;
     ctx.strokeStyle = isDarkMode ? "hsl(142, 76%, 36%)" : "hsl(217, 91%, 60%)";
-    const hourAngle = ((hours + minutes / 60) * 30 - 90) * (Math.PI / 180); // Aangepast naar graden en correcte offset
+    const hourAngle = ((hours + minutes / 60) * 30 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.5 * Math.cos(hourAngle),
@@ -94,7 +93,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.lineCap = 'round';
     ctx.lineWidth = 6;
     ctx.strokeStyle = "hsl(0, 0.00%, 22.00%)";
-    const minuteAngle = ((minutes + seconds / 60) * 6 - 90) * (Math.PI / 180); // Aangepast naar graden en correcte offset
+    const minuteAngle = ((minutes + seconds / 60) * 6 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.7 * Math.cos(minuteAngle),
@@ -108,7 +107,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.lineWidth = 1;
     ctx.globalAlpha = 0.9;
     ctx.strokeStyle = "hsl(0, 150%, 50%)";
-    const secondAngle = ((seconds + milliseconds / 1500) * 6 - 90) * (Math.PI / 180); // Aangepast naar graden en correcte offset
+    const secondAngle = ((seconds + milliseconds / 1500) * 6 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.8 * Math.cos(secondAngle),

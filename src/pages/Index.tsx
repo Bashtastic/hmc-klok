@@ -9,7 +9,7 @@ import DateDisplay from "../components/DateDisplay";
 const AMSTERDAM_LAT = 52.3676;
 const AMSTERDAM_LON = 4.9041;
 
-// Nieuwe interface voor de maanfase data op basis van de nieuwe API-structuur
+// Interface for the moon phase data
 interface MoonPhaseData {
   maan: {
     symbool: string;
@@ -33,7 +33,7 @@ const Index = () => {
   const [moonPercentage, setMoonPercentage] = useState<number | undefined>(undefined);
   const [isWaning, setIsWaning] = useState<boolean | undefined>(undefined);
   const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
-  // const [waterLevel, setWaterLevel] = useState(50); // Temporarily commented out
+  
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
   
   // Check if it's April 1st and within specific time ranges for the prank
@@ -45,13 +45,38 @@ const Index = () => {
     (currentHour >= 15 && currentHour < 16)
   );
 
+  // Parse URL params for theme
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const themeParam = urlParams.get('theme');
+    
+    if (themeParam === 'night') {
+      setIsDark(true);
+    } else if (themeParam === 'day') {
+      setIsDark(false);
+    } else {
+      // If no theme parameter is provided, use the automatic day/night detection
+      const checkDayNight = () => {
+        const sunrise = getSunrise(AMSTERDAM_LAT, AMSTERDAM_LON);
+        const sunset = getSunset(AMSTERDAM_LAT, AMSTERDAM_LON);
+        const now = new Date();
+        setIsDark(now < sunrise || now > sunset);
+      };
+
+      checkDayNight();
+      const interval = setInterval(checkDayNight, 60000);
+
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  // Moon data fetching
   useEffect(() => {
     const fetchMoonData = async () => {
       try {
         const response = await axios.get('https://api.allorigins.win/get?url=' + encodeURIComponent('https://waterberichtgeving.rws.nl/dynamisch/hmc-api/maanfase.json'));
         const data = JSON.parse(response.data.contents) as MoonPhaseData;
         
-        // Gebruik de nieuwe JSON-structuur om de maanfase en getijfase te extraheren
         if (data.maan && data.maan.symbool) {
           setMoonPhase(data.maan.symbool.trim());
         }
@@ -60,7 +85,6 @@ const Index = () => {
           setMoonDescription(data.getijfase.omschrijving.trim());
         }
         
-        // Sla het percentage en de slinkende status op
         if (data.maan && data.maan.percentage_tot_hondert !== undefined) {
           setMoonPercentage(data.maan.percentage_tot_hondert);
         }
@@ -81,17 +105,16 @@ const Index = () => {
     fetchMoonData();
 
     // Set up interval to check every second if it's 2 minutes past the hour
-    // én om elke minuut opnieuw te proberen als de laatste fetch mislukt is
     const checkTimeInterval = setInterval(() => {
       const now = new Date();
       
-      // Als het 2 minuten na het uur is, haal dan sowieso nieuwe data op
+      // If it's 2 minutes past the hour, always fetch new data
       if (now.getMinutes() === 2 && now.getSeconds() === 0) {
         fetchMoonData();
         return;
       }
       
-      // Als de laatste fetch mislukt is, probeer elke minuut opnieuw
+      // If the last fetch failed, try again every minute
       if (!lastFetchSuccess && now.getSeconds() === 0) {
         console.log("Vorige fetch mislukt, opnieuw proberen...");
         fetchMoonData();
@@ -109,20 +132,6 @@ const Index = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const checkDayNight = () => {
-      const sunrise = getSunrise(AMSTERDAM_LAT, AMSTERDAM_LON);
-      const sunset = getSunset(AMSTERDAM_LAT, AMSTERDAM_LON);
-      const now = new Date();
-      setIsDark(now < sunrise || now > sunset);
-    };
-
-    checkDayNight();
-    const interval = setInterval(checkDayNight, 60000);
-
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
