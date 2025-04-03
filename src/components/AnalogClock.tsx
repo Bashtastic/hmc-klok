@@ -51,7 +51,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     const marginFromEdge = 15; // Increased margin for better spacing
     
     // Additional margin specifically for the "12" marker
-    const twelveMarkerExtraMargin = 25; // Adjust this value to create more space
+    const twelveMarkerExtraMargin = 15; // Adjust this value to create more space
     
     // Get text metrics for "12" to adjust vertical alignment
     const textMetrics = ctx.measureText("12");
