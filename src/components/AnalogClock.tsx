@@ -83,6 +83,12 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
       }
     }
 
+    // Get time components
+    const hours = time.getHours() % 12;
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+    const milliseconds = time.getMilliseconds();
+
     // Draw hour hand
     ctx.beginPath();
     ctx.lineCap = 'round';
