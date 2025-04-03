@@ -100,7 +100,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.beginPath();
     ctx.lineCap = 'round';
     ctx.lineWidth = 12;
-    ctx.strokeStyle = isDarkMode ? "hsl(142, 76%, 36%)" : "hsl(217, 91%, 60%)"; // Hour hand color
+    ctx.strokeStyle = isDarkMode ? "hsl(204, 61.50%, 53.10%)" : "hsl(217, 91%, 60%)"; // Hour hand color
     const hourAngle = ((hours + minutes / 60) * 30 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
