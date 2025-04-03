@@ -47,21 +47,28 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.textBaseline = "middle";
     ctx.fillStyle = "hsl(220, 13%, 40%)";
 
-    // Set equal margin from edge for both hour markers and numbers
-    const marginFromEdge = 20; // Equal margin from edge
+    // Set consistent margin from edge for both hour markers and numbers
+    const marginFromEdge = 30; // Increased margin for better spacing
+    
+    // Get text metrics for "12" to adjust vertical alignment
+    const textMetrics = ctx.measureText("12");
+    // Estimate the height (not perfect in Canvas API)
+    const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
     
     for (let i = 0; i < 12; i++) {
       const angle = (i * Math.PI) / 6 - Math.PI / 2;
       const isMainHour = i % 3 === 0;
       
       if (isMainHour) {
-        // Adjust number position to have equal margin from edge as the hour markers
-        const numberX = centerX + (radius - marginFromEdge) * Math.cos(angle);
-        const numberY = centerY + (radius - marginFromEdge) * Math.sin(angle);
         const number = i === 0 ? "12" : i.toString();
+        // Calculate position based on angle and adjust for text size
+        // The font size itself needs to be accounted for in the margin
+        const textAdjustment = 10; // Additional adjustment to account for text size
+        const numberX = centerX + (radius - marginFromEdge - textAdjustment) * Math.cos(angle);
+        const numberY = centerY + (radius - marginFromEdge - textAdjustment) * Math.sin(angle);
         ctx.fillText(number, numberX, numberY);
       } else {
-        // Hour markers with equal margin from edge
+        // Hour markers with consistent margin from edge
         const markerLength = 20; // Length of marker
         const startX = centerX + (radius - marginFromEdge) * Math.cos(angle);
         const startY = centerY + (radius - marginFromEdge) * Math.sin(angle);
@@ -75,12 +82,6 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
         ctx.stroke();
       }
     }
-
-    // Get time components
-    const hours = time.getHours() % 12;
-    const minutes = time.getMinutes();
-    const seconds = time.getSeconds();
-    const milliseconds = time.getMilliseconds();
 
     // Draw hour hand
     ctx.beginPath();
