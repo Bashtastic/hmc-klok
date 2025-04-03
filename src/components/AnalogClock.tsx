@@ -50,6 +50,9 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Set consistent margin from edge for both hour markers and numbers
     const marginFromEdge = 15; // Increased margin for better spacing
     
+    // Additional margin specifically for the "12" marker
+    const twelveMarkerExtraMargin = 25; // Adjust this value to create more space
+    
     // Get text metrics for "12" to adjust vertical alignment
     const textMetrics = ctx.measureText("12");
     // Estimate the height (not perfect in Canvas API)
@@ -64,8 +67,12 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
         // Calculate position based on angle and adjust for text size
         // The font size itself needs to be accounted for in the margin
         const textAdjustment = 10; // Additional adjustment to account for text size
-        const numberX = centerX + (radius - marginFromEdge - textAdjustment) * Math.cos(angle);
-        const numberY = centerY + (radius - marginFromEdge - textAdjustment) * Math.sin(angle);
+        
+        // Add extra margin for "12" marker
+        const extraMarginForTwelve = i === 0 ? twelveMarkerExtraMargin : 0;
+        
+        const numberX = centerX + (radius - marginFromEdge - textAdjustment - extraMarginForTwelve) * Math.cos(angle);
+        const numberY = centerY + (radius - marginFromEdge - textAdjustment - extraMarginForTwelve) * Math.sin(angle);
         ctx.fillText(number, numberX, numberY);
       } else {
         // Hour markers with consistent margin from edge
@@ -149,3 +156,4 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
 };
 
 export default AnalogClock;
+
