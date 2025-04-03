@@ -42,7 +42,7 @@ html::-webkit-scrollbar {
 
 @layer base {
   :root {
-    --background: #9ab7c2;
+    --background: 197, 25%, 68%;
     --foreground: 0 0% 100%;
 
     --card: 0 0% 100%;
