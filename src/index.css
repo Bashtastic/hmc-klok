@@ -43,7 +43,7 @@ html::-webkit-scrollbar {
 @layer base {
   :root {
     --background: 197, 25%, 68%;
-    --foreground: 0 0% 50%;
+    --foreground: 0 1% 1%; /* digitale tijd en getijinfo en datum */
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
