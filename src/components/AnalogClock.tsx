@@ -48,7 +48,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.fillStyle = "hsl(220, 13%, 40%)";
 
     // Set consistent margin from edge for both hour markers and numbers
-    const marginFromEdge = 30; // Increased margin for better spacing
+    const marginFromEdge = 15; // Increased margin for better spacing
     
     // Get text metrics for "12" to adjust vertical alignment
     const textMetrics = ctx.measureText("12");
