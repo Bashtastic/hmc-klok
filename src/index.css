@@ -58,7 +58,7 @@ html::-webkit-scrollbar {
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 0 0% 100%;
-    --muted-foreground: 136 100% 56%;
+    --muted-foreground: 0 1% 1%; /* tijdzone titel */
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
