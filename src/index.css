@@ -83,8 +83,8 @@ html::-webkit-scrollbar {
   }
 
   .dark {
-    --background: 0 0% 0%; /* HSL(0, 0%, 0%) */
-    --foreground: 210 40% 98%; /* HSL(210, 40%, 98%) */
+    --background: 234, 23%, 15%; /* hsl(234, 23%, 15%) */
+    --foreground: 215 20.2% 65.1%; /* digitale tijd en getijinfo en datum */
 
     --card: 222 47% 11%; /* HSL(222, 47%, 11%) */
     --card-foreground: 210 40% 98%;
@@ -99,7 +99,7 @@ html::-webkit-scrollbar {
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%; /* HSL(215, 20.2%, 65.1%) */
+    --muted-foreground: 215 20.2% 65.1%;  /* tijdzone titel */
 
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
