@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from "react";
+import { getThemeColors } from "../utils/colorDefinitions";
 
 interface AnalogClockProps {
   time: Date;
@@ -27,17 +28,22 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     const centerX = 150;
     const centerY = 150;
 
+    // Detect if dark mode is active
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    
+    // Get theme colors based on mode
+    const colors = getThemeColors(isDarkMode);
+
     // Clear canvas
     ctx.clearRect(0, 0, 300, 300);
 
     // Draw clock face
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    const isDarkMode = document.documentElement.classList.contains('dark');
-    ctx.fillStyle = isDarkMode ? "hsl(222, 47%, 11%)" : "#F1F1F1"; // Clock face background color
+    ctx.fillStyle = isDarkMode ? colors.clockFace.background : colors.clockFace.background; // Clock face background color
     ctx.fill();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = isDarkMode ? "hsl(217, 49.10%, 41.60%)" : "#999999"; // Clock face border color
+    ctx.strokeStyle = isDarkMode ? colors.clockFace.border : colors.clockFace.border; // Clock face border color
     ctx.stroke();
 
     // Draw hour markers and numbers - 2x larger
@@ -45,13 +51,13 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.font = "bold 40px Arial"; // Doubled from 20px
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "hsl(220, 13%, 40%)"; // Hour markers and numbers color
+    ctx.fillStyle = colors.hourMarkers; // Hour markers and numbers color
 
     // Set consistent margin from edge for both hour markers and numbers
     const marginFromEdge = 15; // Increased margin for better spacing
     
     // Additional margin specifically for the "12" marker
-    const twelveMarkerExtraMargin = 10; // Extra space for "12" marker
+    const twelveMarkerExtraMargin = 25; // Extra space for "12" marker
     
     // Get text metrics for "12" to adjust vertical alignment
     const textMetrics = ctx.measureText("12");
@@ -85,7 +91,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
         ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(endX, endY);
-        ctx.strokeStyle = "hsl(220, 13%, 40%)"; // Hour markers stroke color
+        ctx.strokeStyle = colors.hourMarkers; // Hour markers stroke color
         ctx.stroke();
       }
     }
@@ -100,7 +106,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.beginPath();
     ctx.lineCap = 'round';
     ctx.lineWidth = 12;
-    ctx.strokeStyle = isDarkMode ? "hsl(204, 61.50%, 53.10%)" : "hsl(217, 91%, 60%)"; // Hour hand color
+    ctx.strokeStyle = colors.hourHand; // Hour hand color
     const hourAngle = ((hours + minutes / 60) * 30 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
@@ -113,7 +119,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.beginPath();
     ctx.lineCap = 'round';
     ctx.lineWidth = 6;
-    ctx.strokeStyle = isDarkMode ? "hsl(142, 76%, 36%)" : "hsl(0, 0.00%, 22.00%)"; // Minute hand color - green in dark mode, black in light mode
+    ctx.strokeStyle = colors.minuteHand; // Minute hand color
     const minuteAngle = ((minutes + seconds / 60) * 6 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
@@ -127,7 +133,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.lineCap = 'round';
     ctx.lineWidth = 1;
     ctx.globalAlpha = 0.9;
-    ctx.strokeStyle = "hsl(0, 150%, 50%)"; // Second hand color - red
+    ctx.strokeStyle = colors.secondHand; // Second hand color - red
     const secondAngle = ((seconds + milliseconds / 1500) * 6 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
@@ -140,7 +146,7 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     // Draw center dot
     ctx.beginPath();
     ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
-    ctx.fillStyle = "hsl(0, 0%, 89%)"; // Center dot color - light gray
+    ctx.fillStyle = colors.centerDot; // Center dot color - light gray
     ctx.fill();
   }, [time]);
 
