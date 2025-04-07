@@ -5,6 +5,7 @@ import { getSunrise, getSunset } from "sunrise-sunset-js";
 import axios from "axios";
 import ClockDisplay from "../components/ClockDisplay";
 import DateDisplay from "../components/DateDisplay";
+import { isKingsDay, kingsDay } from "../utils/colorDefinitions";
 
 const AMSTERDAM_LAT = 52.3676;
 const AMSTERDAM_LON = 4.9041;
@@ -44,6 +45,9 @@ const Index = () => {
     (currentHour >= 6 && currentHour < 7) || 
     (currentHour >= 15 && currentHour < 16)
   );
+  
+  // Check if it's Koningsdag (King's Day)
+  const kingsday = isKingsDay(time);
 
   // Parse URL params for theme
   useEffect(() => {
@@ -146,9 +150,15 @@ const Index = () => {
   const cetTime = toZonedTime(time, 'Europe/Paris');
   const metTime = toZonedTime(time, 'Etc/GMT-1');
 
+  // Determine the background style based on whether it's King's Day and not in dark mode
+  const bgStyle = (!isDark && kingsday) 
+    ? { backgroundColor: kingsDay.background } 
+    : {};
+
   return (
     <div 
       className={`min-h-screen bg-white bg-opacity-0 dark:bg-background transition-colors duration-300 flex flex-col items-center justify-between p-4 relative ${shouldRotate ? 'rotate-180' : ''}`}
+      style={bgStyle}
     >
       <div className="w-full relative z-10 flex flex-col min-h-screen">
         <div className="flex flex-wrap justify-between px-[20%] scale-150 mt-32">

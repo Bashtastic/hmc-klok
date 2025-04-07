@@ -33,6 +33,12 @@ export const lightModeColors = {
   minuteHand: "hsl(0, 0.00%, 22.00%)", // Dark gray, almost black for minute hand
 };
 
+// Special day theme colors
+export const kingsDay = {
+  // Background color for King's Day (Koningsdag) - bright orange
+  background: "#F97316", // Bright orange background
+};
+
 // Dark mode color definitions
 export const darkModeColors = {
   // Clock Face
@@ -57,4 +63,17 @@ export const getThemeColors = (isDarkMode: boolean) => {
     ...commonColors,
     ...(isDarkMode ? darkModeColors : lightModeColors),
   };
+};
+
+/**
+ * Checks if the current date is Koningsdag (King's Day)
+ * King's Day is April 27th, but if it falls on a Sunday, it's celebrated on April 26th
+ */
+export const isKingsDay = (date: Date): boolean => {
+  const month = date.getMonth(); // 3 = April (0-indexed)
+  const day = date.getDate();
+  const dayOfWeek = date.getDay(); // 0 = Sunday
+
+  // April 27th, unless it's a Sunday, then April 26th
+  return month === 3 && (day === 27 || (day === 26 && dayOfWeek === 6));
 };
