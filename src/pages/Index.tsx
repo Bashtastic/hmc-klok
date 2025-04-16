@@ -15,7 +15,7 @@ interface MoonPhaseData {
   maan: {
     symbool: string;
     naam: string;
-    percentage_tot_hondert: number;
+    percentage: number;
     is_groeiend: boolean;
     is_slinkend: boolean;
   };
@@ -89,8 +89,8 @@ const Index = () => {
           setMoonDescription(data.getijfase.omschrijving.trim());
         }
         
-        if (data.maan && data.maan.percentage_tot_hondert !== undefined) {
-          setMoonPercentage(data.maan.percentage_tot_hondert);
+        if (data.maan && data.maan.percentage !== undefined) {
+          setMoonPercentage(data.maan.percentage);
         }
         
         if (data.maan && data.maan.is_slinkend !== undefined) {
