@@ -47,26 +47,26 @@ export const getHolidayName = (date: Date): string | null => {
     date1.getFullYear() === date2.getFullYear();
   
   // Check fixed dates
-  if (day === 1 && month === 1) return "Watersnoodramp - 1953";
-  if (day === 5 && month === 4) return "Bevrijdingsdag";
-  if (day === 25 && month === 11) return "Eerste Kerstdag";
-  if (day === 26 && month === 11) return "Tweede Kerstdag";
+  if (day === 1 && month === 1) return "watersnoodramp - 1953";
+  if (day === 5 && month === 4) return "bevrijdingsdag";
+  if (day === 25 && month === 11) return "1ᵉ kerstdag";
+  if (day === 26 && month === 11) return "2ᵉ kerstdag";
   
   // Check King's Day (27th April, or 26th if 27th is Sunday)
   const kingsDate = new Date(year, 3, 27);
   if (kingsDate.getDay() === 0) { // If 27th is Sunday
-    if (day === 26 && month === 3) return "Koningsdag";
+    if (day === 26 && month === 3) return "koningsdag";
   } else {
-    if (day === 27 && month === 3) return "Koningsdag";
+    if (day === 27 && month === 3) return "koningsdag";
   }
   
   // Check Easter-based holidays
   if (isSameDay(date, goodFriday)) return "Goede Vrijdag";
-  if (isSameDay(date, easterSunday)) return "Eerste Paasdag";
-  if (isSameDay(date, easterMonday)) return "Tweede Paasdag";
-  if (isSameDay(date, ascensionDay)) return "Hemelvaartsdag";
-  if (isSameDay(date, pentecostSunday)) return "Eerste Pinksterdag";
-  if (isSameDay(date, pentecostMonday)) return "Tweede Pinksterdag";
+  if (isSameDay(date, easterSunday)) return "1ᵉ paasdag";
+  if (isSameDay(date, easterMonday)) return "2ᵉ paasdag";
+  if (isSameDay(date, ascensionDay)) return "hemelvaartsdag";
+  if (isSameDay(date, pentecostSunday)) return "1ᵉ pinksterdag";
+  if (isSameDay(date, pentecostMonday)) return "2ᵉ pinksterdag";
   
   return null;
 };
