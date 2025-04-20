@@ -1,6 +1,7 @@
 
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
+import { getHolidayName } from "../utils/holidayUtils";
 
 interface DateDisplayProps {
   date: Date;
@@ -36,6 +37,13 @@ const getMoonPhaseImage = (phase: string, percentage?: number, isWaning?: boolea
 };
 
 const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWaning }: DateDisplayProps) => {
+  const dayName = format(date, "EEEE", { locale: nl });
+  const holidayName = getHolidayName(date);
+  const dateDisplay = format(date, "d MMMM yyyy", { locale: nl });
+  const displayText = holidayName 
+    ? `${holidayName}) ${dayName}, ${dateDisplay}`
+    : `${dayName}, ${dateDisplay}`;
+
   return (
     <div className="flex items-center justify-center w-full mt-[80px]">
       <div className="flex-1 flex justify-end">
@@ -59,7 +67,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
             width: "96px",
             height: "96px",
             objectFit: "contain",
-            transform: isWaning ? 'scaleX(-1)' : 'none' // Horizontaal spiegelen als de maan slinkend is
+            transform: isWaning ? 'scaleX(-1)' : 'none'
           }}
         />
       </div>
@@ -72,7 +80,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
             display: "inline-block" 
           }}
         >
-          {format(date, "d MMMM yyyy", { locale: nl })}
+          {displayText}
         </span>
       </div>
     </div>
