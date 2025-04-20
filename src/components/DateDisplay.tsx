@@ -41,7 +41,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
   const holidayName = getHolidayName(date);
   const dateDisplay = format(date, "d MMMM yyyy", { locale: nl });
   const displayText = holidayName 
-    ? `(${holidayName}) ${dayName}, ${dateDisplay}`
+    ? `${holidayName} - ${dayName}, ${dateDisplay}`
     : `${dayName}, ${dateDisplay}`;
 
   return (
