@@ -55,18 +55,18 @@ export const getHolidayName = (date: Date): string | null => {
   // Check King's Day (27th April, or 26th if 27th is Sunday)
   const kingsDate = new Date(year, 3, 27);
   if (kingsDate.getDay() === 0) { // If 27th is Sunday
-    if (day === 26 && month === 3) return "koningsdag";
+    if (day === 26 && month === 3) return "Koningsdag";
   } else {
-    if (day === 27 && month === 3) return "koningsdag";
+    if (day === 27 && month === 3) return "Koningsdag";
   }
   
   // Check Easter-based holidays
   if (isSameDay(date, goodFriday)) return "Goede Vrijdag";
-  if (isSameDay(date, easterSunday)) return "1ᵉ paasdag";
-  if (isSameDay(date, easterMonday)) return "2ᵉ paasdag";
-  if (isSameDay(date, ascensionDay)) return "hemelvaartsdag";
-  if (isSameDay(date, pentecostSunday)) return "1ᵉ pinksterdag";
-  if (isSameDay(date, pentecostMonday)) return "2ᵉ pinksterdag";
+  if (isSameDay(date, easterSunday)) return "1ᵉ Paasdag";
+  if (isSameDay(date, easterMonday)) return "2ᵉ Paasdag";
+  if (isSameDay(date, ascensionDay)) return "Hemelvaartsdag";
+  if (isSameDay(date, pentecostSunday)) return "1ᵉ Pinksterdag";
+  if (isSameDay(date, pentecostMonday)) return "2ᵉ Pinksterdag";
   
   return null;
 };
