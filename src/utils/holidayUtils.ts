@@ -105,8 +105,8 @@ export const getHolidayName = (date: Date): string | null => {
   const pentecostMonday  = addDays(easterSunday, 50);
 
   if (isSameDay(date, goodFriday))      return "Goede Vrijdag ✝️";
-  if (isSameDay(date, easterSunday))    return "1ᵉ Paasdag 🐣";
-  if (isSameDay(date, easterMonday))    return "2ᵉ Paasdag 🐣";
+  if (isSameDay(date, easterSunday))    return "1ᵉ Paasdag";
+  if (isSameDay(date, easterMonday))    return "2ᵉ Paasdag";
   if (isSameDay(date, ascensionDay))    return "Hemelvaartsdag ☁️";
   if (isSameDay(date, pentecostSunday)) return "1ᵉ Pinksterdag 🔥";
   if (isSameDay(date, pentecostMonday)) return "2ᵉ Pinksterdag 🔥";
