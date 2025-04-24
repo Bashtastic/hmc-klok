@@ -1,5 +1,7 @@
-
-// Meeus/Jones/Butcher algorithm for calculating Easter
+// holidays.ts – Dutch public‐holiday helper
+//------------------------------------------------------------
+//  Meeus/Jones/Butcher algorithm for calculating Easter
+//------------------------------------------------------------
 const calculateEaster = (year: number): Date => {
   const a = year % 19;
   const b = Math.floor(year / 100);
@@ -13,60 +15,84 @@ const calculateEaster = (year: number): Date => {
   const k = c % 4;
   const l = (32 + 2 * e + 2 * i - h - k) % 7;
   const m = Math.floor((a + 11 * h + 22 * l) / 451);
-  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const month = Math.floor((h + l - 7 * m + 114) / 31); // March = 3, April = 4 (1‑based)
   const day = ((h + l - 7 * m + 114) % 31) + 1;
-  
-  return new Date(year, month - 1, day);
+
+  return new Date(year, month - 1, day); // JS Date month is 0‑based
 };
 
-// Add days to a date
+//------------------------------------------------------------
+//  Small utilities
+//------------------------------------------------------------
+/** Returns a new Date that is `days` days offset from `date` */
 const addDays = (date: Date, days: number): Date => {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
 };
 
-// Function to get holiday name for a given date
+/** Checks if two Date objects represent the same calendar day */
+const isSameDay = (d1: Date, d2: Date): boolean =>
+  d1.getFullYear() === d2.getFullYear() &&
+  d1.getMonth()    === d2.getMonth()    &&
+  d1.getDate()     === d2.getDate();
+
+//------------------------------------------------------------
+//  Main API
+//------------------------------------------------------------
+/**
+ * Returns the Dutch public/commemorative holiday for the given date, if any.
+ *
+ * Implements:
+ *  • Fixed‑date holidays (Christmas, Liberation Day, etc.)
+ *  • Koningsdag (27 April, shifted to 26 April when the 27th is a Sunday)
+ *  • Easter‐dependent holidays via the Meeus/Jones/Butcher algorithm
+ *
+ * @param date – Date to check (local time zone)
+ * @returns Holiday name or `null` when none applies
+ */
 export const getHolidayName = (date: Date): string | null => {
-  const day = date.getDate();
-  const month = date.getMonth(); // 0-based
-  const year = date.getFullYear();
-  
-  // Calculate Easter Sunday for the current year
-  const easterSunday = calculateEaster(year);
-  const goodFriday = addDays(easterSunday, -2);
-  const easterMonday = addDays(easterSunday, 1);
-  const ascensionDay = addDays(easterSunday, 39);
-  const pentecostSunday = addDays(easterSunday, 49);
-  const pentecostMonday = addDays(easterSunday, 50);
-  
-  // Function to check if two dates are the same day
-  const isSameDay = (date1: Date, date2: Date) => 
-    date1.getDate() === date2.getDate() && 
-    date1.getMonth() === date2.getMonth() &&
-    date1.getFullYear() === date2.getFullYear();
-  
-  // Check fixed dates
-  if (day === 1 && month === 1) return "watersnoodramp - 1953";
-  if (day === 5 && month === 4) return "bevrijdingsdag";
-  if (day === 25 && month === 11) return "1ᵉ kerstdag";
-  if (day === 26 && month === 11) return "2ᵉ kerstdag";
-  
-  // Check King's Day (27th April, or 26th if 27th is Sunday)
-  const kingsDate = new Date(year, 3, 27);
-  if (kingsDate.getDay() === 0) { // If 27th is Sunday
-    if (day === 26 && month === 3) return "Koningsdag";
-  } else {
-    if (day === 27 && month === 3) return "Koningsdag";
+  const day   = date.getDate();      // 1‑31
+  const month = date.getMonth();     // 0‑based (0 = January)
+  const year  = date.getFullYear();
+
+  //----------------------------------------------------------
+  //  Fixed‑date holidays
+  //----------------------------------------------------------
+  if (day === 1  && month === 0)  return "watersnoodramp - 1953"; // 1 Jan – example commemorative date
+  if (day === 5  && month === 4)  return "bevrijdingsdag 🇳🇱";        // 5 May
+  if (day === 25 && month === 11) return "1ᵉ kerstdag";           // 25 Dec
+  if (day === 26 && month === 11) return "2ᵉ kerstdag";           // 26 Dec
+
+  //----------------------------------------------------------
+  //  Koningsdag – 27 April (or 26 April if 27th is a Sunday)
+  //----------------------------------------------------------
+  const kingsDay       = new Date(year, 3, 27); // 27 Apr (month index 3)
+  const observedIs26th = kingsDay.getDay() === 0; // 0 = Sunday
+  if ((observedIs26th && month === 3 && day === 26) ||
+      (!observedIs26th && month === 3 && day === 27)) {
+    return "Koningsdag 🇳🇱";
   }
-  
-  // Check Easter-based holidays
-  if (isSameDay(date, goodFriday)) return "Goede Vrijdag";
-  if (isSameDay(date, easterSunday)) return "1ᵉ Paasdag";
-  if (isSameDay(date, easterMonday)) return "2ᵉ Paasdag";
-  if (isSameDay(date, ascensionDay)) return "Hemelvaartsdag";
+
+  //----------------------------------------------------------
+  //  Easter‑based moveable feasts
+  //----------------------------------------------------------
+  const easterSunday     = calculateEaster(year);
+  const goodFriday       = addDays(easterSunday, -2);
+  const easterMonday     = addDays(easterSunday, 1);
+  const ascensionDay     = addDays(easterSunday, 39);
+  const pentecostSunday  = addDays(easterSunday, 49);
+  const pentecostMonday  = addDays(easterSunday, 50);
+
+  if (isSameDay(date, goodFriday))      return "Goede Vrijdag";
+  if (isSameDay(date, easterSunday))    return "1ᵉ Paasdag";
+  if (isSameDay(date, easterMonday))    return "2ᵉ Paasdag";
+  if (isSameDay(date, ascensionDay))    return "Hemelvaartsdag";
   if (isSameDay(date, pentecostSunday)) return "1ᵉ Pinksterdag";
   if (isSameDay(date, pentecostMonday)) return "2ᵉ Pinksterdag";
-  
+
+  //----------------------------------------------------------
+  //  No holiday – return null
+  //----------------------------------------------------------
   return null;
 };
