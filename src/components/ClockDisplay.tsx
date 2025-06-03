@@ -1,6 +1,7 @@
 
 import { format } from "date-fns";
 import AnalogClock from "./AnalogClock";
+import SeaCreatureFlag from "./SeaCreatureFlag";
 
 interface ClockDisplayProps {
   time: Date;
@@ -13,8 +14,6 @@ const ClockDisplay = ({ time, title, flagType }: ClockDisplayProps) => {
     switch (flagType) {
       case 'uk':
         return '/flags/flag-uk.webp';
-      case 'seal':
-        return '/flags/seal.png';
       case 'nl':
         return '/flags/flag-nl.webp';
       default:
@@ -37,13 +36,19 @@ const ClockDisplay = ({ time, title, flagType }: ClockDisplayProps) => {
         >
           {title}
         </p>
-        {flagImage && (
+        {flagType === 'seal' ? (
+          <SeaCreatureFlag 
+            time={time}
+            title={title}
+            className="w-12 h-12 mb-2 mt-12 object-cover"
+          />
+        ) : flagImage ? (
           <img 
             src={flagImage} 
             alt={`${title} flag`} 
             className="w-12 h-12 mb-2 mt-12 object-cover"
           />
-        )}
+        ) : null}
       </div>
       <AnalogClock time={time} />
       <p 
