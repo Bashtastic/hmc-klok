@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { getRandomSeaCreatureForHour, getNextSeaCreature, type SeaCreature } from "../utils/seaCreatures";
+import { getTrulyRandomSeaCreature, getRandomSeaCreatureForHour, getNextSeaCreature, type SeaCreature } from "../utils/seaCreatures";
 
 interface SeaCreatureFlagProps {
   time: Date;
@@ -10,7 +10,7 @@ interface SeaCreatureFlagProps {
 
 const SeaCreatureFlag = ({ time, title, className }: SeaCreatureFlagProps) => {
   const [currentCreature, setCurrentCreature] = useState<SeaCreature>(() => 
-    getRandomSeaCreatureForHour(time)
+    getTrulyRandomSeaCreature()
   );
 
   // Update creature when hour changes

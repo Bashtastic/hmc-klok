@@ -1,4 +1,3 @@
-
 // Sea creatures utility for managing random sea emoji rotation
 export interface SeaCreature {
   name: string;
@@ -52,6 +51,14 @@ export const seaCreatures: SeaCreature[] = [
   { name: 'Water Wave 3', path: '/flags/sea/water-wave_3.png' },
   { name: 'Whale', path: '/flags/sea/whale.png' }
 ];
+
+/**
+ * Get a truly random sea creature for initial page load
+ */
+export const getTrulyRandomSeaCreature = (): SeaCreature => {
+  const randomIndex = Math.floor(Math.random() * seaCreatures.length);
+  return seaCreatures[randomIndex];
+};
 
 /**
  * Get a random sea creature based on the current hour
