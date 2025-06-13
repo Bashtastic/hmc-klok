@@ -38,7 +38,7 @@ const SeaCreatureFlag = ({ time, title, className }: SeaCreatureFlagProps) => {
     <img 
       src={currentCreature.path}
       alt={`${title} - ${currentCreature.name}`}
-      className={`cursor-pointer hover:scale-110 transition-transform object-contain max-w-12 max-h-12 ${className}`}
+      className={`cursor-pointer hover:scale-110 transition-transform object-contain max-w-12 max-h-12 scale-x-[-1] ${className}`}
       onClick={handleClick}
       title={`Click to change sea creature (${currentCreature.name})`}
     />
