@@ -25,7 +25,7 @@ const ClockDisplay = ({ time, title, flagType }: ClockDisplayProps) => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex items-center gap-2">
+      <div className="relative flex justify-center">
         <p 
           className="mb-2 text-4xl text-muted-foreground" 
           style={{ 
@@ -40,13 +40,13 @@ const ClockDisplay = ({ time, title, flagType }: ClockDisplayProps) => {
           <SeaCreatureFlag 
             time={time}
             title={title}
-            className="w-12 h-12 mb-2 mt-12 object-cover"
+            className="w-12 h-12 mb-2 mt-12 object-cover absolute left-full ml-2"
           />
         ) : flagImage ? (
           <img 
             src={flagImage} 
             alt={`${title} flag`} 
-            className="w-12 h-12 mb-2 mt-12 object-cover"
+            className="w-12 h-12 mb-2 mt-12 object-cover absolute left-full ml-2"
           />
         ) : null}
       </div>
