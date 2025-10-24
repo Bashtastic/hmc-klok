@@ -1,0 +1,4 @@
+project_id = "tcmqijljalbqtagfpheg"
+
+[functions.moon-phase]
+verify_jwt = false
