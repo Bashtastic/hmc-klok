@@ -171,7 +171,7 @@ const Index = () => {
       style={bgStyle}
     >
       <div className="w-full relative z-10 flex flex-col min-h-screen">
-        <div className="flex flex-wrap justify-between px-[20%] scale-150 mt-32">
+        <div className="flex flex-wrap justify-between px-[20%] scale-150 mt-32 mb-16">
           <ClockDisplay 
             time={utcTime} 
             title="UTC" 
@@ -194,7 +194,7 @@ const Index = () => {
         </div>
 
         {dstMessage && (
-          <div className="w-full flex justify-center mt-8 mb-4">
+          <div className="w-full flex justify-center mt-12 mb-8">
             <p className="text-xl text-foreground/80 bg-muted/50 px-6 py-3 rounded-lg border border-border/30">
               {dstMessage}
             </p>
