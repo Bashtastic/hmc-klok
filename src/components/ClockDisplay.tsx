@@ -7,9 +7,10 @@ interface ClockDisplayProps {
   time: Date;
   title: string;
   flagType?: 'uk' | 'seal' | 'nl';
+  dstMessage?: string | null;
 }
 
-const ClockDisplay = ({ time, title, flagType }: ClockDisplayProps) => {
+const ClockDisplay = ({ time, title, flagType, dstMessage }: ClockDisplayProps) => {
   const getFlagImage = () => {
     switch (flagType) {
       case 'uk':
@@ -50,7 +51,7 @@ const ClockDisplay = ({ time, title, flagType }: ClockDisplayProps) => {
           />
         ) : null}
       </div>
-      <AnalogClock time={time} />
+      <AnalogClock time={time} dstMessage={dstMessage} />
       <p 
         className="mt-4 text-4xl tracking-wide text-foreground" 
         style={{ 

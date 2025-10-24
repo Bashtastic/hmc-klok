@@ -190,16 +190,9 @@ const Index = () => {
             time={cetTime} 
             title={isDST ? 'CET' : 'MET / CET'} 
             flagType="nl"
+            dstMessage={dstMessage}
           />
         </div>
-
-        {dstMessage && (
-          <div className="w-full flex justify-center mt-12 mb-8">
-            <p className="text-xl text-foreground/80 bg-muted/50 px-6 py-3 rounded-lg border border-border/30">
-              {dstMessage}
-            </p>
-          </div>
-        )}
 
         <div className="flex-grow flex items-center justify-center w-screen -ml-4">
           <DateDisplay 

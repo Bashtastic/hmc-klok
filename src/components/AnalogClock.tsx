@@ -4,9 +4,10 @@ import { getThemeColors } from "../utils/colorDefinitions";
 
 interface AnalogClockProps {
   time: Date;
+  dstMessage?: string | null;
 }
 
-const AnalogClock = ({ time }: AnalogClockProps) => {
+const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -148,7 +149,49 @@ const AnalogClock = ({ time }: AnalogClockProps) => {
     ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
     ctx.fillStyle = colors.centerDot; // Center dot color - light gray
     ctx.fill();
-  }, [time]);
+
+    // Draw DST message if present
+    if (dstMessage) {
+      const hours = time.getHours();
+      // Between 3 and 9 hours: top half, between 9 and 3 hours: bottom half
+      const isTopHalf = hours >= 3 && hours < 9;
+      
+      ctx.font = "bold 14px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = colors.hourMarkers;
+      
+      // Calculate Y position based on time
+      const textY = isTopHalf ? centerY - 60 : centerY + 60;
+      
+      // Split message into multiple lines if needed
+      const words = dstMessage.split(' ');
+      const lines: string[] = [];
+      let currentLine = '';
+      
+      words.forEach(word => {
+        const testLine = currentLine ? currentLine + ' ' + word : word;
+        const metrics = ctx.measureText(testLine);
+        
+        if (metrics.width > 120 && currentLine) {
+          lines.push(currentLine);
+          currentLine = word;
+        } else {
+          currentLine = testLine;
+        }
+      });
+      
+      if (currentLine) {
+        lines.push(currentLine);
+      }
+      
+      // Draw each line
+      lines.forEach((line, index) => {
+        const lineY = textY + (index - (lines.length - 1) / 2) * 18;
+        ctx.fillText(line, centerX, lineY);
+      });
+    }
+  }, [time, dstMessage]);
 
   return (
     <canvas
