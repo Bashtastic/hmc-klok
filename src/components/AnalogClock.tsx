@@ -156,10 +156,9 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
       // Between 3 and 9 hours: top half, between 9 and 3 hours: bottom half
       const isTopHalf = hours >= 3 && hours < 9;
       
-      ctx.font = "bold 14px Arial";
+      ctx.font = "bold 21px Arial"; // 50% larger than 14px
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillStyle = colors.hourMarkers;
       
       // Calculate Y position based on time
       const textY = isTopHalf ? centerY - 60 : centerY + 60;
@@ -173,7 +172,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
         const testLine = currentLine ? currentLine + ' ' + word : word;
         const metrics = ctx.measureText(testLine);
         
-        if (metrics.width > 120 && currentLine) {
+        if (metrics.width > 140 && currentLine) {
           lines.push(currentLine);
           currentLine = word;
         } else {
@@ -185,9 +184,33 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
         lines.push(currentLine);
       }
       
-      // Draw each line
+      // Calculate box dimensions
+      const lineHeight = 24;
+      const padding = 12;
+      let maxWidth = 0;
+      lines.forEach(line => {
+        const metrics = ctx.measureText(line);
+        if (metrics.width > maxWidth) maxWidth = metrics.width;
+      });
+      
+      const boxWidth = maxWidth + padding * 2;
+      const boxHeight = lines.length * lineHeight + padding * 2;
+      const boxX = centerX - boxWidth / 2;
+      const boxY = textY - boxHeight / 2;
+      
+      // Draw white background rectangle
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+      
+      // Draw red border
+      ctx.strokeStyle = '#ff0000';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+      
+      // Draw text in red
+      ctx.fillStyle = '#ff0000';
       lines.forEach((line, index) => {
-        const lineY = textY + (index - (lines.length - 1) / 2) * 18;
+        const lineY = textY + (index - (lines.length - 1) / 2) * lineHeight;
         ctx.fillText(line, centerX, lineY);
       });
     }
