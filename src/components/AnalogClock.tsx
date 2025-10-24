@@ -156,7 +156,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
       // Between 3 and 9 hours: top half, between 9 and 3 hours: bottom half
       const isTopHalf = hours >= 3 && hours < 9;
       
-      ctx.font = "bold 21px Arial"; // 50% larger than 14px
+      ctx.font = "bold 18px Arial"; // 15% smaller than 21px
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       
@@ -185,7 +185,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
       }
       
       // Calculate box dimensions
-      const lineHeight = 24;
+      const lineHeight = 22;
       const padding = 12;
       let maxWidth = 0;
       lines.forEach(line => {
@@ -193,19 +193,31 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
         if (metrics.width > maxWidth) maxWidth = metrics.width;
       });
       
-      const boxWidth = maxWidth + padding * 2;
+      const boxWidth = maxWidth + padding * 2 + 20; // 20px extra width
       const boxHeight = lines.length * lineHeight + padding * 2;
       const boxX = centerX - boxWidth / 2;
       const boxY = textY - boxHeight / 2;
+      const borderRadius = 8;
       
-      // Draw white background rectangle
+      // Draw rounded rectangle with white background
       ctx.fillStyle = '#ffffff';
-      ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+      ctx.beginPath();
+      ctx.moveTo(boxX + borderRadius, boxY);
+      ctx.lineTo(boxX + boxWidth - borderRadius, boxY);
+      ctx.quadraticCurveTo(boxX + boxWidth, boxY, boxX + boxWidth, boxY + borderRadius);
+      ctx.lineTo(boxX + boxWidth, boxY + boxHeight - borderRadius);
+      ctx.quadraticCurveTo(boxX + boxWidth, boxY + boxHeight, boxX + boxWidth - borderRadius, boxY + boxHeight);
+      ctx.lineTo(boxX + borderRadius, boxY + boxHeight);
+      ctx.quadraticCurveTo(boxX, boxY + boxHeight, boxX, boxY + boxHeight - borderRadius);
+      ctx.lineTo(boxX, boxY + borderRadius);
+      ctx.quadraticCurveTo(boxX, boxY, boxX + borderRadius, boxY);
+      ctx.closePath();
+      ctx.fill();
       
       // Draw red border
       ctx.strokeStyle = '#ff0000';
       ctx.lineWidth = 2;
-      ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+      ctx.stroke();
       
       // Draw text in red
       ctx.fillStyle = '#ff0000';
