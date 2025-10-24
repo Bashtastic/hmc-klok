@@ -6,6 +6,7 @@ import axios from "axios";
 import ClockDisplay from "../components/ClockDisplay";
 import DateDisplay from "../components/DateDisplay";
 import { isKingsDay, kingsDay } from "../utils/colorDefinitions";
+import { getDSTTransitionMessage } from "../utils/dstUtils";
 
 const AMSTERDAM_LAT = 52.3676;
 const AMSTERDAM_LON = 4.9041;
@@ -34,6 +35,7 @@ const Index = () => {
   const [moonPercentage, setMoonPercentage] = useState<number | undefined>(undefined);
   const [isWaning, setIsWaning] = useState<boolean | undefined>(undefined);
   const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
+  const [dstMessage, setDstMessage] = useState<string | null>(null);
   
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
   
@@ -148,6 +150,12 @@ const Index = () => {
     }
   }, [isDark]);
 
+  // Check for DST transition week
+  useEffect(() => {
+    const message = getDSTTransitionMessage(time);
+    setDstMessage(message);
+  }, [time]);
+
   const utcTime = toZonedTime(time, 'UTC');
   const cetTime = toZonedTime(time, 'Europe/Paris');
   const metTime = toZonedTime(time, 'Etc/GMT-1');
@@ -184,6 +192,14 @@ const Index = () => {
             flagType="nl"
           />
         </div>
+
+        {dstMessage && (
+          <div className="w-full flex justify-center mt-8 mb-4">
+            <p className="text-xl text-foreground/80 bg-muted/50 px-6 py-3 rounded-lg border border-border/30">
+              {dstMessage}
+            </p>
+          </div>
+        )}
 
         <div className="flex-grow flex items-center justify-center w-screen -ml-4">
           <DateDisplay 
