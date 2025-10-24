@@ -161,7 +161,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
       ctx.textBaseline = "middle";
       
       // Calculate Y position based on time
-      const textY = isTopHalf ? centerY - 60 : centerY + 60;
+      const textY = isTopHalf ? centerY - 40 : centerY + 40;
       
       // Split message into multiple lines if needed
       const words = dstMessage.split(' ');
@@ -186,7 +186,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
       
       // Calculate box dimensions
       const lineHeight = 22;
-      const padding = 5;
+      const padding = 12;
       let maxWidth = 0;
       lines.forEach(line => {
         const metrics = ctx.measureText(line);
