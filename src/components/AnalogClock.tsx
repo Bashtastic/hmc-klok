@@ -161,7 +161,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
       ctx.textBaseline = "middle";
       
       // Calculate Y position based on time
-      const textY = isTopHalf ? centerY - 40 : centerY + 40;
+      const textY = isTopHalf ? centerY - 50 : centerY + 50;
       
       // Split message into multiple lines if needed
       const words = dstMessage.split(' ');
