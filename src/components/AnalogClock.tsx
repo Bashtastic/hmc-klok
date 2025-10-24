@@ -172,7 +172,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
         const testLine = currentLine ? currentLine + ' ' + word : word;
         const metrics = ctx.measureText(testLine);
         
-        if (metrics.width > 140 && currentLine) {
+        if (metrics.width > 200 && currentLine) {
           lines.push(currentLine);
           currentLine = word;
         } else {
