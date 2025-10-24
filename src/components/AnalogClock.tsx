@@ -47,6 +47,83 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
     ctx.strokeStyle = isDarkMode ? colors.clockFace.border : colors.clockFace.border; // Clock face border color
     ctx.stroke();
 
+    // Draw DST message if present (behind markers and hands)
+    if (dstMessage) {
+      const hours = time.getHours();
+      // Between 3 and 9 hours: top half, between 9 and 3 hours: bottom half
+      const isTopHalf = hours >= 3 && hours < 9;
+      
+      ctx.font = "bold 18px Arial"; // 15% smaller than 21px
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      
+      // Calculate Y position based on time
+      const textY = isTopHalf ? centerY - 60 : centerY + 60;
+      
+      // Split message into multiple lines if needed
+      const words = dstMessage.split(' ');
+      const lines: string[] = [];
+      let currentLine = '';
+      
+      words.forEach(word => {
+        const testLine = currentLine ? currentLine + ' ' + word : word;
+        const metrics = ctx.measureText(testLine);
+        
+        if (metrics.width > 200 && currentLine) {
+          lines.push(currentLine);
+          currentLine = word;
+        } else {
+          currentLine = testLine;
+        }
+      });
+      
+      if (currentLine) {
+        lines.push(currentLine);
+      }
+      
+      // Calculate box dimensions
+      const lineHeight = 22;
+      const padding = 12;
+      let maxWidth = 0;
+      lines.forEach(line => {
+        const metrics = ctx.measureText(line);
+        if (metrics.width > maxWidth) maxWidth = metrics.width;
+      });
+      
+      const boxWidth = maxWidth + padding * 2 + 20; // 20px extra width
+      const boxHeight = lines.length * lineHeight + padding * 2;
+      const boxX = centerX - boxWidth / 2;
+      const boxY = textY - boxHeight / 2;
+      const borderRadius = 8;
+      
+      // Draw rounded rectangle with white background
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.moveTo(boxX + borderRadius, boxY);
+      ctx.lineTo(boxX + boxWidth - borderRadius, boxY);
+      ctx.quadraticCurveTo(boxX + boxWidth, boxY, boxX + boxWidth, boxY + borderRadius);
+      ctx.lineTo(boxX + boxWidth, boxY + boxHeight - borderRadius);
+      ctx.quadraticCurveTo(boxX + boxWidth, boxY + boxHeight, boxX + boxWidth - borderRadius, boxY + boxHeight);
+      ctx.lineTo(boxX + borderRadius, boxY + boxHeight);
+      ctx.quadraticCurveTo(boxX, boxY + boxHeight, boxX, boxY + boxHeight - borderRadius);
+      ctx.lineTo(boxX, boxY + borderRadius);
+      ctx.quadraticCurveTo(boxX, boxY, boxX + borderRadius, boxY);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Draw red border
+      ctx.strokeStyle = '#ff0000';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      
+      // Draw text in red
+      ctx.fillStyle = '#ff0000';
+      lines.forEach((line, index) => {
+        const lineY = textY + (index - (lines.length - 1) / 2) * lineHeight;
+        ctx.fillText(line, centerX, lineY);
+      });
+    }
+
     // Draw hour markers and numbers - 2x larger
     ctx.lineWidth = 4; // Doubled from 2
     ctx.font = "bold 40px Arial"; // Doubled from 20px
@@ -149,83 +226,6 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
     ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
     ctx.fillStyle = colors.centerDot; // Center dot color - light gray
     ctx.fill();
-
-    // Draw DST message if present
-    if (dstMessage) {
-      const hours = time.getHours();
-      // Between 3 and 9 hours: top half, between 9 and 3 hours: bottom half
-      const isTopHalf = hours >= 3 && hours < 9;
-      
-      ctx.font = "bold 18px Arial"; // 15% smaller than 21px
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      
-      // Calculate Y position based on time
-      const textY = isTopHalf ? centerY - 50 : centerY + 50;
-      
-      // Split message into multiple lines if needed
-      const words = dstMessage.split(' ');
-      const lines: string[] = [];
-      let currentLine = '';
-      
-      words.forEach(word => {
-        const testLine = currentLine ? currentLine + ' ' + word : word;
-        const metrics = ctx.measureText(testLine);
-        
-        if (metrics.width > 200 && currentLine) {
-          lines.push(currentLine);
-          currentLine = word;
-        } else {
-          currentLine = testLine;
-        }
-      });
-      
-      if (currentLine) {
-        lines.push(currentLine);
-      }
-      
-      // Calculate box dimensions
-      const lineHeight = 22;
-      const padding = 12;
-      let maxWidth = 0;
-      lines.forEach(line => {
-        const metrics = ctx.measureText(line);
-        if (metrics.width > maxWidth) maxWidth = metrics.width;
-      });
-      
-      const boxWidth = maxWidth + padding * 2 + 20; // 20px extra width
-      const boxHeight = lines.length * lineHeight + padding * 2;
-      const boxX = centerX - boxWidth / 2;
-      const boxY = textY - boxHeight / 2;
-      const borderRadius = 8;
-      
-      // Draw rounded rectangle with white background
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.moveTo(boxX + borderRadius, boxY);
-      ctx.lineTo(boxX + boxWidth - borderRadius, boxY);
-      ctx.quadraticCurveTo(boxX + boxWidth, boxY, boxX + boxWidth, boxY + borderRadius);
-      ctx.lineTo(boxX + boxWidth, boxY + boxHeight - borderRadius);
-      ctx.quadraticCurveTo(boxX + boxWidth, boxY + boxHeight, boxX + boxWidth - borderRadius, boxY + boxHeight);
-      ctx.lineTo(boxX + borderRadius, boxY + boxHeight);
-      ctx.quadraticCurveTo(boxX, boxY + boxHeight, boxX, boxY + boxHeight - borderRadius);
-      ctx.lineTo(boxX, boxY + borderRadius);
-      ctx.quadraticCurveTo(boxX, boxY, boxX + borderRadius, boxY);
-      ctx.closePath();
-      ctx.fill();
-      
-      // Draw red border
-      ctx.strokeStyle = '#ff0000';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      
-      // Draw text in red
-      ctx.fillStyle = '#ff0000';
-      lines.forEach((line, index) => {
-        const lineY = textY + (index - (lines.length - 1) / 2) * lineHeight;
-        ctx.fillText(line, centerX, lineY);
-      });
-    }
   }, [time, dstMessage]);
 
   return (
