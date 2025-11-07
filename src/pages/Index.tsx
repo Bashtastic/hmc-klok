@@ -171,7 +171,7 @@ const Index = () => {
       style={bgStyle}
     >
       <div className="w-full relative z-10 flex flex-col min-h-screen">
-        <div className="flex flex-wrap justify-between px-[20%] scale-150 mt-32 mb-16">
+        <div className={`flex flex-wrap justify-between ${isDST ? 'px-[20%]' : 'px-[30%]'} scale-150 mt-32 mb-16`}>
           <ClockDisplay 
             time={utcTime} 
             title="UTC" 
