@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 import { getThemeColors } from "../utils/colorDefinitions";
 
 interface AnalogClockProps {
@@ -7,35 +7,29 @@ interface AnalogClockProps {
   dstMessage?: string | null;
 }
 
-const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
+const AnalogClock = memo(({ time, dstMessage }: AnalogClockProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const faceCanvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Draw static clock face only once or when dark mode changes
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = faceCanvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Set actual size in memory (scaled to account for extra pixel density)
     const scale = window.devicePixelRatio;
     canvas.width = 300 * scale;
     canvas.height = 300 * scale;
-
-    // Normalize coordinate system to use CSS pixels
     ctx.scale(scale, scale);
 
     const radius = 150;
     const centerX = 150;
     const centerY = 150;
 
-    // Detect if dark mode is active
     const isDarkMode = document.documentElement.classList.contains('dark');
-    
-    // Get theme colors based on mode
     const colors = getThemeColors(isDarkMode);
 
-    // Clear canvas
     ctx.clearRect(0, 0, 300, 300);
 
     // Draw clock face
@@ -124,23 +118,15 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
       });
     }
 
-    // Draw hour markers and numbers - 2x larger
-    ctx.lineWidth = 4; // Doubled from 2
-    ctx.font = "bold 40px Arial"; // Doubled from 20px
+    // Draw hour markers and numbers
+    ctx.lineWidth = 4;
+    ctx.font = "bold 40px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = colors.hourMarkers; // Hour markers and numbers color
+    ctx.fillStyle = colors.hourMarkers;
 
-    // Set consistent margin from edge for both hour markers and numbers
-    const marginFromEdge = 15; // Increased margin for better spacing
-    
-    // Additional margin specifically for the "12" marker
-    const twelveMarkerExtraMargin = 10; // Extra space for "12" marker
-    
-    // Get text metrics for "12" to adjust vertical alignment
-    const textMetrics = ctx.measureText("12");
-    // Estimate the height (not perfect in Canvas API)
-    const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
+    const marginFromEdge = 15;
+    const twelveMarkerExtraMargin = 10;
     
     for (let i = 0; i < 12; i++) {
       const angle = (i * Math.PI) / 6 - Math.PI / 2;
@@ -148,19 +134,14 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
       
       if (isMainHour) {
         const number = i === 0 ? "12" : i.toString();
-        // Calculate position based on angle and adjust for text size
-        // The font size itself needs to be accounted for in the margin
-        const textAdjustment = 10; // Additional adjustment to account for text size
-        
-        // Add extra margin for "12" marker
+        const textAdjustment = 10;
         const extraMarginForTwelve = i === 0 ? twelveMarkerExtraMargin : 0;
         
         const numberX = centerX + (radius - marginFromEdge - textAdjustment - extraMarginForTwelve) * Math.cos(angle);
         const numberY = centerY + (radius - marginFromEdge - textAdjustment - extraMarginForTwelve) * Math.sin(angle);
         ctx.fillText(number, numberX, numberY);
       } else {
-        // Hour markers with consistent margin from edge
-        const markerLength = 20; // Length of marker
+        const markerLength = 20;
         const startX = centerX + (radius - marginFromEdge) * Math.cos(angle);
         const startY = centerY + (radius - marginFromEdge) * Math.sin(angle);
         const endX = centerX + (radius - marginFromEdge - markerLength) * Math.cos(angle);
@@ -169,10 +150,35 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
         ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(endX, endY);
-        ctx.strokeStyle = colors.hourMarkers; // Hour markers stroke color
+        ctx.strokeStyle = colors.hourMarkers;
         ctx.stroke();
       }
     }
+  }, [dstMessage]);
+
+  // Draw hands every second (much lighter operation)
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const faceCanvas = faceCanvasRef.current;
+    if (!canvas || !faceCanvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const scale = window.devicePixelRatio;
+    canvas.width = 300 * scale;
+    canvas.height = 300 * scale;
+    ctx.scale(scale, scale);
+
+    const radius = 150;
+    const centerX = 150;
+    const centerY = 150;
+
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    const colors = getThemeColors(isDarkMode);
+
+    // Copy the static face
+    ctx.drawImage(faceCanvas, 0, 0);
 
     // Get time components
     const hours = time.getHours() % 12;
@@ -229,14 +235,24 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
   }, [time, dstMessage]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width="300"
-      height="300"
-      style={{ width: "300px", height: "300px" }}
-      className="shadow-lg rounded-full"
-    />
+    <div style={{ position: 'relative', width: '300px', height: '300px' }}>
+      <canvas
+        ref={faceCanvasRef}
+        width="300"
+        height="300"
+        style={{ position: 'absolute', width: "300px", height: "300px", display: 'none' }}
+      />
+      <canvas
+        ref={canvasRef}
+        width="300"
+        height="300"
+        style={{ width: "300px", height: "300px" }}
+        className="shadow-lg rounded-full"
+      />
+    </div>
   );
-};
+});
+
+AnalogClock.displayName = "AnalogClock";
 
 export default AnalogClock;

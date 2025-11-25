@@ -1,5 +1,6 @@
 
 import { format } from "date-fns";
+import { memo } from "react";
 import AnalogClock from "./AnalogClock";
 import SeaCreatureFlag from "./SeaCreatureFlag";
 
@@ -10,7 +11,7 @@ interface ClockDisplayProps {
   dstMessage?: string | null;
 }
 
-const ClockDisplay = ({ time, title, flagType, dstMessage }: ClockDisplayProps) => {
+const ClockDisplay = memo(({ time, title, flagType, dstMessage }: ClockDisplayProps) => {
   const getFlagImage = () => {
     switch (flagType) {
       case 'uk':
@@ -63,6 +64,8 @@ const ClockDisplay = ({ time, title, flagType, dstMessage }: ClockDisplayProps) 
       </p>
     </div>
   );
-};
+});
+
+ClockDisplay.displayName = "ClockDisplay";
 
 export default ClockDisplay;
