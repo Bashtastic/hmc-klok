@@ -1,7 +1,6 @@
 
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
-import { memo, useMemo } from "react";
 import { getHolidayName } from "../utils/holidayUtils";
 
 interface DateDisplayProps {
@@ -37,20 +36,13 @@ const getMoonPhaseImage = (phase: string, percentage?: number, isWaning?: boolea
   return moonImages[phase] || moonImages["🌑"]; // fallback naar nieuwe maan als de fase niet bekend is
 };
 
-const DateDisplay = memo(({ date, moonPhase, moonDescription, moonPercentage, isWaning }: DateDisplayProps) => {
-  const displayText = useMemo(() => {
-    const dayName = format(date, "EEEE", { locale: nl });
-    const holidayName = getHolidayName(date);
-    const dateDisplay = format(date, "d MMMM yyyy", { locale: nl });
-    return holidayName 
-      ? `${holidayName}, ${dayName} ${dateDisplay}`
-      : `${dayName}, ${dateDisplay}`;
-  }, [date]);
-
-  const moonImage = useMemo(() => 
-    moonPhase ? getMoonPhaseImage(moonPhase, moonPercentage, isWaning) : "/moon-phases/animated_moon.gif",
-    [moonPhase, moonPercentage, isWaning]
-  );
+const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWaning }: DateDisplayProps) => {
+  const dayName = format(date, "EEEE", { locale: nl });
+  const holidayName = getHolidayName(date);
+  const dateDisplay = format(date, "d MMMM yyyy", { locale: nl });
+  const displayText = holidayName 
+    ? `${holidayName}, ${dayName} ${dateDisplay}`
+    : `${dayName}, ${dateDisplay}`;
 
   return (
     <div className="flex items-center justify-center w-full mt-[80px]">
@@ -68,7 +60,7 @@ const DateDisplay = memo(({ date, moonPhase, moonDescription, moonPercentage, is
       </div>
       <div className="mx-[50px]">
         <img 
-          src={moonImage}
+          src={moonPhase ? getMoonPhaseImage(moonPhase, moonPercentage, isWaning) : "/moon-phases/animated_moon.gif"}
           alt={moonDescription || "Loading moon phase..."}
           className="text-foreground flex-shrink-0"
           style={{ 
@@ -93,8 +85,6 @@ const DateDisplay = memo(({ date, moonPhase, moonDescription, moonPercentage, is
       </div>
     </div>
   );
-});
-
-DateDisplay.displayName = "DateDisplay";
+};
 
 export default DateDisplay;

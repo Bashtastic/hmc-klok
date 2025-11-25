@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { toZonedTime } from "date-fns-tz";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
 import axios from "axios";
@@ -37,22 +37,19 @@ const Index = () => {
   const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
   const [dstMessage, setDstMessage] = useState<string | null>(null);
   
-  const isDST = useMemo(() => 
-    time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset(),
-    [time.getMonth()]
+  const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
+  
+  // Check if it's April 1st and within specific time ranges for the prank
+  const isAprilFools = time.getMonth() === 3 && time.getDate() === 1;
+  const currentHour = time.getHours();
+  const shouldRotate = isAprilFools && (
+    (currentHour >= 1 && currentHour < 2) || 
+    (currentHour >= 6 && currentHour < 7) || 
+    (currentHour >= 15 && currentHour < 16)
   );
   
-  const shouldRotate = useMemo(() => {
-    const isAprilFools = time.getMonth() === 3 && time.getDate() === 1;
-    const currentHour = time.getHours();
-    return isAprilFools && (
-      (currentHour >= 1 && currentHour < 2) || 
-      (currentHour >= 6 && currentHour < 7) || 
-      (currentHour >= 15 && currentHour < 16)
-    );
-  }, [time.getMonth(), time.getDate(), time.getHours()]);
-  
-  const kingsday = useMemo(() => isKingsDay(time), [time.getMonth(), time.getDate()]);
+  // Check if it's Koningsdag (King's Day)
+  const kingsday = isKingsDay(time);
 
   // Parse URL params for theme
   useEffect(() => {
@@ -73,7 +70,7 @@ const Index = () => {
       };
 
       checkDayNight();
-      const interval = setInterval(checkDayNight, 300000); // Check every 5 minutes instead of 1
+      const interval = setInterval(checkDayNight, 60000);
 
       return () => clearInterval(interval);
     }
@@ -115,22 +112,22 @@ const Index = () => {
     // Initial fetch
     fetchMoonData();
 
-    // Set up interval to check every 30 seconds instead of every second
+    // Set up interval to check every second if it's 2 minutes past the hour
     const checkTimeInterval = setInterval(() => {
       const now = new Date();
       
       // If it's 2 minutes past the hour, always fetch new data
-      if (now.getMinutes() === 2 && now.getSeconds() < 30) {
+      if (now.getMinutes() === 2 && now.getSeconds() === 0) {
         fetchMoonData();
         return;
       }
       
       // If the last fetch failed, try again every minute
-      if (!lastFetchSuccess) {
+      if (!lastFetchSuccess && now.getSeconds() === 0) {
         console.log("Vorige fetch mislukt, opnieuw proberen...");
         fetchMoonData();
       }
-    }, 30000);
+    }, 1000);
 
     return () => {
       clearInterval(checkTimeInterval);
@@ -159,14 +156,14 @@ const Index = () => {
     setDstMessage(message);
   }, [time]);
 
-  const utcTime = useMemo(() => toZonedTime(time, 'UTC'), [time]);
-  const cetTime = useMemo(() => toZonedTime(time, 'Europe/Paris'), [time]);
-  const metTime = useMemo(() => toZonedTime(time, 'Etc/GMT-1'), [time]);
+  const utcTime = toZonedTime(time, 'UTC');
+  const cetTime = toZonedTime(time, 'Europe/Paris');
+  const metTime = toZonedTime(time, 'Etc/GMT-1');
 
-  const bgStyle = useMemo(() => 
-    (!isDark && kingsday) ? { backgroundColor: kingsDay.background } : {},
-    [isDark, kingsday]
-  );
+  // Determine the background style based on whether it's King's Day and not in dark mode
+  const bgStyle = (!isDark && kingsday) 
+    ? { backgroundColor: kingsDay.background } 
+    : {};
 
   return (
     <div 

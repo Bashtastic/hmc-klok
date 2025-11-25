@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef, memo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getTrulyRandomSeaCreature, getRandomSeaCreatureForHour, getNextSeaCreature, type SeaCreature } from "../utils/seaCreatures";
 
 interface SeaCreatureFlagProps {
@@ -8,7 +8,7 @@ interface SeaCreatureFlagProps {
   className?: string;
 }
 
-const SeaCreatureFlag = memo(({ time, title, className }: SeaCreatureFlagProps) => {
+const SeaCreatureFlag = ({ time, title, className }: SeaCreatureFlagProps) => {
   const [currentCreature, setCurrentCreature] = useState<SeaCreature>(() => 
     getTrulyRandomSeaCreature()
   );
@@ -43,8 +43,6 @@ const SeaCreatureFlag = memo(({ time, title, className }: SeaCreatureFlagProps) 
       title={`Click to change sea creature (${currentCreature.name})`}
     />
   );
-});
-
-SeaCreatureFlag.displayName = "SeaCreatureFlag";
+};
 
 export default SeaCreatureFlag;

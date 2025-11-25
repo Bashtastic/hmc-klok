@@ -1,10 +1,8 @@
-import { memo } from "react";
-
 interface WaterLevelProps {
   percentage: number;
 }
 
-const WaterLevel = memo(({ percentage }: WaterLevelProps) => {
+const WaterLevel = ({ percentage }: WaterLevelProps) => {
   // Ensure percentage is between 0 and 100
   const clampedPercentage = Math.min(100, Math.max(0, percentage));
   
@@ -22,8 +20,6 @@ const WaterLevel = memo(({ percentage }: WaterLevelProps) => {
       />
     </div>
   );
-});
-
-WaterLevel.displayName = "WaterLevel";
+};
 
 export default WaterLevel;
