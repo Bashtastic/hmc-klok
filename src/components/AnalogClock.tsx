@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { getThemeColors } from "../utils/colorDefinitions";
 
 interface AnalogClockProps {
@@ -8,32 +8,32 @@ interface AnalogClockProps {
 }
 
 const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const staticCanvasRef = useRef<HTMLCanvasElement>(null);
+  const dynamicCanvasRef = useRef<HTMLCanvasElement>(null);
+  const scaleRef = useRef(window.devicePixelRatio);
+  
+  // Detect if dark mode is active
+  const isDarkMode = document.documentElement.classList.contains('dark');
+  
+  // Memoize theme colors - only recalculate when dark mode changes
+  const colors = useMemo(() => getThemeColors(isDarkMode), [isDarkMode]);
 
+  // Draw static elements (clock face, markers, numbers, DST message)
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = staticCanvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Set actual size in memory (scaled to account for extra pixel density)
-    const scale = window.devicePixelRatio;
+    const scale = scaleRef.current;
     canvas.width = 300 * scale;
     canvas.height = 300 * scale;
-
-    // Normalize coordinate system to use CSS pixels
     ctx.scale(scale, scale);
 
     const radius = 150;
     const centerX = 150;
     const centerY = 150;
-
-    // Detect if dark mode is active
-    const isDarkMode = document.documentElement.classList.contains('dark');
-    
-    // Get theme colors based on mode
-    const colors = getThemeColors(isDarkMode);
 
     // Clear canvas
     ctx.clearRect(0, 0, 300, 300);
@@ -173,18 +173,38 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
         ctx.stroke();
       }
     }
+  }, [dstMessage, colors, isDarkMode]);
+
+  // Draw dynamic elements (hands) - redraws every second
+  useEffect(() => {
+    const canvas = dynamicCanvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const scale = scaleRef.current;
+    canvas.width = 300 * scale;
+    canvas.height = 300 * scale;
+    ctx.scale(scale, scale);
+
+    const radius = 150;
+    const centerX = 150;
+    const centerY = 150;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, 300, 300);
 
     // Get time components
     const hours = time.getHours() % 12;
     const minutes = time.getMinutes();
     const seconds = time.getSeconds();
-    const milliseconds = time.getMilliseconds();
 
     // Draw hour hand
     ctx.beginPath();
     ctx.lineCap = 'round';
     ctx.lineWidth = 12;
-    ctx.strokeStyle = colors.hourHand; // Hour hand color
+    ctx.strokeStyle = colors.hourHand;
     const hourAngle = ((hours + minutes / 60) * 30 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
@@ -197,7 +217,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
     ctx.beginPath();
     ctx.lineCap = 'round';
     ctx.lineWidth = 6;
-    ctx.strokeStyle = colors.minuteHand; // Minute hand color
+    ctx.strokeStyle = colors.minuteHand;
     const minuteAngle = ((minutes + seconds / 60) * 6 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
@@ -206,13 +226,13 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
     );
     ctx.stroke();
 
-    // Draw second hand
+    // Draw second hand (no milliseconds - timer only updates every 1000ms)
     ctx.beginPath();
     ctx.lineCap = 'round';
     ctx.lineWidth = 1;
     ctx.globalAlpha = 0.9;
-    ctx.strokeStyle = colors.secondHand; // Second hand color - red
-    const secondAngle = ((seconds + milliseconds / 1500) * 6 - 90) * (Math.PI / 180);
+    ctx.strokeStyle = colors.secondHand;
+    const secondAngle = (seconds * 6 - 90) * (Math.PI / 180);
     ctx.moveTo(centerX, centerY);
     ctx.lineTo(
       centerX + radius * 0.8 * Math.cos(secondAngle),
@@ -224,18 +244,38 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
     // Draw center dot
     ctx.beginPath();
     ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
-    ctx.fillStyle = colors.centerDot; // Center dot color - light gray
+    ctx.fillStyle = colors.centerDot;
     ctx.fill();
-  }, [time, dstMessage]);
+  }, [time, colors]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width="300"
-      height="300"
-      style={{ width: "300px", height: "300px" }}
-      className="shadow-lg rounded-full"
-    />
+    <div style={{ position: "relative", width: "300px", height: "300px" }}>
+      <canvas
+        ref={staticCanvasRef}
+        width="300"
+        height="300"
+        style={{ 
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "300px", 
+          height: "300px" 
+        }}
+        className="shadow-lg rounded-full"
+      />
+      <canvas
+        ref={dynamicCanvasRef}
+        width="300"
+        height="300"
+        style={{ 
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "300px", 
+          height: "300px" 
+        }}
+      />
+    </div>
   );
 };
 
