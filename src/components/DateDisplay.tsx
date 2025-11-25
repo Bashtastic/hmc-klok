@@ -1,4 +1,5 @@
 
+import { useMemo } from "react";
 import { format } from "date-fns";
 import { nl } from "date-fns/locale";
 import { getHolidayName } from "../utils/holidayUtils";
@@ -38,7 +39,12 @@ const getMoonPhaseImage = (phase: string, percentage?: number, isWaning?: boolea
 
 const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWaning }: DateDisplayProps) => {
   const dayName = format(date, "EEEE", { locale: nl });
-  const holidayName = getHolidayName(date);
+  
+  // Memoize holiday calculation - only recalculate when date changes
+  const holidayName = useMemo(() => {
+    return getHolidayName(date);
+  }, [date.getFullYear(), date.getMonth(), date.getDate()]);
+  
   const dateDisplay = format(date, "d MMMM yyyy", { locale: nl });
   const displayText = holidayName 
     ? `${holidayName}, ${dayName} ${dateDisplay}`

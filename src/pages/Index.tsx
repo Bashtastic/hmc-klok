@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { toZonedTime } from "date-fns-tz";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
 import axios from "axios";
@@ -150,11 +150,14 @@ const Index = () => {
     }
   }, [isDark]);
 
-  // Check for DST transition week
+  // Memoize DST message - only recalculate when date changes (not every second)
+  const memoizedDstMessage = useMemo(() => {
+    return getDSTTransitionMessage(time);
+  }, [time.getFullYear(), time.getMonth(), time.getDate()]);
+  
   useEffect(() => {
-    const message = getDSTTransitionMessage(time);
-    setDstMessage(message);
-  }, [time]);
+    setDstMessage(memoizedDstMessage);
+  }, [memoizedDstMessage]);
 
   const utcTime = toZonedTime(time, 'UTC');
   const cetTime = toZonedTime(time, 'Europe/Paris');
