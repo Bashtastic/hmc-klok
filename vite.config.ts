@@ -8,6 +8,10 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    headers: {
+      // Cache static images for 2 months (5184000 seconds), must revalidate after expiry
+      "Cache-Control": "public, max-age=5184000, must-revalidate",
+    },
   },
   plugins: [
     react(),
