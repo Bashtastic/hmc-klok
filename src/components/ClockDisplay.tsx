@@ -6,7 +6,7 @@ import SeaCreatureFlag from "./SeaCreatureFlag";
 interface ClockDisplayProps {
   time: Date;
   title: string;
-  flagType?: 'uk' | 'seal' | 'nl';
+  flagType?: 'uk' | 'seal' | 'nl' | 'island';
   dstMessage?: string | null;
 }
 
@@ -17,6 +17,8 @@ const ClockDisplay = ({ time, title, flagType, dstMessage }: ClockDisplayProps) 
         return '/flags/flag-uk.webp';
       case 'nl':
         return '/flags/flag-nl.webp';
+      case 'island':
+        return '/flags/island.png';
       default:
         return null;
     }
