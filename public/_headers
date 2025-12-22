@@ -1,0 +1,26 @@
+# Cache static image assets for 2 months (5184000 seconds)
+# must-revalidate ensures cache cannot be used after expiry
+
+/flags/*
+  Cache-Control: public, max-age=5184000, must-revalidate
+
+/moon-phases/*
+  Cache-Control: public, max-age=5184000, must-revalidate
+
+/lovable-uploads/*
+  Cache-Control: public, max-age=5184000, must-revalidate
+
+/*.png
+  Cache-Control: public, max-age=5184000, must-revalidate
+
+/*.webp
+  Cache-Control: public, max-age=5184000, must-revalidate
+
+/*.gif
+  Cache-Control: public, max-age=5184000, must-revalidate
+
+/*.jpg
+  Cache-Control: public, max-age=5184000, must-revalidate
+
+/*.jpeg
+  Cache-Control: public, max-age=5184000, must-revalidate
