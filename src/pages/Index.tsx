@@ -37,6 +37,12 @@ const Index = () => {
   const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
   const [dstMessage, setDstMessage] = useState<string | null>(null);
   
+  // Check for crisis mode via URL parameter
+  const isCrisisMode = useMemo(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('user') === 'crisis';
+  }, []);
+  
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
   
   // Check if it's April 1st and within specific time ranges for the prank
@@ -162,6 +168,7 @@ const Index = () => {
   const utcTime = toZonedTime(time, 'UTC');
   const cetTime = toZonedTime(time, 'Europe/Paris');
   const metTime = toZonedTime(time, 'Etc/GMT-1');
+  const astTime = toZonedTime(time, 'America/Curacao'); // AST UTC-4, no DST
 
   // Determine the background style based on whether it's King's Day and not in dark mode
   const bgStyle = (!isDark && kingsday) 
@@ -174,14 +181,22 @@ const Index = () => {
       style={bgStyle}
     >
       <div className="w-full relative z-10 flex flex-col min-h-screen">
-        <div className={`flex flex-wrap justify-between ${isDST ? 'px-[20%]' : 'px-[30%]'} scale-150 mt-32 mb-16`}>
+        <div className={`flex flex-wrap justify-between ${isCrisisMode ? 'px-[20%]' : (isDST ? 'px-[20%]' : 'px-[30%]')} scale-150 mt-32 mb-16`}>
+          {isCrisisMode && (
+            <ClockDisplay 
+              time={astTime} 
+              title="AST" 
+              flagType="island" 
+            />
+          )}
+          
           <ClockDisplay 
             time={utcTime} 
             title="UTC" 
             flagType="uk" 
           />
           
-          {isDST && (
+          {!isCrisisMode && isDST && (
             <ClockDisplay 
               time={metTime} 
               title="MET" 
