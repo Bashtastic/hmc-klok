@@ -170,6 +170,14 @@ const Index = () => {
   const metTime = toZonedTime(time, 'Etc/GMT-1');
   const astTime = toZonedTime(time, 'America/Curacao'); // AST UTC-4, no DST
 
+  // Calculate sunrise and sunset times for Amsterdam
+  const sunrise = getSunrise(AMSTERDAM_LAT, AMSTERDAM_LON);
+  const sunset = getSunset(AMSTERDAM_LAT, AMSTERDAM_LON);
+  
+  const formatSunTime = (date: Date) => {
+    return date.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+  };
+
   // Determine the background style based on whether it's King's Day and not in dark mode
   const bgStyle = (!isDark && kingsday) 
     ? { backgroundColor: kingsDay.background } 
@@ -180,6 +188,28 @@ const Index = () => {
       className={`min-h-screen bg-white bg-opacity-0 dark:bg-background transition-colors duration-300 flex flex-col items-center justify-between p-4 relative ${shouldRotate ? 'rotate-180' : ''}`}
       style={bgStyle}
     >
+      {/* Sunrise - top left corner */}
+      <div className="fixed top-4 left-4 flex flex-col items-center z-20">
+        <img src="/icons/sunrise.png" alt="Zonsopkomst" style={{ width: '150px', height: 'auto' }} />
+        <span 
+          className="text-foreground text-2xl mt-2" 
+          style={{ fontFamily: "'RO Sans', sans-serif" }}
+        >
+          {formatSunTime(sunrise)}
+        </span>
+      </div>
+      
+      {/* Sunset - top right corner */}
+      <div className="fixed top-4 right-4 flex flex-col items-center z-20">
+        <img src="/icons/sunset.png" alt="Zonsondergang" style={{ width: '150px', height: 'auto' }} />
+        <span 
+          className="text-foreground text-2xl mt-2" 
+          style={{ fontFamily: "'RO Sans', sans-serif" }}
+        >
+          {formatSunTime(sunset)}
+        </span>
+      </div>
+
       <div className="w-full relative z-10 flex flex-col min-h-screen">
         <div className={`flex flex-wrap justify-between ${isCrisisMode ? 'px-[20%]' : (isDST ? 'px-[20%]' : 'px-[30%]')} scale-150 mt-32 mb-16`}>
           {isCrisisMode && (
