@@ -53,7 +53,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
       // Between 3 and 9 hours: top half, between 9 and 3 hours: bottom half
       const isTopHalf = hours >= 3 && hours < 9;
       
-      ctx.font = "bold 18px Arial"; // 15% smaller than 21px
+      ctx.font = "bold 18px 'RO Sans', sans-serif"; // 15% smaller than 21px
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       
@@ -126,7 +126,7 @@ const AnalogClock = ({ time, dstMessage }: AnalogClockProps) => {
 
     // Draw hour markers and numbers - 2x larger
     ctx.lineWidth = 4; // Doubled from 2
-    ctx.font = "bold 40px Arial"; // Doubled from 20px
+    ctx.font = "bold 40px 'RO Sans', sans-serif"; // Doubled from 20px
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = colors.hourMarkers; // Hour markers and numbers color

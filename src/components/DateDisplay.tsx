@@ -56,7 +56,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
         <span 
           className="text-foreground" 
           style={{ 
-            fontFamily: "'Roboto', sans-serif", 
+            fontFamily: "'RO Sans', sans-serif", 
             fontSize: "3rem", 
             display: "inline-block" 
           }}
@@ -81,7 +81,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
         <span 
           className="text-foreground" 
           style={{ 
-            fontFamily: "'Roboto', sans-serif", 
+            fontFamily: "'RO Sans', sans-serif", 
             fontSize: "3rem", 
             display: "inline-block" 
           }}

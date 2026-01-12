@@ -32,7 +32,7 @@ const ClockDisplay = ({ time, title, flagType, dstMessage }: ClockDisplayProps) 
         <p 
           className="mb-2 text-4xl text-muted-foreground" 
           style={{ 
-            fontFamily: "'Roboto', sans-serif", 
+            fontFamily: "'RO Sans', sans-serif", 
             fontWeight: 400, 
             marginTop: "50px" 
           }}
@@ -57,7 +57,7 @@ const ClockDisplay = ({ time, title, flagType, dstMessage }: ClockDisplayProps) 
       <p 
         className="mt-4 text-4xl tracking-wide text-foreground" 
         style={{ 
-          fontFamily: "'Roboto', sans-serif", 
+          fontFamily: "'RO Sans', sans-serif", 
           fontWeight: 400 
         }}
       >
