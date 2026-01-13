@@ -11,28 +11,27 @@ interface TidePhaseChartProps {
 }
 
 const TOTAL_BARS = 48;
-const FUNCTIONAL_BARS = 32;
-const HALF_FUNCTIONAL = FUNCTIONAL_BARS / 2;
-const OFFSET = 8; // Extra bars at start
 
 const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
+  // Wave pattern: HW at bar ~12 (25%), LW at bar ~36 (75%)
+  const HW_BAR = Math.round(TOTAL_BARS * 0.25); // ~12
+  const LW_BAR = Math.round(TOTAL_BARS * 0.75); // ~36
+
   // Calculate which bar index each location should be at
   const locationBars = useMemo(() => {
     return tideData.map((data) => {
-      // If isRising (after LW), we're going from 0% (low) to 100% (high)
-      // If falling (after HW), we're going from 100% (high) to 0% (low)
-      // The percentage indicates progress from prev extreme to next extreme
-      
       let barIndex: number;
       
       if (data.isRising) {
-        // Rising tide: functional bars 0-15, offset by OFFSET
-        // 0% = bar OFFSET (bottom left), 100% = bar OFFSET+15 (top/peak)
-        barIndex = OFFSET + Math.floor((data.percentage / 100) * (HALF_FUNCTIONAL - 1));
+        // Rising tide (after LW, going to HW): position from LW (bar 36) towards end
+        // 0% = just after LW (bar 36), 100% = approaching next HW (bar 47)
+        const risingRange = TOTAL_BARS - 1 - LW_BAR; // ~11 bars
+        barIndex = LW_BAR + Math.round((data.percentage / 100) * risingRange);
       } else {
-        // Falling tide: functional bars 16-31, offset by OFFSET
-        // 0% = bar OFFSET+16 (just past peak), 100% = bar OFFSET+31 (bottom right)
-        barIndex = OFFSET + HALF_FUNCTIONAL + Math.floor((data.percentage / 100) * (HALF_FUNCTIONAL - 1));
+        // Falling tide (after HW, going to LW): position from HW (bar 12) to LW (bar 36)
+        // 0% = just after HW (bar 12), 100% = at LW (bar 36)
+        const fallingRange = LW_BAR - HW_BAR; // ~24 bars
+        barIndex = HW_BAR + Math.round((data.percentage / 100) * fallingRange);
       }
       
       return {
@@ -40,7 +39,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
         barIndex: Math.max(0, Math.min(TOTAL_BARS - 1, barIndex)),
       };
     });
-  }, [tideData]);
+  }, [tideData, HW_BAR, LW_BAR]);
 
   // Create bar heights for the wave pattern matching reference:
   // Start rising -> HW (peak at ~1/4) -> falling -> LW (bottom at ~3/4) -> rising again
