@@ -77,9 +77,9 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
           {displayText}
         </span>
       </div>
-      {/* Moon description centered at 75% width */}
+      {/* Moon description centered at 70% width */}
       <span
-        className="text-foreground absolute left-[75%] -translate-x-1/2 top-[100px]"
+        className="text-foreground absolute left-[70%] -translate-x-1/2 top-[100px]"
         style={{
           fontFamily: "'RO Sans', sans-serif",
           fontSize: "3rem",
