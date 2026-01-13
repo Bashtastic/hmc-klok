@@ -272,7 +272,7 @@ const Index = () => {
 
       <div className="w-full relative z-10 flex flex-col min-h-screen">
         <div
-          className={`flex flex-wrap justify-between ${isCrisisMode ? "px-[20%]" : isDST ? "px-[20%]" : "px-[30%]"} scale-150 mt-32 mb-16`}
+          className={`flex flex-wrap justify-between ${isCrisisMode ? "px-[20%]" : isDST ? "px-[20%]" : "px-[30%]"} scale-150 mt-24 mb-12`}
         >
           {isCrisisMode && <ClockDisplay time={astTime} title="AST" flagType={showTimezoneEmojis ? "island" : undefined} />}
 
@@ -285,7 +285,7 @@ const Index = () => {
 
         {/* Tide Phase Chart */}
         {tideData.length > 0 && (
-          <div className="flex justify-center mt-32 mb-4">
+          <div className="flex justify-center mt-24 mb-2">
             <TidePhaseChart tideData={tideData} />
           </div>
         )}
