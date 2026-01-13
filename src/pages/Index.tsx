@@ -12,7 +12,7 @@ const AMSTERDAM_LAT = 52.3676;
 const AMSTERDAM_LON = 4.9041;
 
 // Tide locations to display
-const TIDE_LOCATIONS = ["VLIS", "HOEK", "IJMH", "DLFZ"] as const;
+const TIDE_LOCATIONS = ["VLIS", "HOEK", "IJMH", "DLFZ", "HARL"] as const;
 
 // Interface for the moon phase data
 interface MoonPhaseData {
