@@ -82,7 +82,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
         className="text-foreground absolute left-[70%] -translate-x-1/2 top-[100px]"
         style={{
           fontFamily: "'RO Sans', sans-serif",
-          fontSize: "3rem",
+          fontSize: "3.75rem",
           display: "inline-block",
           whiteSpace: "nowrap",
         }}
