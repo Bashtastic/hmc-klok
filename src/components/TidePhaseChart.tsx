@@ -67,7 +67,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
   }, [locationBars]);
 
   return (
-    <div className="flex items-end justify-center gap-1 h-24" style={{ fontFamily: "'RO Sans', sans-serif" }}>
+    <div className="flex items-end justify-center gap-1 h-40" style={{ fontFamily: "'RO Sans', sans-serif" }}>
       {barHeights.map((height, index) => {
         const locationsAtBar = barsWithLocations[index] || [];
         const isActive = locationsAtBar.length > 0;
