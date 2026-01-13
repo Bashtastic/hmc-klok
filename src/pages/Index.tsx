@@ -184,7 +184,7 @@ const Index = () => {
       style={bgStyle}
     >
       {/* Sunrise - top left corner */}
-      <div className="fixed top-14 left-34 flex flex-col items-center z-20">
+      <div className="fixed top-14 left-24 flex flex-col items-center z-20">
         <img src="/icons/sunrise.png" alt="Zonsopkomst" style={{ width: "150px", height: "auto" }} />
         <span className="text-foreground text-5xl mt-2" style={{ fontFamily: "'RO Sans', sans-serif" }}>
           {formatSunTime(sunrise)}
@@ -192,7 +192,7 @@ const Index = () => {
       </div>
 
       {/* Sunset - top right corner */}
-      <div className="fixed top-14 right-34 flex flex-col items-center z-20">
+      <div className="fixed top-14 right-24 flex flex-col items-center z-20">
         <img src="/icons/sunset.png" alt="Zonsondergang" style={{ width: "150px", height: "auto" }} />
         <span className="text-foreground text-5xl mt-2" style={{ fontFamily: "'RO Sans', sans-serif" }}>
           {formatSunTime(sunset)}
