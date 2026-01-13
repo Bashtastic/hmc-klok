@@ -49,8 +49,8 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
 
   return (
     <div className="flex flex-col items-center justify-center w-full mt-[80px]">
-      <div className="flex items-center justify-center">
-        <div className="mx-[50px]">
+      <div className="flex items-center">
+        <div className="w-[50vw] flex justify-end pr-4">
           <img
             src={moonPhase ? getMoonPhaseImage(moonPhase, moonPercentage, isWaning) : "/moon-phases/animated_moon.gif"}
             alt={moonDescription || "Loading moon phase..."}
@@ -63,27 +63,29 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
             }}
           />
         </div>
-        <span
-          className="text-foreground"
-          style={{
-            fontFamily: "'RO Sans', sans-serif",
-            fontSize: "4rem",
-            display: "inline-block",
-          }}
-        >
-          {displayText}
-        </span>
+        <div className="flex flex-col items-start">
+          <span
+            className="text-foreground"
+            style={{
+              fontFamily: "'RO Sans', sans-serif",
+              fontSize: "4rem",
+              display: "inline-block",
+            }}
+          >
+            {displayText}
+          </span>
+          <span
+            className="text-foreground"
+            style={{
+              fontFamily: "'RO Sans', sans-serif",
+              fontSize: "3rem",
+              display: "inline-block",
+            }}
+          >
+            {moonDescription}
+          </span>
+        </div>
       </div>
-      <span
-        className="text-foreground mt-2"
-        style={{
-          fontFamily: "'RO Sans', sans-serif",
-          fontSize: "3rem",
-          display: "inline-block",
-        }}
-      >
-        {moonDescription}
-      </span>
     </div>
   );
 };
