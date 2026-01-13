@@ -13,10 +13,11 @@ interface TidePhaseChartProps {
 const TOTAL_BARS = 48;
 
 // Location-specific colors: [light theme, dark theme]
-const LOCATION_COLORS: { [key: string]: { light: string; dark: string } } = {
+const LOCATION_COLORS: { [key: string]: { light: string; dark: string; textColor?: string } } = {
   IJMH: { light: "hsl(0, 70%, 45%)", dark: "hsl(0, 80%, 60%)" },        // Red
   HOEK: { light: "hsl(140, 60%, 35%)", dark: "hsl(140, 70%, 50%)" },    // Green
   DLFZ: { light: "hsl(220, 70%, 35%)", dark: "hsl(220, 70%, 55%)" },    // Dark blue
+  VLIS: { light: "hsl(45, 90%, 50%)", dark: "hsl(45, 85%, 55%)", textColor: "black" }, // Yellow with black text
 };
 
 const getLocationColor = (location: string, isDark: boolean): string => {
@@ -25,6 +26,11 @@ const getLocationColor = (location: string, isDark: boolean): string => {
     return isDark ? colors.dark : colors.light;
   }
   return isDark ? "hsl(var(--foreground))" : "hsl(var(--foreground))";
+};
+
+const getTextColor = (location: string): string => {
+  const colors = LOCATION_COLORS[location];
+  return colors?.textColor || "white";
 };
 
 const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
@@ -66,9 +72,9 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
       // angle = (progress - 0.25) * 2π
       const angle = (progress - 0.25) * 2 * Math.PI;
       const cosValue = Math.cos(angle);
-      // Scale between 15% and 100% height
-      const minHeight = 15;
-      const maxHeight = 100;
+      // Scale between 22.5% and 150% height (50% increase)
+      const minHeight = 22.5;
+      const maxHeight = 150;
       heights.push(minHeight + ((cosValue + 1) / 2) * (maxHeight - minHeight));
     }
     return heights;
@@ -113,10 +119,13 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
           >
             {isActive && (
               <div 
-                className="absolute flex flex-col items-center justify-center gap-0.5"
+                className="absolute flex flex-col items-start gap-0.5"
                 style={{
                   transform: "rotate(-90deg)",
                   whiteSpace: "nowrap",
+                  left: "50%",
+                  bottom: "4px",
+                  transformOrigin: "left bottom",
                 }}
               >
                 {locationsAtBar.map((loc) => (
@@ -124,7 +133,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
                     key={loc}
                     className="text-[15px] font-black tracking-wider"
                     style={{ 
-                      color: "white",
+                      color: getTextColor(loc),
                     }}
                   >
                     {loc}
