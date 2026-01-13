@@ -70,6 +70,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
           style={{
             fontFamily: "'RO Sans', sans-serif",
             fontSize: "4rem",
+            fontStyle: "italic",
             display: "inline-block",
             whiteSpace: "nowrap",
           }}
