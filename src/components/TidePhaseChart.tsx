@@ -10,8 +10,10 @@ interface TidePhaseChartProps {
   tideData: TideLocationData[];
 }
 
-const TOTAL_BARS = 32;
-const HALF_BARS = TOTAL_BARS / 2;
+const TOTAL_BARS = 48;
+const FUNCTIONAL_BARS = 32;
+const HALF_FUNCTIONAL = FUNCTIONAL_BARS / 2;
+const OFFSET = 8; // Extra bars at start
 
 const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
   // Calculate which bar index each location should be at
@@ -24,13 +26,13 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
       let barIndex: number;
       
       if (data.isRising) {
-        // Rising tide: bars 0-11 (left half, going up)
-        // 0% = bar 0 (bottom left), 100% = bar 11 (top/peak)
-        barIndex = Math.floor((data.percentage / 100) * (HALF_BARS - 1));
+        // Rising tide: functional bars 0-15, offset by OFFSET
+        // 0% = bar OFFSET (bottom left), 100% = bar OFFSET+15 (top/peak)
+        barIndex = OFFSET + Math.floor((data.percentage / 100) * (HALF_FUNCTIONAL - 1));
       } else {
-        // Falling tide: bars 12-23 (right half, going down)
-        // 0% = bar 12 (just past peak), 100% = bar 23 (bottom right)
-        barIndex = HALF_BARS + Math.floor((data.percentage / 100) * (HALF_BARS - 1));
+        // Falling tide: functional bars 16-31, offset by OFFSET
+        // 0% = bar OFFSET+16 (just past peak), 100% = bar OFFSET+31 (bottom right)
+        barIndex = OFFSET + HALF_FUNCTIONAL + Math.floor((data.percentage / 100) * (HALF_FUNCTIONAL - 1));
       }
       
       return {
@@ -40,16 +42,16 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
     });
   }, [tideData]);
 
-  // Create bar heights for the wave pattern (sine wave-like)
+  // Create bar heights for the wave pattern (extended sine wave)
   const barHeights = useMemo(() => {
     const heights: number[] = [];
     for (let i = 0; i < TOTAL_BARS; i++) {
-      // Create a wave pattern: rises from left, peaks in middle, falls to right
-      // Using sine function for smooth wave
-      const progress = i / (TOTAL_BARS - 1);
+      // Create an extended wave pattern that shows partial waves at start/end
+      // Map from -0.25 to 1.25 of a full wave cycle
+      const progress = (i - OFFSET) / (FUNCTIONAL_BARS - 1);
       const sineValue = Math.sin(progress * Math.PI);
-      // Scale between 20% and 100% height
-      heights.push(20 + sineValue * 80);
+      // Scale between 20% and 100% height, clamp negative values
+      heights.push(20 + Math.max(0, sineValue) * 80);
     }
     return heights;
   }, []);
