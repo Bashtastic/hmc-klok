@@ -12,22 +12,13 @@ interface TidePhaseChartProps {
 
 const TOTAL_BARS = 48;
 
-// Fixed bar positions for each location (these stay constant)
-const LOCATION_BAR_POSITIONS: { [key: string]: number } = {
-  VLIS: 7,
-  HOEK: 9,
-  DLFZ: 11,
-  IJMH: 13,
-  HARL: 15,
-};
-
 // Location-specific colors: [light theme, dark theme]
 const LOCATION_COLORS: { [key: string]: { light: string; dark: string; textColor?: string } } = {
   IJMH: { light: "hsl(0, 70%, 45%)", dark: "hsl(0, 75%, 27%)" },        // Red
   HOEK: { light: "hsl(140, 60%, 35%)", dark: "hsl(140, 53%, 29%)" },    // Green
   DLFZ: { light: "hsl(220, 70%, 35%)", dark: "hsl(220, 70%, 55%)" },    // Dark blue
   HARL: { light: "hsl(44, 100%, 21%)", dark: "hsl(41, 100%, 15%)" },  
-  VLIS: { light: "hsl(45, 100%, 50%)", dark: "hsl(45, 33%, 30%)", textColor: "white" }, // Yellow with black text
+  VLIS: { light: "hsl(45, 100%, 50%)", dark: "hsl(45, 85%, 55%)", textColor: "white" }, // Yellow with black text
 };
 
 const getLocationColor = (location: string, isDark: boolean): string => {
@@ -44,61 +35,51 @@ const getTextColor = (location: string): string => {
 };
 
 const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
-  // Calculate the wave phase offset based on tide data
-  // Use the first location as reference to determine overall phase
-  const phaseOffset = useMemo(() => {
-    if (tideData.length === 0) return 0;
-    
-    // Use VLIS as reference (or first available location)
-    const referenceData = tideData.find(d => d.location === "VLIS") || tideData[0];
-    const refBarIndex = LOCATION_BAR_POSITIONS[referenceData.location] || 7;
-    
-    // Calculate where in the tide cycle this location is
-    // 0% rising = just after LW, 100% rising = at HW
-    // 0% falling = just after HW, 100% falling = at LW
-    let cycleProgress: number;
-    if (referenceData.isRising) {
-      // Rising: 0% = at LW, 100% = at HW
-      // In wave terms: LW is at phase 0.75, HW is at phase 0.25
-      cycleProgress = 0.75 + (referenceData.percentage / 100) * 0.5;
-      if (cycleProgress > 1) cycleProgress -= 1;
-    } else {
-      // Falling: 0% = at HW, 100% = at LW
-      // In wave terms: HW is at phase 0.25, LW is at phase 0.75
-      cycleProgress = 0.25 + (referenceData.percentage / 100) * 0.5;
-    }
-    
-    // The phase offset positions the wave so that the reference bar shows the correct tide state
-    // At the reference bar position, we want the wave to show cycleProgress
-    const barProgress = refBarIndex / (TOTAL_BARS - 1);
-    return cycleProgress - barProgress;
-  }, [tideData]);
+  // Wave pattern: HW at bar ~12 (25%), LW at bar ~36 (75%)
+  const HW_BAR = Math.round(TOTAL_BARS * 0.25); // ~12
+  const LW_BAR = Math.round(TOTAL_BARS * 0.75); // ~36
 
-  // Fixed bar positions for locations
+  // Calculate which bar index each location should be at
   const locationBars = useMemo(() => {
-    return tideData.map((data) => ({
-      ...data,
-      barIndex: LOCATION_BAR_POSITIONS[data.location] || 0,
-    }));
-  }, [tideData]);
+    return tideData.map((data) => {
+      let barIndex: number;
+      
+      if (data.isRising) {
+        // Rising tide (after LW, going to HW): position from LW (bar 36) towards end
+        // 0% = just after LW (bar 36), 100% = approaching next HW (bar 47)
+        const risingRange = TOTAL_BARS - 1 - LW_BAR; // ~11 bars
+        barIndex = LW_BAR + Math.round((data.percentage / 100) * risingRange);
+      } else {
+        // Falling tide (after HW, going to LW): position from HW (bar 12) to LW (bar 36)
+        // 0% = just after HW (bar 12), 100% = at LW (bar 36)
+        const fallingRange = LW_BAR - HW_BAR; // ~24 bars
+        barIndex = HW_BAR + Math.round((data.percentage / 100) * fallingRange);
+      }
+      
+      return {
+        ...data,
+        barIndex: Math.max(0, Math.min(TOTAL_BARS - 1, barIndex)),
+      };
+    });
+  }, [tideData, HW_BAR, LW_BAR]);
 
-  // Create bar heights for the wave pattern with phase offset
-  // The wave animates by changing the phase, making it appear to move left to right
+  // Create bar heights for the wave pattern matching reference:
+  // Start rising -> HW (peak at ~1/4) -> falling -> LW (bottom at ~3/4) -> rising again
   const barHeights = useMemo(() => {
     const heights: number[] = [];
     for (let i = 0; i < TOTAL_BARS; i++) {
       const progress = i / (TOTAL_BARS - 1);
-      // Apply phase offset to animate the wave
-      // angle = (progress + phaseOffset - 0.25) * 2π
-      const angle = (progress + phaseOffset - 0.25) * 2 * Math.PI;
+      // Use cosine shifted so peak is at 1/4 and bottom at 3/4
+      // angle = (progress - 0.25) * 2π
+      const angle = (progress - 0.25) * 2 * Math.PI;
       const cosValue = Math.cos(angle);
-      // Scale between 22.5% and 150% height
+      // Scale between 22.5% and 150% height (50% increase)
       const minHeight = 22.5;
       const maxHeight = 150;
       heights.push(minHeight + ((cosValue + 1) / 2) * (maxHeight - minHeight));
     }
     return heights;
-  }, [phaseOffset]);
+  }, []);
 
   // Check which bars have locations
   const barsWithLocations = useMemo(() => {
