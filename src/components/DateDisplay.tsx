@@ -48,33 +48,21 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
   const displayText = holidayName ? `${holidayName}, ${dayName} ${dateDisplay}` : `${dayName}, ${dateDisplay}`;
 
   return (
-    <div className="flex items-center justify-center w-full mt-[80px]">
-      <div className="flex-1 flex justify-end">
-        <span
-          className="text-foreground"
-          style={{
-            fontFamily: "'RO Sans', sans-serif",
-            fontSize: "4rem",
-            display: "inline-block",
-          }}
-        >
-          {moonDescription}
-        </span>
-      </div>
-      <div className="mx-[50px]">
-        <img
-          src={moonPhase ? getMoonPhaseImage(moonPhase, moonPercentage, isWaning) : "/moon-phases/animated_moon.gif"}
-          alt={moonDescription || "Loading moon phase..."}
-          className="text-foreground flex-shrink-0"
-          style={{
-            width: "96px",
-            height: "96px",
-            objectFit: "contain",
-            transform: isWaning ? "scaleX(-1)" : "none",
-          }}
-        />
-      </div>
-      <div className="flex-1 flex justify-start">
+    <div className="flex flex-col items-center justify-center w-full mt-[80px]">
+      <div className="flex items-center justify-center">
+        <div className="mx-[50px]">
+          <img
+            src={moonPhase ? getMoonPhaseImage(moonPhase, moonPercentage, isWaning) : "/moon-phases/animated_moon.gif"}
+            alt={moonDescription || "Loading moon phase..."}
+            className="text-foreground flex-shrink-0"
+            style={{
+              width: "96px",
+              height: "96px",
+              objectFit: "contain",
+              transform: isWaning ? "scaleX(-1)" : "none",
+            }}
+          />
+        </div>
         <span
           className="text-foreground"
           style={{
@@ -86,6 +74,16 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
           {displayText}
         </span>
       </div>
+      <span
+        className="text-foreground mt-2"
+        style={{
+          fontFamily: "'RO Sans', sans-serif",
+          fontSize: "3rem",
+          display: "inline-block",
+        }}
+      >
+        {moonDescription}
+      </span>
     </div>
   );
 };
