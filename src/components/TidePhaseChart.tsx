@@ -10,7 +10,7 @@ interface TidePhaseChartProps {
   tideData: TideLocationData[];
 }
 
-const TOTAL_BARS = 24;
+const TOTAL_BARS = 32;
 const HALF_BARS = TOTAL_BARS / 2;
 
 const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
@@ -96,7 +96,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
                 {locationsAtBar.map((loc) => (
                   <span
                     key={loc}
-                    className="text-[10px] font-bold tracking-wider"
+                    className="text-[15px] font-black tracking-wider"
                     style={{ 
                       color: "hsl(var(--background))",
                     }}

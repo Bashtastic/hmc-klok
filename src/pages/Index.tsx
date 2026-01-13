@@ -285,7 +285,7 @@ const Index = () => {
 
         {/* Tide Phase Chart */}
         {tideData.length > 0 && (
-          <div className="flex justify-center my-8">
+          <div className="flex justify-center mt-16 mb-4">
             <TidePhaseChart tideData={tideData} />
           </div>
         )}
