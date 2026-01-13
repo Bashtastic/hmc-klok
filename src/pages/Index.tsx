@@ -172,7 +172,7 @@ const Index = () => {
   const sunset = getSunset(AMSTERDAM_LAT, AMSTERDAM_LON);
 
   const formatSunTime = (date: Date) => {
-    return date.toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
+    return date.toLocaleTimeString("nl-NL", { hour: "numeric", minute: "2-digit" });
   };
 
   // Determine the background style based on whether it's King's Day and not in dark mode
