@@ -117,6 +117,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
               borderRadius: "3px",
               backgroundColor: barColor,
               zIndex: isActive ? 10 : 1,
+              overflow: "hidden",
             }}
           >
             {isActive && (
