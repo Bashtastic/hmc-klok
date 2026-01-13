@@ -290,7 +290,7 @@ const Index = () => {
           </div>
         )}
 
-        <div className="flex-grow flex items-center justify-center w-screen -ml-4">
+        <div className="flex items-start justify-center w-screen -ml-4 mt-4">
           <DateDisplay
             date={time}
             moonPhase={moonPhase}
