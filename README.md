@@ -1,4 +1,49 @@
-# Welcome to your Lovable project
+# HMC Klok
+
+Een digitale klok applicatie die de tijd weergeeft in verschillende tijdzones, samen met zonsopkomst- en zonsondergangtijden en maanfase-informatie.
+
+## URL Parameters
+
+De klok kan worden aangepast met de volgende URL parameters:
+
+### Theme Parameter
+
+| Parameter | Waarde | Beschrijving |
+|-----------|--------|--------------|
+| `theme` | `day` | Forceert het lichte (dag) thema |
+| `theme` | `night` | Forceert het donkere (nacht) thema |
+
+**Voorbeelden:**
+- `https://jouw-domein.nl/?theme=day` - Toont altijd het dag-thema
+- `https://jouw-domein.nl/?theme=night` - Toont altijd het nacht-thema
+
+Zonder de `theme` parameter wordt het thema automatisch bepaald op basis van zonsopkomst en zonsondergang in Amsterdam.
+
+### User Parameter
+
+| Parameter | Waarde | Beschrijving |
+|-----------|--------|--------------|
+| `user` | `crisis` | Activeert de crisis-modus |
+
+**Voorbeeld:**
+- `https://jouw-domein.nl/?user=crisis` - Toont extra de AST (Atlantic Standard Time) tijdzone
+
+### Gecombineerd gebruik
+
+Parameters kunnen worden gecombineerd met `&`:
+
+- `https://jouw-domein.nl/?theme=night&user=crisis` - Nacht-thema met crisis-modus
+
+## Weergegeven informatie
+
+- **UTC** - Coordinated Universal Time
+- **MET** - Midden-Europese Tijd (alleen tijdens zomertijd)
+- **CET** - Centraal-Europese Tijd
+- **AST** - Atlantic Standard Time (alleen in crisis-modus)
+- **Zonsopkomst/Zonsondergang** - Tijden voor Amsterdam
+- **Maanfase** - Huidige maanfase met percentage
+
+---
 
 ## Project info
 
@@ -52,7 +97,7 @@ npm run dev
 
 ## What technologies are used for this project?
 
-This project is built with .
+This project is built with:
 
 - Vite
 - TypeScript
