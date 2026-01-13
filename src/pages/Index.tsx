@@ -256,16 +256,16 @@ const Index = () => {
     >
       {/* Sunrise - top left corner */}
       <div className="fixed top-4 left-20 flex flex-col items-center z-20">
-        <img src={isDark ? "/icons/sunrise.png" : "/icons/sunrise-day-theme.png"} alt="Zonsopkomst" style={{ width: "150px", height: "auto" }} />
-        <span className="text-foreground text-5xl mt-2" style={{ fontFamily: "'RO Sans', sans-serif" }}>
+        <img src={isDark ? "/icons/sunrise.png" : "/icons/sunrise-day-theme.png"} alt="Zonsopkomst" style={{ width: "105px", height: "auto" }} />
+        <span className="text-foreground text-4xl mt-1" style={{ fontFamily: "'RO Sans', sans-serif" }}>
           {formatSunTime(sunrise)}
         </span>
       </div>
 
       {/* Sunset - top right corner */}
       <div className="fixed top-4 right-20 flex flex-col items-center z-20">
-        <img src={isDark ? "/icons/sunset.png" : "/icons/sunset-day-theme.png"} alt="Zonsondergang" style={{ width: "150px", height: "auto" }} />
-        <span className="text-foreground text-5xl mt-2" style={{ fontFamily: "'RO Sans', sans-serif" }}>
+        <img src={isDark ? "/icons/sunset.png" : "/icons/sunset-day-theme.png"} alt="Zonsondergang" style={{ width: "105px", height: "auto" }} />
+        <span className="text-foreground text-4xl mt-1" style={{ fontFamily: "'RO Sans', sans-serif" }}>
           {formatSunTime(sunset)}
         </span>
       </div>
