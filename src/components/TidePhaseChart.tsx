@@ -121,13 +121,31 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
           ? getLocationColor(primaryLocation, isDark)
           : "hsl(var(--muted-foreground) / 0.4)";
         
+        // Calculate height: use actual water level for location bars, wave pattern for background
+        let barHeight = height;
+        if (isActive) {
+          const locationData = tideData.find(d => d.location === primaryLocation);
+          if (locationData) {
+            const minHeight = 22.5;
+            const maxHeight = 150;
+            // Calculate actual water level based on percentage and direction
+            // Rising: 0% = at LW (low), 100% = at HW (high)
+            // Falling: 0% = at HW (high), 100% = at LW (low)
+            let waterLevel = locationData.percentage;
+            if (!locationData.isRising) {
+              waterLevel = 100 - locationData.percentage;
+            }
+            barHeight = minHeight + (waterLevel / 100) * (maxHeight - minHeight);
+          }
+        }
+        
         return (
           <div
             key={index}
             className={`relative flex items-center justify-center transition-colors duration-300`}
             style={{
               width: "31px",
-              height: `${height}%`,
+              height: `${barHeight}%`,
               borderRadius: "3px",
               backgroundColor: barColor,
               zIndex: isActive ? 10 : 1,
