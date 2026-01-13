@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo } from "react";
 import { toZonedTime } from "date-fns-tz";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
@@ -36,35 +35,35 @@ const Index = () => {
   const [isWaning, setIsWaning] = useState<boolean | undefined>(undefined);
   const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
   const [dstMessage, setDstMessage] = useState<string | null>(null);
-  
+
   // Check for crisis mode via URL parameter
   const isCrisisMode = useMemo(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('user') === 'crisis';
+    return urlParams.get("user") === "crisis";
   }, []);
-  
+
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
-  
+
   // Check if it's April 1st and within specific time ranges for the prank
   const isAprilFools = time.getMonth() === 3 && time.getDate() === 1;
   const currentHour = time.getHours();
-  const shouldRotate = isAprilFools && (
-    (currentHour >= 1 && currentHour < 2) || 
-    (currentHour >= 6 && currentHour < 7) || 
-    (currentHour >= 15 && currentHour < 16)
-  );
-  
+  const shouldRotate =
+    isAprilFools &&
+    ((currentHour >= 1 && currentHour < 2) ||
+      (currentHour >= 6 && currentHour < 7) ||
+      (currentHour >= 15 && currentHour < 16));
+
   // Check if it's Koningsdag (King's Day)
   const kingsday = isKingsDay(time);
 
   // Parse URL params for theme
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const themeParam = urlParams.get('theme');
-    
-    if (themeParam === 'night') {
+    const themeParam = urlParams.get("theme");
+
+    if (themeParam === "night") {
       setIsDark(true);
-    } else if (themeParam === 'day') {
+    } else if (themeParam === "day") {
       setIsDark(false);
     } else {
       // If no theme parameter is provided, use the automatic day/night detection
@@ -86,31 +85,29 @@ const Index = () => {
   useEffect(() => {
     const fetchMoonData = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/moon-phase`
-        );
+        const response = await axios.get(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/moon-phase`);
         const data = response.data as MoonPhaseData;
-        
+
         if (data.maan && data.maan.symbool) {
           setMoonPhase(data.maan.symbool.trim());
         }
-        
+
         if (data.getijfase && data.getijfase.omschrijving) {
           setMoonDescription(data.getijfase.omschrijving.trim());
         }
-        
+
         if (data.maan && data.maan.percentage !== undefined) {
           setMoonPercentage(data.maan.percentage);
         }
-        
+
         if (data.maan && data.maan.is_slinkend !== undefined) {
           setIsWaning(data.maan.is_slinkend);
         }
-        
+
         setLastFetchSuccess(true);
         console.log("Maanfase data succesvol opgehaald:", data);
       } catch (error) {
-        console.error('Error fetching moon data:', error);
+        console.error("Error fetching moon data:", error);
         setLastFetchSuccess(false);
       }
     };
@@ -121,13 +118,13 @@ const Index = () => {
     // Set up interval to check every second if it's 2 minutes past the hour
     const checkTimeInterval = setInterval(() => {
       const now = new Date();
-      
+
       // If it's 2 minutes past the hour, always fetch new data
       if (now.getMinutes() === 2 && now.getSeconds() === 0) {
         fetchMoonData();
         return;
       }
-      
+
       // If the last fetch failed, try again every minute
       if (!lastFetchSuccess && now.getSeconds() === 0) {
         console.log("Vorige fetch mislukt, opnieuw proberen...");
@@ -150,9 +147,9 @@ const Index = () => {
 
   useEffect(() => {
     if (isDark) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
   }, [isDark]);
 
@@ -160,92 +157,65 @@ const Index = () => {
   const memoizedDstMessage = useMemo(() => {
     return getDSTTransitionMessage(time);
   }, [time.getFullYear(), time.getMonth(), time.getDate()]);
-  
+
   useEffect(() => {
     setDstMessage(memoizedDstMessage);
   }, [memoizedDstMessage]);
 
-  const utcTime = toZonedTime(time, 'UTC');
-  const cetTime = toZonedTime(time, 'Europe/Paris');
-  const metTime = toZonedTime(time, 'Etc/GMT-1');
-  const astTime = toZonedTime(time, 'America/Curacao'); // AST UTC-4, no DST
+  const utcTime = toZonedTime(time, "UTC");
+  const cetTime = toZonedTime(time, "Europe/Paris");
+  const metTime = toZonedTime(time, "Etc/GMT-1");
+  const astTime = toZonedTime(time, "America/Curacao"); // AST UTC-4, no DST
 
   // Calculate sunrise and sunset times for Amsterdam
   const sunrise = getSunrise(AMSTERDAM_LAT, AMSTERDAM_LON);
   const sunset = getSunset(AMSTERDAM_LAT, AMSTERDAM_LON);
-  
+
   const formatSunTime = (date: Date) => {
-    return date.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
   };
 
   // Determine the background style based on whether it's King's Day and not in dark mode
-  const bgStyle = (!isDark && kingsday) 
-    ? { backgroundColor: kingsDay.background } 
-    : {};
+  const bgStyle = !isDark && kingsday ? { backgroundColor: kingsDay.background } : {};
 
   return (
-    <div 
-      className={`min-h-screen bg-white bg-opacity-0 dark:bg-background transition-colors duration-300 flex flex-col items-center justify-between p-4 relative ${shouldRotate ? 'rotate-180' : ''}`}
+    <div
+      className={`min-h-screen bg-white bg-opacity-0 dark:bg-background transition-colors duration-300 flex flex-col items-center justify-between p-4 relative ${shouldRotate ? "rotate-180" : ""}`}
       style={bgStyle}
     >
       {/* Sunrise - top left corner */}
-      <div className="fixed top-4 left-4 flex flex-col items-center z-20">
-        <img src="/icons/sunrise.png" alt="Zonsopkomst" style={{ width: '150px', height: 'auto' }} />
-        <span 
-          className="text-foreground text-5xl mt-2" 
-          style={{ fontFamily: "'RO Sans', sans-serif" }}
-        >
+      <div className="fixed top-8 left-8 flex flex-col items-center z-20">
+        <img src="/icons/sunrise.png" alt="Zonsopkomst" style={{ width: "150px", height: "auto" }} />
+        <span className="text-foreground text-5xl mt-2" style={{ fontFamily: "'RO Sans', sans-serif" }}>
           {formatSunTime(sunrise)}
         </span>
       </div>
-      
+
       {/* Sunset - top right corner */}
-      <div className="fixed top-4 right-4 flex flex-col items-center z-20">
-        <img src="/icons/sunset.png" alt="Zonsondergang" style={{ width: '150px', height: 'auto' }} />
-        <span 
-          className="text-foreground text-5xl mt-2" 
-          style={{ fontFamily: "'RO Sans', sans-serif" }}
-        >
+      <div className="fixed top-8 right-8 flex flex-col items-center z-20">
+        <img src="/icons/sunset.png" alt="Zonsondergang" style={{ width: "150px", height: "auto" }} />
+        <span className="text-foreground text-5xl mt-2" style={{ fontFamily: "'RO Sans', sans-serif" }}>
           {formatSunTime(sunset)}
         </span>
       </div>
 
       <div className="w-full relative z-10 flex flex-col min-h-screen">
-        <div className={`flex flex-wrap justify-between ${isCrisisMode ? 'px-[20%]' : (isDST ? 'px-[20%]' : 'px-[30%]')} scale-150 mt-32 mb-16`}>
-          {isCrisisMode && (
-            <ClockDisplay 
-              time={astTime} 
-              title="AST" 
-              flagType="island" 
-            />
-          )}
-          
-          <ClockDisplay 
-            time={utcTime} 
-            title="UTC" 
-            flagType="uk" 
-          />
-          
-          {!isCrisisMode && isDST && (
-            <ClockDisplay 
-              time={metTime} 
-              title="MET" 
-              flagType="seal" 
-            />
-          )}
-          
-          <ClockDisplay 
-            time={cetTime} 
-            title={isDST ? 'CET' : 'MET / CET'} 
-            flagType="nl"
-            dstMessage={dstMessage}
-          />
+        <div
+          className={`flex flex-wrap justify-between ${isCrisisMode ? "px-[20%]" : isDST ? "px-[20%]" : "px-[30%]"} scale-150 mt-32 mb-16`}
+        >
+          {isCrisisMode && <ClockDisplay time={astTime} title="AST" flagType="island" />}
+
+          <ClockDisplay time={utcTime} title="UTC" flagType="uk" />
+
+          {!isCrisisMode && isDST && <ClockDisplay time={metTime} title="MET" flagType="seal" />}
+
+          <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType="nl" dstMessage={dstMessage} />
         </div>
 
         <div className="flex-grow flex items-center justify-center w-screen -ml-4">
-          <DateDisplay 
-            date={time} 
-            moonPhase={moonPhase} 
+          <DateDisplay
+            date={time}
+            moonPhase={moonPhase}
             moonDescription={moonDescription}
             moonPercentage={moonPercentage}
             isWaning={isWaning}
