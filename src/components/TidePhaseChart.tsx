@@ -121,7 +121,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
               <div 
                 className="absolute flex flex-col items-start gap-0.5"
                 style={{
-                  transform: "rotate(-90deg)",
+                  transform: "rotate(-90deg) translateX(4px)",
                   whiteSpace: "nowrap",
                   left: "50%",
                   bottom: "4px",
