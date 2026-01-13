@@ -4,11 +4,15 @@ import { getSunrise, getSunset } from "sunrise-sunset-js";
 import axios from "axios";
 import ClockDisplay from "../components/ClockDisplay";
 import DateDisplay from "../components/DateDisplay";
+import TidePhaseChart from "../components/TidePhaseChart";
 import { isKingsDay, kingsDay } from "../utils/colorDefinitions";
 import { getDSTTransitionMessage } from "../utils/dstUtils";
 
 const AMSTERDAM_LAT = 52.3676;
 const AMSTERDAM_LON = 4.9041;
+
+// Tide locations to display
+const TIDE_LOCATIONS = ["VLIS", "HOEK", "IJMH", "DLFZ"] as const;
 
 // Interface for the moon phase data
 interface MoonPhaseData {
@@ -26,6 +30,28 @@ interface MoonPhaseData {
   timestamp: string;
 }
 
+// Interface for tide data from RWS API
+interface TideApiData {
+  locaties: {
+    [key: string]: {
+      extremen: {
+        prev_1: {
+          type: "HW" | "LW";
+        } | null;
+      };
+      actueel: {
+        getij_percentage: number;
+      };
+    };
+  };
+}
+
+interface TideLocationData {
+  location: string;
+  percentage: number;
+  isRising: boolean;
+}
+
 const Index = () => {
   const [time, setTime] = useState(new Date());
   const [isDark, setIsDark] = useState(false);
@@ -34,6 +60,7 @@ const Index = () => {
   const [moonPercentage, setMoonPercentage] = useState<number | undefined>(undefined);
   const [isWaning, setIsWaning] = useState<boolean | undefined>(undefined);
   const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
+  const [tideData, setTideData] = useState<TideLocationData[]>([]);
   const [dstMessage, setDstMessage] = useState<string | null>(null);
 
   // Check for crisis mode and timezone emojis via URL parameters
@@ -142,6 +169,45 @@ const Index = () => {
     };
   }, [lastFetchSuccess]);
 
+  // Tide data fetching via edge function
+  useEffect(() => {
+    const fetchTideData = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/tide-data`
+        );
+        const data = response.data as TideApiData;
+
+        const parsedTideData: TideLocationData[] = TIDE_LOCATIONS.map((loc) => {
+          const locationData = data.locaties[loc];
+          if (!locationData) {
+            return { location: loc, percentage: 0, isRising: true };
+          }
+
+          const percentage = locationData.actueel?.getij_percentage ?? 0;
+          const prevType = locationData.extremen?.prev_1?.type;
+          // If prev_1 is LW (low water), tide is rising; if HW (high water), tide is falling
+          const isRising = prevType === "LW";
+
+          return { location: loc, percentage, isRising };
+        });
+
+        setTideData(parsedTideData);
+        console.log("Getijdata succesvol opgehaald:", parsedTideData);
+      } catch (error) {
+        console.error("Error fetching tide data:", error);
+      }
+    };
+
+    // Initial fetch
+    fetchTideData();
+
+    // Fetch every 5 minutes
+    const interval = setInterval(fetchTideData, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTime(new Date());
@@ -216,6 +282,13 @@ const Index = () => {
 
           <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType={showTimezoneEmojis ? "nl" : undefined} dstMessage={dstMessage} />
         </div>
+
+        {/* Tide Phase Chart */}
+        {tideData.length > 0 && (
+          <div className="flex justify-center my-8">
+            <TidePhaseChart tideData={tideData} />
+          </div>
+        )}
 
         <div className="flex-grow flex items-center justify-center w-screen -ml-4">
           <DateDisplay
