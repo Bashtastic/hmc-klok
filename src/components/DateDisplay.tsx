@@ -63,7 +63,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
           }}
         />
       </div>
-      {/* Text positioned to the right of center */}
+      {/* Date text positioned to the right of center */}
       <div className="flex flex-col items-start absolute left-1/2 ml-[60px]">
         <span
           className="text-foreground"
@@ -76,20 +76,21 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
         >
           {displayText}
         </span>
-        <span
-          className="text-foreground"
-          style={{
-            fontFamily: "'RO Sans', sans-serif",
-            fontSize: "3rem",
-            display: "inline-block",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {moonDescription}
-        </span>
       </div>
+      {/* Moon description centered at 75% width */}
+      <span
+        className="text-foreground absolute left-[75%] -translate-x-1/2 top-[100px]"
+        style={{
+          fontFamily: "'RO Sans', sans-serif",
+          fontSize: "3rem",
+          display: "inline-block",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {moonDescription}
+      </span>
       {/* Spacer to maintain height */}
-      <div className="h-[96px]"></div>
+      <div className="h-[140px]"></div>
     </div>
   );
 };
