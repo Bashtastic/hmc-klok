@@ -28,11 +28,24 @@ Zonder de `theme` parameter wordt het thema automatisch bepaald op basis van zon
 **Voorbeeld:**
 - `https://jouw-domein.nl/?user=crisis` - Toont extra de AST (Atlantic Standard Time) tijdzone
 
+### Timezone Emojis Parameter
+
+| Parameter | Waarde | Beschrijving |
+|-----------|--------|--------------|
+| `timezone_emojis` | `true` | Toont emoji's/vlaggen naast de tijdzones |
+
+**Voorbeeld:**
+- `https://jouw-domein.nl/?timezone_emojis=true` - Toont vlaggen en emoji's naast elke tijdzone
+
+Standaard worden de emoji's niet weergegeven.
+
 ### Gecombineerd gebruik
 
 Parameters kunnen worden gecombineerd met `&`:
 
 - `https://jouw-domein.nl/?theme=night&user=crisis` - Nacht-thema met crisis-modus
+- `https://jouw-domein.nl/?timezone_emojis=true&theme=day` - Dag-thema met tijdzone emoji's
+- `https://jouw-domein.nl/?user=crisis&timezone_emojis=true` - Crisis-modus met emoji's
 
 ## Weergegeven informatie
 
