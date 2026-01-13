@@ -112,7 +112,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
             key={index}
             className={`relative flex items-center justify-center transition-colors duration-300`}
             style={{
-              width: "28px",
+              width: "31px",
               height: `${height}%`,
               borderRadius: "3px",
               backgroundColor: barColor,
