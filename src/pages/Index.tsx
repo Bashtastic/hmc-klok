@@ -36,11 +36,16 @@ const Index = () => {
   const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
   const [dstMessage, setDstMessage] = useState<string | null>(null);
 
-  // Check for crisis mode via URL parameter
-  const isCrisisMode = useMemo(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get("user") === "crisis";
+  // Check for crisis mode and timezone emojis via URL parameters
+  const urlParams = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      isCrisisMode: params.get("user") === "crisis",
+      showTimezoneEmojis: params.get("timezone_emojis") === "true",
+    };
   }, []);
+
+  const { isCrisisMode, showTimezoneEmojis } = urlParams;
 
   const isDST = time.getTimezoneOffset() < new Date(time.getFullYear(), 0, 1).getTimezoneOffset();
 
@@ -203,13 +208,13 @@ const Index = () => {
         <div
           className={`flex flex-wrap justify-between ${isCrisisMode ? "px-[20%]" : isDST ? "px-[20%]" : "px-[30%]"} scale-150 mt-32 mb-16`}
         >
-          {isCrisisMode && <ClockDisplay time={astTime} title="AST" flagType="island" />}
+          {isCrisisMode && <ClockDisplay time={astTime} title="AST" flagType={showTimezoneEmojis ? "island" : undefined} />}
 
-          <ClockDisplay time={utcTime} title="UTC" flagType="uk" />
+          <ClockDisplay time={utcTime} title="UTC" flagType={showTimezoneEmojis ? "uk" : undefined} />
 
-          {!isCrisisMode && isDST && <ClockDisplay time={metTime} title="MET" flagType="seal" />}
+          {!isCrisisMode && isDST && <ClockDisplay time={metTime} title="MET" flagType={showTimezoneEmojis ? "seal" : undefined} />}
 
-          <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType="nl" dstMessage={dstMessage} />
+          <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType={showTimezoneEmojis ? "nl" : undefined} dstMessage={dstMessage} />
         </div>
 
         <div className="flex-grow flex items-center justify-center w-screen -ml-4">
