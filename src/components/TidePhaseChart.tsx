@@ -14,10 +14,10 @@ const TOTAL_BARS = 48;
 
 // Location-specific colors: [light theme, dark theme]
 const LOCATION_COLORS: { [key: string]: { light: string; dark: string; textColor?: string } } = {
-  IJMH: { light: "hsl(0, 70%, 45%)", dark: "hsl(0, 80%, 60%)" },        // Red
-  HOEK: { light: "hsl(140, 60%, 35%)", dark: "hsl(140, 70%, 50%)" },    // Green
+  IJMH: { light: "hsl(0, 70%, 45%)", dark: "hsl(0, 75%, 27%)" },        // Red
+  HOEK: { light: "hsl(140, 60%, 35%)", dark: "hsl(140, 53%, 29%)" },    // Green
   DLFZ: { light: "hsl(220, 70%, 35%)", dark: "hsl(220, 70%, 55%)" },    // Dark blue
-  HARL: { light: "hsl(44, 78%, 74%)", dark: "hsl(41, 100%, 77%)" },  
+  HARL: { light: "hsl(44, 100%, 21%)", dark: "hsl(41, 100%, 15%)" },  
   VLIS: { light: "hsl(45, 100%, 50%)", dark: "hsl(45, 85%, 55%)", textColor: "white" }, // Yellow with black text
 };
 
