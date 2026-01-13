@@ -60,7 +60,7 @@ const ClockDisplay = ({ time, title, flagType, dstMessage }: ClockDisplayProps) 
           fontWeight: 400,
         }}
       >
-        {format(time, "HH:mm")}
+        {format(time, "H:mm")}
       </p>
     </div>
   );
