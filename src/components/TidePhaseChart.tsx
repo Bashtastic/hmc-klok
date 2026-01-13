@@ -42,18 +42,20 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
     });
   }, [tideData]);
 
-  // Create bar heights for the wave pattern (S-curve with extended tails)
+  // Create bar heights for the wave pattern matching reference:
+  // Start rising -> HW (peak at ~1/4) -> falling -> LW (bottom at ~3/4) -> rising again
   const barHeights = useMemo(() => {
     const heights: number[] = [];
     for (let i = 0; i < TOTAL_BARS; i++) {
-      // Map to a range that shows the S-curve: from -0.25π to 1.25π
-      // This creates visible tails at both ends
-      const progress = (i / (TOTAL_BARS - 1)) * 1.5 - 0.25; // -0.25 to 1.25
-      const sineValue = Math.sin(progress * Math.PI);
-      // Scale between 10% and 100% height
-      const minHeight = 10;
+      const progress = i / (TOTAL_BARS - 1);
+      // Use cosine shifted so peak is at 1/4 and bottom at 3/4
+      // angle = (progress - 0.25) * 2π
+      const angle = (progress - 0.25) * 2 * Math.PI;
+      const cosValue = Math.cos(angle);
+      // Scale between 15% and 100% height
+      const minHeight = 15;
       const maxHeight = 100;
-      heights.push(minHeight + ((sineValue + 1) / 2) * (maxHeight - minHeight));
+      heights.push(minHeight + ((cosValue + 1) / 2) * (maxHeight - minHeight));
     }
     return heights;
   }, []);
