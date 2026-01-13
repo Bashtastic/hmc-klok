@@ -48,44 +48,48 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
   const displayText = holidayName ? `${holidayName}, ${dayName} ${dateDisplay}` : `${dayName}, ${dateDisplay}`;
 
   return (
-    <div className="flex flex-col items-center justify-center w-full mt-[80px]">
-      <div className="flex items-center">
-        <div className="w-[50vw] flex justify-end pr-4">
-          <img
-            src={moonPhase ? getMoonPhaseImage(moonPhase, moonPercentage, isWaning) : "/moon-phases/animated_moon.gif"}
-            alt={moonDescription || "Loading moon phase..."}
-            className="text-foreground flex-shrink-0"
-            style={{
-              width: "96px",
-              height: "96px",
-              objectFit: "contain",
-              transform: isWaning ? "scaleX(-1)" : "none",
-            }}
-          />
-        </div>
-        <div className="flex flex-col items-start">
-          <span
-            className="text-foreground"
-            style={{
-              fontFamily: "'RO Sans', sans-serif",
-              fontSize: "4rem",
-              display: "inline-block",
-            }}
-          >
-            {displayText}
-          </span>
-          <span
-            className="text-foreground"
-            style={{
-              fontFamily: "'RO Sans', sans-serif",
-              fontSize: "3rem",
-              display: "inline-block",
-            }}
-          >
-            {moonDescription}
-          </span>
-        </div>
+    <div className="relative w-full mt-[80px]">
+      {/* Moon centered on page */}
+      <div className="absolute left-1/2 -translate-x-1/2">
+        <img
+          src={moonPhase ? getMoonPhaseImage(moonPhase, moonPercentage, isWaning) : "/moon-phases/animated_moon.gif"}
+          alt={moonDescription || "Loading moon phase..."}
+          className="text-foreground flex-shrink-0"
+          style={{
+            width: "96px",
+            height: "96px",
+            objectFit: "contain",
+            transform: isWaning ? "scaleX(-1)" : "none",
+          }}
+        />
       </div>
+      {/* Text positioned to the right of center */}
+      <div className="flex flex-col items-start absolute left-1/2 ml-[60px]">
+        <span
+          className="text-foreground"
+          style={{
+            fontFamily: "'RO Sans', sans-serif",
+            fontSize: "4rem",
+            display: "inline-block",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {displayText}
+        </span>
+        <span
+          className="text-foreground"
+          style={{
+            fontFamily: "'RO Sans', sans-serif",
+            fontSize: "3rem",
+            display: "inline-block",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {moonDescription}
+        </span>
+      </div>
+      {/* Spacer to maintain height */}
+      <div className="h-[96px]"></div>
     </div>
   );
 };
