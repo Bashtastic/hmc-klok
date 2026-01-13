@@ -283,13 +283,6 @@ const Index = () => {
           <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType={showTimezoneEmojis ? "nl" : undefined} dstMessage={dstMessage} />
         </div>
 
-        {/* Tide Phase Chart */}
-        {tideData.length > 0 && (
-          <div className="flex justify-center mt-24 mb-2">
-            <TidePhaseChart tideData={tideData} />
-          </div>
-        )}
-
         <div className="flex items-start justify-center w-screen -ml-4 mt-4">
           <DateDisplay
             date={time}
@@ -299,6 +292,13 @@ const Index = () => {
             isWaning={isWaning}
           />
         </div>
+
+        {/* Tide Phase Chart */}
+        {tideData.length > 0 && (
+          <div className="flex justify-center mt-4 mb-2">
+            <TidePhaseChart tideData={tideData} />
+          </div>
+        )}
       </div>
     </div>
   );
