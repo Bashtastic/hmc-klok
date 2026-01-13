@@ -12,6 +12,21 @@ interface TidePhaseChartProps {
 
 const TOTAL_BARS = 48;
 
+// Location-specific colors: [light theme, dark theme]
+const LOCATION_COLORS: { [key: string]: { light: string; dark: string } } = {
+  IJMH: { light: "hsl(0, 70%, 45%)", dark: "hsl(0, 80%, 60%)" },        // Red
+  HOEK: { light: "hsl(140, 60%, 35%)", dark: "hsl(140, 70%, 50%)" },    // Green
+  DLFZ: { light: "hsl(220, 70%, 35%)", dark: "hsl(220, 70%, 55%)" },    // Dark blue
+};
+
+const getLocationColor = (location: string, isDark: boolean): string => {
+  const colors = LOCATION_COLORS[location];
+  if (colors) {
+    return isDark ? colors.dark : colors.light;
+  }
+  return isDark ? "hsl(var(--foreground))" : "hsl(var(--foreground))";
+};
+
 const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
   // Wave pattern: HW at bar ~12 (25%), LW at bar ~36 (75%)
   const HW_BAR = Math.round(TOTAL_BARS * 0.25); // ~12
@@ -71,11 +86,19 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
     return result;
   }, [locationBars]);
 
+  // Detect dark mode
+  const isDark = typeof document !== 'undefined' && 
+    document.documentElement.classList.contains('dark');
+
   return (
     <div className="flex items-end justify-center gap-1 h-40" style={{ fontFamily: "'RO Sans', sans-serif" }}>
       {barHeights.map((height, index) => {
         const locationsAtBar = barsWithLocations[index] || [];
         const isActive = locationsAtBar.length > 0;
+        const primaryLocation = locationsAtBar[0];
+        const barColor = isActive 
+          ? getLocationColor(primaryLocation, isDark)
+          : "hsl(var(--muted-foreground) / 0.4)";
         
         return (
           <div
@@ -85,9 +108,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
               width: "28px",
               height: `${height}%`,
               borderRadius: "3px",
-              backgroundColor: isActive 
-                ? "hsl(var(--foreground))" 
-                : "hsl(var(--muted-foreground) / 0.4)",
+              backgroundColor: barColor,
             }}
           >
             {isActive && (
@@ -103,7 +124,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
                     key={loc}
                     className="text-[15px] font-black tracking-wider"
                     style={{ 
-                      color: "hsl(var(--background))",
+                      color: "white",
                     }}
                   >
                     {loc}
