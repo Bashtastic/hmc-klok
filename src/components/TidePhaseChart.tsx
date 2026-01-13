@@ -98,7 +98,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
     document.documentElement.classList.contains('dark');
 
   return (
-    <div className="flex items-end justify-center gap-0.5 h-40" style={{ fontFamily: "'RO Sans', sans-serif" }}>
+    <div className="flex items-end justify-center gap-1 h-40" style={{ fontFamily: "'RO Sans', sans-serif", transform: "scaleX(1.1)" }}>
       {barHeights.map((height, index) => {
         const locationsAtBar = barsWithLocations[index] || [];
         const isActive = locationsAtBar.length > 0;
@@ -112,7 +112,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
             key={index}
             className={`relative flex items-center justify-center transition-colors duration-300`}
             style={{
-              width: "34px",
+              width: "31px",
               height: `${height}%`,
               borderRadius: "3px",
               backgroundColor: barColor,
