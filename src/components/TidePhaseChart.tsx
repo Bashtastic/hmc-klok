@@ -98,7 +98,8 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
     document.documentElement.classList.contains('dark');
 
   return (
-    <div className="flex items-end justify-center gap-1 h-40" style={{ fontFamily: "'RO Sans', sans-serif" }}>
+    <div className="relative flex items-end justify-center gap-1 h-40" style={{ fontFamily: "'RO Sans', sans-serif" }}>
+      {/* Bars layer */}
       {barHeights.map((height, index) => {
         const locationsAtBar = barsWithLocations[index] || [];
         const isActive = locationsAtBar.length > 0;
@@ -110,43 +111,60 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
         return (
           <div
             key={index}
-            className={`relative flex items-center justify-center transition-colors duration-300`}
+            className="transition-colors duration-300"
             style={{
               width: "28px",
               height: `${height}%`,
               borderRadius: "3px",
               backgroundColor: barColor,
-              zIndex: isActive ? 10 : 1,
             }}
-          >
-            {isActive && (
-              <div 
-                className="absolute flex flex-col items-start gap-0.5"
-                style={{
-                  transform: "rotate(-90deg)",
-                  whiteSpace: "nowrap",
-                  left: "91%",
-                  bottom: "4px",
-                  transformOrigin: "left bottom",
-                  zIndex: 20,
-                }}
-              >
-                {locationsAtBar.map((loc) => (
-                  <span
-                    key={loc}
-                    className="text-[15px] font-black tracking-wider"
-                    style={{ 
-                      color: getTextColor(loc),
-                    }}
-                  >
-                    {loc}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
+          />
         );
       })}
+      
+      {/* Labels layer - rendered on top of all bars */}
+      <div className="absolute inset-0 flex items-end justify-center gap-1 pointer-events-none" style={{ zIndex: 50 }}>
+        {barHeights.map((height, index) => {
+          const locationsAtBar = barsWithLocations[index] || [];
+          const isActive = locationsAtBar.length > 0;
+          
+          return (
+            <div
+              key={index}
+              className="relative"
+              style={{
+                width: "28px",
+                height: `${height}%`,
+              }}
+            >
+              {isActive && (
+                <div 
+                  className="absolute flex flex-col items-start gap-0.5"
+                  style={{
+                    transform: "rotate(-90deg)",
+                    whiteSpace: "nowrap",
+                    left: "91%",
+                    bottom: "4px",
+                    transformOrigin: "left bottom",
+                  }}
+                >
+                  {locationsAtBar.map((loc) => (
+                    <span
+                      key={loc}
+                      className="text-[15px] font-black tracking-wider"
+                      style={{ 
+                        color: getTextColor(loc),
+                      }}
+                    >
+                      {loc}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
