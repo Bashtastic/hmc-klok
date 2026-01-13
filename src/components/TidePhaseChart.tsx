@@ -123,7 +123,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
                 style={{
                   transform: "rotate(-90deg)",
                   whiteSpace: "nowrap",
-                  left: "220%",
+                  left: "520%",
                   bottom: "4px",
                   transformOrigin: "left bottom",
                 }}
