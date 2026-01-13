@@ -116,6 +116,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
               height: `${height}%`,
               borderRadius: "3px",
               backgroundColor: barColor,
+              zIndex: isActive ? 10 : 1,
             }}
           >
             {isActive && (
@@ -127,6 +128,7 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
                   left: "91%",
                   bottom: "4px",
                   transformOrigin: "left bottom",
+                  zIndex: 20,
                 }}
               >
                 {locationsAtBar.map((loc) => (
