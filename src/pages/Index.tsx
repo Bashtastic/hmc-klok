@@ -192,7 +192,7 @@ const Index = () => {
       <div className="fixed top-4 left-4 flex flex-col items-center z-20">
         <img src="/icons/sunrise.png" alt="Zonsopkomst" style={{ width: '150px', height: 'auto' }} />
         <span 
-          className="text-foreground text-2xl mt-2" 
+          className="text-foreground text-5xl mt-2" 
           style={{ fontFamily: "'RO Sans', sans-serif" }}
         >
           {formatSunTime(sunrise)}
@@ -203,7 +203,7 @@ const Index = () => {
       <div className="fixed top-4 right-4 flex flex-col items-center z-20">
         <img src="/icons/sunset.png" alt="Zonsondergang" style={{ width: '150px', height: 'auto' }} />
         <span 
-          className="text-foreground text-2xl mt-2" 
+          className="text-foreground text-5xl mt-2" 
           style={{ fontFamily: "'RO Sans', sans-serif" }}
         >
           {formatSunTime(sunset)}
