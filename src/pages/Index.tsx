@@ -283,7 +283,7 @@ const Index = () => {
           <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType={showTimezoneEmojis ? "nl" : undefined} dstMessage={dstMessage} />
         </div>
 
-        <div className="flex items-start justify-center w-screen -ml-4 mt-4">
+        <div className="flex items-start justify-center w-screen -ml-4 mt-4 relative z-30">
           <DateDisplay
             date={time}
             moonPhase={moonPhase}
