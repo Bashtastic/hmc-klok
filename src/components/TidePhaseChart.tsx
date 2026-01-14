@@ -81,23 +81,24 @@ const TidePhaseChart = ({ tideData, onTroughPositionChange }: TidePhaseChartProp
     }));
   }, [tideData]);
 
-  // Calculate trough position (where angle = π, cos = -1)
-  // From formula: angle = (phaseOffset - progress - 0.25) * 2π = π
-  // So: phaseOffset - progress - 0.25 = 0.5 → progress = phaseOffset - 0.75
-  const troughPosition = useMemo(() => {
-    let pos = phaseOffset - 0.75;
+  // Calculate anchor position at 25% after high water
+  // Peak (HW) is at angle = 0, so 25% after HW is at angle = π/2
+  // From formula: angle = (phaseOffset - progress - 0.25) * 2π = π/2
+  // So: phaseOffset - progress - 0.25 = 0.25 → progress = phaseOffset - 0.5
+  const anchorPosition = useMemo(() => {
+    let pos = phaseOffset - 0.5;
     // Normalize to 0-1 range
     while (pos < 0) pos += 1;
     while (pos > 1) pos -= 1;
     return pos;
   }, [phaseOffset]);
 
-  // Notify parent of trough position change
+  // Notify parent of anchor position change
   useMemo(() => {
     if (onTroughPositionChange) {
-      onTroughPositionChange(troughPosition);
+      onTroughPositionChange(anchorPosition);
     }
-  }, [troughPosition, onTroughPositionChange]);
+  }, [anchorPosition, onTroughPositionChange]);
 
   // Create bar heights for the wave pattern with phase offset
   const barHeights = useMemo(() => {
