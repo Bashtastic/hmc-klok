@@ -67,8 +67,9 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
     }
     
     // The phase offset positions the wave so that the reference bar shows the correct tide state
+    // Using + barProgress to invert wave direction (tide propagates left to right)
     const barProgress = refBarIndex / (TOTAL_BARS - 1);
-    return cycleProgress - barProgress;
+    return cycleProgress + barProgress;
   }, [tideData]);
 
   // Fixed bar positions for locations
@@ -84,8 +85,9 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
     const heights: number[] = [];
     for (let i = 0; i < TOTAL_BARS; i++) {
       const progress = i / (TOTAL_BARS - 1);
-      // Apply phase offset to animate the wave
-      const angle = (progress + phaseOffset - 0.25) * 2 * Math.PI;
+      // Apply phase offset with inverted direction (phaseOffset - progress)
+      // This makes the wave travel from left to right, matching tide propagation
+      const angle = (phaseOffset - progress - 0.25) * 2 * Math.PI;
       const cosValue = Math.cos(angle);
       // Scale between 22.5% and 150% height
       const minHeight = 22.5;
