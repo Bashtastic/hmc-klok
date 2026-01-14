@@ -8,6 +8,7 @@ interface TideLocationData {
 
 interface TidePhaseChartProps {
   tideData: TideLocationData[];
+  onTroughPositionChange?: (positionPercent: number) => void;
 }
 
 const TOTAL_BARS = 48;
@@ -43,7 +44,7 @@ const getTextColor = (location: string): string => {
   return colors?.textColor || "white";
 };
 
-const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
+const TidePhaseChart = ({ tideData, onTroughPositionChange }: TidePhaseChartProps) => {
   // Calculate the wave phase offset based on tide data
   // Use VLIS as reference to determine overall phase
   const phaseOffset = useMemo(() => {
@@ -79,6 +80,24 @@ const TidePhaseChart = ({ tideData }: TidePhaseChartProps) => {
       barIndex: LOCATION_BAR_POSITIONS[data.location] || 0,
     }));
   }, [tideData]);
+
+  // Calculate trough position (where angle = π, cos = -1)
+  // From formula: angle = (phaseOffset - progress - 0.25) * 2π = π
+  // So: phaseOffset - progress - 0.25 = 0.5 → progress = phaseOffset - 0.75
+  const troughPosition = useMemo(() => {
+    let pos = phaseOffset - 0.75;
+    // Normalize to 0-1 range
+    while (pos < 0) pos += 1;
+    while (pos > 1) pos -= 1;
+    return pos;
+  }, [phaseOffset]);
+
+  // Notify parent of trough position change
+  useMemo(() => {
+    if (onTroughPositionChange) {
+      onTroughPositionChange(troughPosition);
+    }
+  }, [troughPosition, onTroughPositionChange]);
 
   // Create bar heights for the wave pattern with phase offset
   const barHeights = useMemo(() => {

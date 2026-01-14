@@ -62,6 +62,7 @@ const Index = () => {
   const [lastFetchSuccess, setLastFetchSuccess] = useState(false);
   const [tideData, setTideData] = useState<TideLocationData[]>([]);
   const [dstMessage, setDstMessage] = useState<string | null>(null);
+  const [troughPosition, setTroughPosition] = useState(0.5); // Position of trough as 0-1
 
   // Check for crisis mode and timezone emojis via URL parameters
   const urlParams = useMemo(() => {
@@ -283,7 +284,13 @@ const Index = () => {
           <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType={showTimezoneEmojis ? "nl" : undefined} dstMessage={dstMessage} />
         </div>
 
-        <div className="flex items-start justify-center w-screen -ml-4 mt-4 relative z-30">
+        {/* DateDisplay positioned above the trough of the wave */}
+        <div 
+          className="flex items-start justify-center w-screen -ml-4 mt-4 relative z-30 transition-all duration-1000"
+          style={{
+            transform: `translateX(${(troughPosition - 0.5) * 100}%)`,
+          }}
+        >
           <DateDisplay
             date={time}
             moonPhase={moonPhase}
@@ -296,7 +303,10 @@ const Index = () => {
         {/* Tide Phase Chart */}
         {tideData.length > 0 && (
           <div className="flex justify-center mt-4 mb-2">
-            <TidePhaseChart tideData={tideData} />
+            <TidePhaseChart 
+              tideData={tideData} 
+              onTroughPositionChange={setTroughPosition}
+            />
           </div>
         )}
       </div>
