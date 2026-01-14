@@ -18,8 +18,8 @@ const LOCATION_BAR_POSITIONS: { [key: string]: number } = {
   VLIS: 7,
   HOEK: 9,
   IJMH: 14,
-  HARL: 26,
-  DLFZ: 30,
+  HARL: 35,
+  DLFZ: 50,
 };
 
 // Location-specific colors: [light theme, dark theme]
