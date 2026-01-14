@@ -81,11 +81,11 @@ const TidePhaseChart = ({ tideData, onTroughPositionChange }: TidePhaseChartProp
     }));
   }, [tideData]);
 
-  // Calculate anchor position at 35% after high water
-  // Peak (HW) is at angle = 0, so 35% after HW is at angle = -0.35 * 2π
-  // Adding 0.1 to phaseOffset shifts from 25% to 35% after HW
+  // Calculate anchor position at 30% after high water
+  // Peak (HW) is at angle = 0, so 30% after HW is at angle = -0.30 * 2π
+  // Adding 0.05 to phaseOffset shifts from 25% to 30% after HW
   const anchorPosition = useMemo(() => {
-    let pos = phaseOffset + 0.1;
+    let pos = phaseOffset + 0.05;
     // Normalize to 0-1 range
     while (pos < 0) pos += 1;
     while (pos > 1) pos -= 1;
