@@ -288,7 +288,7 @@ const Index = () => {
         <div 
           className="flex items-start justify-center w-screen -ml-4 mt-4 relative z-30 transition-all duration-1000"
           style={{
-            transform: `translateX(${(Math.min(troughPosition, 0.5) - 0.5) * 100}%)`,
+            transform: `translateX(${(Math.min(troughPosition, 0.55) - 0.5) * 100}%)`,
           }}
         >
           <DateDisplay
