@@ -9,6 +9,7 @@ interface DateDisplayProps {
   moonDescription: string;
   moonPercentage?: number;
   isWaning?: boolean;
+  isAtBoundary?: boolean;
 }
 
 const getMoonPhaseImage = (phase: string, percentage?: number, isWaning?: boolean) => {
@@ -36,7 +37,7 @@ const getMoonPhaseImage = (phase: string, percentage?: number, isWaning?: boolea
   return moonImages[phase] || moonImages["🌑"]; // fallback naar nieuwe maan als de fase niet bekend is
 };
 
-const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWaning }: DateDisplayProps) => {
+const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWaning, isAtBoundary = false }: DateDisplayProps) => {
   const dayName = format(date, "EEEE", { locale: nl });
 
   // Memoize holiday calculation - only recalculate when date changes
@@ -64,7 +65,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
         />
       </div>
       {/* Date text positioned to the right of center */}
-      <div className="flex flex-col items-center absolute left-1/2 ml-[60px]">
+      <div className={`flex flex-col absolute left-1/2 ml-[60px] ${isAtBoundary ? 'items-end' : 'items-center'}`}>
         <span
           className="text-foreground"
           style={{
@@ -77,7 +78,7 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
         >
           {displayText}
         </span>
-        {/* Moon description centered below date text */}
+        {/* Moon description - centered normally, right-aligned at boundary */}
         <span
           className="text-foreground"
           style={{
