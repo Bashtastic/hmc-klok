@@ -284,7 +284,7 @@ const Index = () => {
           <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType={showTimezoneEmojis ? "nl" : undefined} dstMessage={dstMessage} />
         </div>
 
-        {/* DateDisplay positioned above the trough of the wave, clamped to max 50% (center) */}
+        {/* DateDisplay positioned above the trough of the wave, clamped to max 55% */}
         <div 
           className="flex items-start justify-center w-screen -ml-4 mt-4 relative z-30 transition-all duration-1000"
           style={{
@@ -297,6 +297,7 @@ const Index = () => {
             moonDescription={moonDescription}
             moonPercentage={moonPercentage}
             isWaning={isWaning}
+            isAtBoundary={troughPosition >= 0.55}
           />
         </div>
 
