@@ -284,11 +284,11 @@ const Index = () => {
           <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType={showTimezoneEmojis ? "nl" : undefined} dstMessage={dstMessage} />
         </div>
 
-        {/* DateDisplay positioned above the trough of the wave, clamped to max 60% (10% past center) */}
+        {/* DateDisplay positioned above the trough of the wave, clamped to max 50% (center) */}
         <div 
           className="flex items-start justify-center w-screen -ml-4 mt-4 relative z-30 transition-all duration-1000"
           style={{
-            transform: `translateX(${(Math.min(troughPosition, 0.6) - 0.5) * 100}%)`,
+            transform: `translateX(${(Math.min(troughPosition, 0.5) - 0.5) * 100}%)`,
           }}
         >
           <DateDisplay
