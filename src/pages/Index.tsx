@@ -203,8 +203,8 @@ const Index = () => {
     // Initial fetch
     fetchTideData();
 
-    // Fetch every 5 minutes
-    const interval = setInterval(fetchTideData, 5 * 60 * 1000);
+    // Fetch every minute
+    const interval = setInterval(fetchTideData, 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
