@@ -13,14 +13,35 @@ interface TidePhaseChartProps {
 
 const TOTAL_BARS = 48;
 
-// Fixed bar positions for each location (these stay constant)
-const LOCATION_BAR_POSITIONS: { [key: string]: number } = {
-  VLIS: 7,
-  HOEK: 9,
-  IJMH: 14,
-  DENH: 21,
-  HARL: 35,
-  DLFZ: 43,
+// Only VLIS has a fixed position (as visual anchor)
+const VLIS_BAR_POSITION = 7;
+
+// Calculate bar position for a location based on its tide percentage and the overall phase
+const calculateBarPosition = (
+  percentage: number,
+  isRising: boolean,
+  phaseOffset: number
+): number => {
+  // Calculate the cycleProgress for this location (same logic as in phaseOffset calculation)
+  let cycleProgress: number;
+  if (isRising) {
+    cycleProgress = 0.75 + (percentage / 100) * 0.5;
+    if (cycleProgress > 1) cycleProgress -= 1;
+  } else {
+    cycleProgress = 0.25 + (percentage / 100) * 0.5;
+  }
+
+  // Find the bar where this cycleProgress would appear in the wave
+  // The wave formula is: angle = (phaseOffset - progress - 0.25) * 2 * PI
+  // We solve for progress: progress = phaseOffset - cycleProgress
+  const barProgress = phaseOffset - cycleProgress;
+  let barIndex = Math.round(barProgress * (TOTAL_BARS - 1));
+
+  // Normalize to valid range (0 to TOTAL_BARS-1)
+  while (barIndex < 0) barIndex += TOTAL_BARS;
+  while (barIndex >= TOTAL_BARS) barIndex -= TOTAL_BARS;
+
+  return barIndex;
 };
 
 // Location-specific colors: [light theme, dark theme]
@@ -54,7 +75,6 @@ const TidePhaseChart = ({ tideData, onTroughPositionChange }: TidePhaseChartProp
     
     // Use VLIS as reference (or first available location)
     const referenceData = tideData.find(d => d.location === "VLIS") || tideData[0];
-    const refBarIndex = LOCATION_BAR_POSITIONS[referenceData.location] || 7;
     
     // Calculate where in the tide cycle this location is
     let cycleProgress: number;
@@ -69,19 +89,29 @@ const TidePhaseChart = ({ tideData, onTroughPositionChange }: TidePhaseChartProp
       cycleProgress = 0.25 + (referenceData.percentage / 100) * 0.5;
     }
     
-    // The phase offset positions the wave so that the reference bar shows the correct tide state
+    // The phase offset positions the wave so that VLIS bar shows the correct tide state
     // Using + barProgress to invert wave direction (tide propagates left to right)
-    const barProgress = refBarIndex / (TOTAL_BARS - 1);
+    const barProgress = VLIS_BAR_POSITION / (TOTAL_BARS - 1);
     return cycleProgress + barProgress;
   }, [tideData]);
 
-  // Fixed bar positions for locations
+  // Calculate bar positions for each location
   const locationBars = useMemo(() => {
-    return tideData.map((data) => ({
-      ...data,
-      barIndex: LOCATION_BAR_POSITIONS[data.location] || 0,
-    }));
-  }, [tideData]);
+    return tideData.map((data) => {
+      // VLIS keeps fixed position as anchor
+      if (data.location === "VLIS") {
+        return { ...data, barIndex: VLIS_BAR_POSITION };
+      }
+
+      // Other locations get dynamic position based on their tide percentage
+      const barIndex = calculateBarPosition(
+        data.percentage,
+        data.isRising,
+        phaseOffset
+      );
+      return { ...data, barIndex };
+    });
+  }, [tideData, phaseOffset]);
 
   // Calculate anchor position at 30% after high water
   // Peak (HW) is at angle = 0, so 30% after HW is at angle = -0.30 * 2π
