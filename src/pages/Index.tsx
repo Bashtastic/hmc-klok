@@ -8,8 +8,8 @@ import TidePhaseChart from "../components/TidePhaseChart";
 import { isKingsDay, kingsDay } from "../utils/colorDefinitions";
 import { getDSTTransitionMessage } from "../utils/dstUtils";
 
-const AMSTERDAM_LAT = 52.3676;
-const AMSTERDAM_LON = 4.9041;
+const AMSTERDAM_LAT = 51.74851;
+const AMSTERDAM_LON = 3.82588;
 
 // Tide locations to display
 const TIDE_LOCATIONS = ["VLIS", "HOEK", "IJMH", "DENH", "DLFZ", "HARL"] as const;
