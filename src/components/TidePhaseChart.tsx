@@ -14,7 +14,7 @@ interface TidePhaseChartProps {
 const TOTAL_BARS = 48;
 
 // Only VLIS has a fixed position (as visual anchor)
-const VLIS_BAR_POSITION = 7;
+const VLIS_BAR_POSITION = 4;
 
 // Calculate bar position for a location based on its tide percentage and the overall phase
 const calculateBarPosition = (
