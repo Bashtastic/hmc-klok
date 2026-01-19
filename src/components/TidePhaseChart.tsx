@@ -9,6 +9,7 @@ interface TideLocationData {
 interface TidePhaseChartProps {
   tideData: TideLocationData[];
   onTroughPositionChange?: (positionPercent: number) => void;
+  onPeakPositionChange?: (positionPercent: number) => void;
 }
 
 const TOTAL_BARS = 48;
@@ -67,7 +68,7 @@ const getTextColor = (location: string): string => {
   return colors?.textColor || "white";
 };
 
-const TidePhaseChart = ({ tideData, onTroughPositionChange }: TidePhaseChartProps) => {
+const TidePhaseChart = ({ tideData, onTroughPositionChange, onPeakPositionChange }: TidePhaseChartProps) => {
   // Calculate the wave phase offset based on tide data
   // Use VLIS as reference to determine overall phase
   const phaseOffset = useMemo(() => {
@@ -124,12 +125,30 @@ const TidePhaseChart = ({ tideData, onTroughPositionChange }: TidePhaseChartProp
     return pos;
   }, [phaseOffset]);
 
+  // Calculate peak position (where the wave is at maximum height)
+  // Peak is at where angle = 0, which means phaseOffset - progress - 0.25 = 0
+  // So progress = phaseOffset - 0.25
+  const peakPosition = useMemo(() => {
+    let pos = phaseOffset - 0.25;
+    // Normalize to 0-1 range
+    while (pos < 0) pos += 1;
+    while (pos > 1) pos -= 1;
+    return pos;
+  }, [phaseOffset]);
+
   // Notify parent of anchor position change
   useMemo(() => {
     if (onTroughPositionChange) {
       onTroughPositionChange(anchorPosition);
     }
   }, [anchorPosition, onTroughPositionChange]);
+
+  // Notify parent of peak position change
+  useMemo(() => {
+    if (onPeakPositionChange) {
+      onPeakPositionChange(peakPosition);
+    }
+  }, [peakPosition, onPeakPositionChange]);
 
   // Create bar heights for the wave pattern with phase offset
   const barHeights = useMemo(() => {
