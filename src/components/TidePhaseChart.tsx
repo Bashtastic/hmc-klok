@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 
 interface TideLocationData {
   location: string;
@@ -147,14 +147,14 @@ const TidePhaseChart = ({ tideData, onTroughPositionChange, onPeakPositionChange
   }, [phaseOffset]);
 
   // Notify parent of anchor position change
-  useMemo(() => {
+  useEffect(() => {
     if (onTroughPositionChange) {
       onTroughPositionChange(anchorPosition);
     }
   }, [anchorPosition, onTroughPositionChange]);
 
   // Notify parent of peak position change
-  useMemo(() => {
+  useEffect(() => {
     if (onPeakPositionChange) {
       onPeakPositionChange(peakPosition);
     }
