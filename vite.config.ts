@@ -22,5 +22,7 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    // Prevent duplicate React copies (common cause of "useState is null" / invalid hook call)
+    dedupe: ["react", "react-dom"],
   },
 }));
