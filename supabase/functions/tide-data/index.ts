@@ -30,11 +30,10 @@ Deno.serve(async (req) => {
         },
       },
     );
-  } catch (error: unknown) {
+  } catch (error) {
     console.error('Error fetching tide data:', error);
-    const message = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: message }),
+      JSON.stringify({ error: error.message }),
       { 
         status: 500,
         headers: { 
