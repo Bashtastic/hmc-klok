@@ -63,6 +63,7 @@ const Index = () => {
   const [tideData, setTideData] = useState<TideLocationData[]>([]);
   const [dstMessage, setDstMessage] = useState<string | null>(null);
   const [troughPosition, setTroughPosition] = useState(0.5); // Position of trough as 0-1
+  const [peakPosition, setPeakPosition] = useState(0.5); // Position of peak as 0-1
 
   // Check for crisis mode and timezone emojis via URL parameters
   const urlParams = useMemo(() => {
@@ -284,11 +285,15 @@ const Index = () => {
           <ClockDisplay time={cetTime} title={isDST ? "CET" : "MET / CET"} flagType={showTimezoneEmojis ? "nl" : undefined} dstMessage={dstMessage} />
         </div>
 
-        {/* DateDisplay positioned above the trough of the wave, clamped to max 57% */}
+        {/* DateDisplay positioned above the trough of the wave
+            - If peak > 50%, position DateDisplay on the left side
+            - Otherwise, position on the right side (clamped to max 57%) */}
         <div 
           className="flex items-start justify-center w-screen -ml-4 mt-4 relative z-30 transition-all duration-1000"
           style={{
-            transform: `translateX(${(Math.min(troughPosition, 0.57) - 0.5) * 100}%)`,
+            transform: peakPosition > 0.5 
+              ? `translateX(${(Math.max(troughPosition, 0.43) - 0.5) * 100}%)` 
+              : `translateX(${(Math.min(troughPosition, 0.57) - 0.5) * 100}%)`,
           }}
         >
           <DateDisplay
@@ -297,7 +302,9 @@ const Index = () => {
             moonDescription={moonDescription}
             moonPercentage={moonPercentage}
             isWaning={isWaning}
-            isAtBoundary={troughPosition >= 0.57}
+            isAtBoundary={peakPosition > 0.5 ? troughPosition <= 0.43 : troughPosition >= 0.57}
+            isOnLeft={peakPosition > 0.5}
+            isAtLeftEdge={peakPosition > 0.5 && troughPosition <= 0.10}
           />
         </div>
 
@@ -307,6 +314,7 @@ const Index = () => {
             <TidePhaseChart 
               tideData={tideData} 
               onTroughPositionChange={setTroughPosition}
+              onPeakPositionChange={setPeakPosition}
             />
           </div>
         )}

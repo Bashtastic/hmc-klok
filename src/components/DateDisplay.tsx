@@ -10,6 +10,8 @@ interface DateDisplayProps {
   moonPercentage?: number;
   isWaning?: boolean;
   isAtBoundary?: boolean;
+  isOnLeft?: boolean;
+  isAtLeftEdge?: boolean;
 }
 
 const getMoonPhaseImage = (phase: string, percentage?: number, isWaning?: boolean) => {
@@ -37,7 +39,7 @@ const getMoonPhaseImage = (phase: string, percentage?: number, isWaning?: boolea
   return moonImages[phase] || moonImages["🌑"]; // fallback naar nieuwe maan als de fase niet bekend is
 };
 
-const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWaning, isAtBoundary = false }: DateDisplayProps) => {
+const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWaning, isAtBoundary = false, isOnLeft = false, isAtLeftEdge = false }: DateDisplayProps) => {
   const dayName = format(date, "EEEE", { locale: nl });
 
   // Memoize holiday calculation - only recalculate when date changes
@@ -47,6 +49,16 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
 
   const dateDisplay = format(date, "d MMMM yyyy", { locale: nl });
   const displayText = holidayName ? `${holidayName}, ${dayName} ${dateDisplay}` : `${dayName}, ${dateDisplay}`;
+
+  // Determine alignment for the text container
+  // - Right-aligned (items-end) when at right boundary
+  // - Left-aligned (items-start) when at left edge (first 10%)
+  // - Centered otherwise
+  const getTextAlignment = () => {
+    if (isAtBoundary && !isOnLeft) return 'items-end';
+    if (isAtLeftEdge) return 'items-start';
+    return 'items-center';
+  };
 
   return (
     <div className="relative w-full mt-[80px]">
@@ -64,8 +76,8 @@ const DateDisplay = ({ date, moonPhase, moonDescription, moonPercentage, isWanin
           }}
         />
       </div>
-      {/* Date text positioned to the right of center */}
-      <div className={`flex flex-col absolute left-1/2 ml-[60px] ${isAtBoundary ? 'items-end' : 'items-center'}`}>
+      {/* Date text positioned relative to moon */}
+      <div className={`flex flex-col absolute ${isOnLeft ? 'right-1/2 mr-[60px]' : 'left-1/2 ml-[60px]'} ${getTextAlignment()}`}>
         <span
           className="text-foreground"
           style={{
