@@ -126,14 +126,24 @@ const TidePhaseChart = ({ tideData, onTroughPositionChange, onPeakPositionChange
   }, [phaseOffset]);
 
   // Calculate peak position (where the wave is at maximum height)
-  // Peak is at where angle = 0, which means phaseOffset - progress - 0.25 = 0
-  // So progress = phaseOffset - 0.25
+  // Find the bar index where the wave height is maximum
   const peakPosition = useMemo(() => {
-    let pos = phaseOffset - 0.25;
-    // Normalize to 0-1 range
-    while (pos < 0) pos += 1;
-    while (pos > 1) pos -= 1;
-    return pos;
+    // Find the bar with maximum height
+    let maxHeight = 0;
+    let peakBarIndex = 0;
+    
+    for (let i = 0; i < TOTAL_BARS; i++) {
+      const progress = i / (TOTAL_BARS - 1);
+      const angle = (phaseOffset - progress - 0.25) * 2 * Math.PI;
+      const height = Math.cos(angle);
+      if (height > maxHeight) {
+        maxHeight = height;
+        peakBarIndex = i;
+      }
+    }
+    
+    // Return as percentage of total width
+    return peakBarIndex / (TOTAL_BARS - 1);
   }, [phaseOffset]);
 
   // Notify parent of anchor position change
